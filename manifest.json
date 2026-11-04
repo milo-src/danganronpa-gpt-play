@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Danganronpa GPT Play",
+  "version": "0.1.0",
+  "description": "Игровая сцена Danganronpa в веб-чате ChatGPT: персонажи, локации, реплики и улики. Без API.",
+  "permissions": ["storage", "activeTab"],
+  "action": {
+    "default_title": "Danganronpa — включить или выключить",
+    "default_popup": "src/extension/settings/popup.html"
+  },
+  "content_scripts": [{
+    "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+    "js": [
+      "src/data/runtime-assets.js",
+      "src/game/dialogue/protocol.js",
+      "src/game/scene/timeline.js",
+      "src/adapters/chatgpt/adapter.js",
+      "src/ui/components/player.js",
+      "src/extension/content/main.js"
+    ],
+    "run_at": "document_idle"
+  }],
+  "web_accessible_resources": [{
+    "resources": ["public/assets/characters/*", "public/assets/backgrounds/*", "src/ui/styles/player.css"],
+    "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"]
+  }],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "danganronpa-gpt-play@local.extension",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {"required": ["none"]}
+    }
+  }
+}

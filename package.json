@@ -1,0 +1,12 @@
+{
+  "name": "danganronpa-gpt-play",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local visual-novel overlay for ChatGPT, without an API",
+  "scripts": {
+    "assets": "node scripts/build-runtime.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "check": "node scripts/check-extension.cjs"
+  },
+  "engines": {"node": ">=20"}
+}
