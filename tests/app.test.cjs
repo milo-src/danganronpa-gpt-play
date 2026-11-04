@@ -13,7 +13,7 @@ async function harness(initialRoute = 'chat:a', initialStore = {}) {
     read() { this.reads++; return {messages: this.messages, invalid: 0, streaming: false, assistantCount: this.messages.length}; }
     start(cb) { this.started = true; this.cb = cb; cb(this.read()); }
     stop() { this.started = false; this.cb = null; }
-    insertDraft() { return {ok: true}; }
+    insertDraft() { return this.draftResult || {ok: true}; }
   }
   class Player {
     constructor(actions) { this.actions = actions; this.input = {value: ''}; this.lastDialogue = ''; }
@@ -23,6 +23,7 @@ async function harness(initialRoute = 'chat:a', initialStore = {}) {
     reset() { this.input.value = ''; this.state = null; }
     render(state) { this.state = state; }
     setCollapsed(value) { this.collapsed = value; }
+    showDraftHelp(text, reason) { this.help = {text, reason}; this.collapsed = true; }
   }
   const context = vm.createContext({
     setTimeout: callback => { const id = ++serial; tasks.set(id, callback); return id; },
@@ -72,4 +73,13 @@ test('stored reading position contains no conversation text', async () => {
   await h.toggle(true); await h.flush();
   const serialized = JSON.stringify(h.store);
   assert.ok(!serialized.includes('SECRET')); assert.ok(h.store['dgp-session:chat:a'].cursor.startsWith('response:'));
+});
+test('missing composer collapses the scene and retains action in recovery UI', async () => {
+  const h = await harness(); await h.toggle(true);
+  h.adapter.draftResult = {ok: false, reason: 'Поле сообщения не найдено'};
+  h.player.actions.onDraft('Начни новую игру');
+  assert.equal(h.player.collapsed, true);
+  assert.equal(h.player.help.text, 'Начни новую игру');
+  assert.equal(h.player.help.reason, 'Поле сообщения не найдено');
+  assert.equal(h.player.enabled, true);
 });

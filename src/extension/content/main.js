@@ -46,7 +46,10 @@
       if (result.ok) {
         player.input.value = ''; player.setCollapsed(true);
         player.notice('Действие в поле ChatGPT. Нажми обычную кнопку отправки.');
-      } else player.notice(result.reason);
+      } else {
+        player.notice(result.reason);
+        player.showDraftHelp(value, result.reason);
+      }
     }
   });
   function receive(data) {

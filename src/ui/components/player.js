@@ -38,7 +38,7 @@
       this.stage.append(this.background, shade, top, this.cast, this.effect);
       this.welcome = el('div', 'welcome');
       this.welcome.append(el('span', 'eyebrow', 'ТВОЯ ИСТОРИЯ НАЧИНАЕТСЯ ЗДЕСЬ'), el('h1', '', 'Надежда или отчаяние?'),
-        el('p', '', 'Добавь инструкции и каталог ресурсов в проект ChatGPT. Напиши «Начни новую игру» — сцена появится по мере ответа.'));
+        el('p', '', 'Вставь единый TXT в инструкции проекта ChatGPT и открой в нём новый чат. Отправь «Начни новую игру» — сцена появится по мере ответа.'));
       this.welcome.append(this.button('Вставить стартовый запрос', () => onDraft('Начни новую игру Danganronpa по инструкциям проекта, в формате DGP. Сначала предложи выбрать часть, героя и режим спойлеров.')));
       this.stage.append(this.welcome);
       this.dialogue = el('section', 'dialogue');
@@ -56,7 +56,9 @@
       compose.append(this.input, this.button('В поле ChatGPT ↗', () => onDraft(this.input.value), 'draft'));
       this.drawer = el('aside', 'drawer'); this.drawer.hidden = true;
       this.panel.append(toolbar, this.stage, this.dialogue, this.status, compose, this.drawer);
-      this.shadow.append(this.launch, this.panel); document.documentElement.append(this.host);
+      this.draftHelp = el('aside', 'draft-help'); this.draftHelp.hidden = true;
+      this.draftHelp.setAttribute('aria-label', 'Перенос действия в ChatGPT');
+      this.shadow.append(this.launch, this.panel, this.draftHelp); document.documentElement.append(this.host);
       this.panel.addEventListener('keydown', e => {
         if (e.key === 'Escape') { this.setCollapsed(true); this.launch.focus(); }
         if ((e.key === ' ' || e.key === 'ArrowRight') && !['TEXTAREA', 'INPUT', 'SELECT', 'BUTTON'].includes(e.target.tagName)) {
@@ -72,6 +74,7 @@
       const b = el('button', cls, text); b.type = 'button'; b.addEventListener('click', callback); return b;
     }
     setEnabled(value) {
+      this.draftHelp.hidden = true;
       this.enabled = value; this.collapsed = false; this.panel.hidden = !value;
       this.launch.textContent = value ? 'RONPA · ВКЛ' : 'RONPA · ВЫКЛ';
       this.launch.setAttribute('aria-pressed', String(value));
@@ -80,12 +83,31 @@
       else this.panel.focus({preventScroll: true});
     }
     setCollapsed(value) {
+      if (!value) this.draftHelp.hidden = true;
       this.collapsed = value; this.panel.hidden = value || !this.enabled;
       this.launch.textContent = value ? 'RONPA · ОТКРЫТЬ' : (this.enabled ? 'RONPA · ВКЛ' : 'RONPA · ВЫКЛ');
       this.scheduleAuto();
       if (!value) { this.actions.onExpand?.(); this.panel.focus({preventScroll: true}); }
     }
     notice(text) { this.status.textContent = text; }
+    showDraftHelp(text, reason) {
+      this.setCollapsed(true);
+      this.draftHelp.hidden = false;
+      const explanation = el('p', '', reason); explanation.setAttribute('role', 'status');
+      const copyText = el('textarea'); copyText.value = text; copyText.readOnly = true; copyText.rows = 4;
+      copyText.setAttribute('aria-label', 'Текст для ручной вставки');
+      const copy = this.button('Скопировать текст', async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          explanation.textContent = 'Скопировано. Вставь в сообщение ChatGPT через Ctrl+V и отправь.';
+        } catch {
+          copyText.focus(); copyText.select();
+          explanation.textContent = 'Текст выделен. Нажми Ctrl+C, затем вставь его в сообщение ChatGPT через Ctrl+V.';
+        }
+      });
+      this.draftHelp.replaceChildren(this.button('Закрыть ×', () => { this.draftHelp.hidden = true; }, 'close-drawer'),
+        el('strong', '', 'Продолжить в ChatGPT'), explanation, copyText, copy);
+    }
     setSettings(settings) {
       this.settings = {...this.settings, ...settings}; this.panel.classList.toggle('reduced', this.settings.reduced);
       this.drawSettings(); this.scheduleAuto();
@@ -205,7 +227,7 @@
     }
     reset() {
       this.stopTyping(); clearTimeout(this.autoTimer); this.lastDialogue = ''; this.lastCast = '';
-      this.input.value = ''; this.drawer.hidden = true; this.effect.textContent = ''; this.background.dataset.path = '';
+      this.input.value = ''; this.drawer.hidden = true; this.draftHelp.hidden = true; this.effect.textContent = ''; this.background.dataset.path = '';
     }
   }
   D.Player = Player;

@@ -33,3 +33,4 @@ for (const [id, bg] of Object.entries(backgrounds)) lines.push(`${id} | ${bg.nam
 fs.mkdirSync(path.join(root, 'instructions'), {recursive: true});
 fs.writeFileSync(path.join(root, 'instructions/ASSET_CATALOG.txt'), lines.join('\n') + '\n');
 console.log(`${Object.keys(characters).length} characters; ${Object.keys(backgrounds).length} backgrounds`);
+require('./build-project-instructions.cjs');
