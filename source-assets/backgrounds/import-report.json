@@ -1,0 +1,44 @@
+{
+  "images": 147,
+  "bytes": 82083550,
+  "duplicates": [
+    {
+      "game": "dr1",
+      "sourceName": "bgd_099out.png",
+      "sameAs": "dr1.bgd-094out"
+    }
+  ],
+  "coverage": {
+    "dr1": {
+      "status": "partial",
+      "images": 52
+    },
+    "dr2": {
+      "status": "partial",
+      "images": 57
+    },
+    "drv3": {
+      "status": "partial",
+      "images": 38
+    },
+    "udg": {
+      "status": "not-imported",
+      "reason": "Available candidates include concept art and unverified locations; rejected."
+    },
+    "drs": {
+      "status": "not-imported",
+      "reason": "Verified downloadable clean location pack not obtained."
+    }
+  },
+  "verifiedDate": "2026-11-04",
+  "excluded": [
+    "All 4 drultradespairgirls.comic.studio candidates: concept art or insufficiently verified locations",
+    "Official tweet photo 3: scene containing a character",
+    "All 3 official promotional room backgrounds: embedded copyright caption; excluded from the game asset collection."
+  ],
+  "notes": [
+    "This is a curated location collection, not every room or camera angle in every game.",
+    "Russian names are descriptive labels based on visual inspection.",
+    "Original pixel dimensions retained. WebP encoding is lossless; JPEG retained when smaller."
+  ]
+}

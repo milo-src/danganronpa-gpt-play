@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Локации Danganronpa</title>
+<style>
+  :root{color-scheme:dark;font:16px/1.5 system-ui,sans-serif;background:#11131a;color:#f0f1f5}
+  body{max-width:1500px;margin:auto;padding:32px 24px}h1{margin:0;font-size:30px}
+  p{color:#b9bdcc;max-width:950px}label{display:inline-flex;gap:10px;align-items:center;margin:0 18px 16px 0}
+  select,input{font:inherit;color:inherit;background:#222634;border:1px solid #50576a;border-radius:8px;padding:9px 12px}
+  input{max-width:70vw}#count{display:block;margin-bottom:18px;color:#b9bdcc}
+  main{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+  article{background:#1b1e29;border:1px solid #33394a;border-radius:12px;overflow:hidden}
+  article a{display:block;background:#0b0d12}img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}
+  article div{padding:12px 16px}h2{font-size:17px;margin:0 0 6px}small{color:#aeb5ca;overflow-wrap:anywhere}
+</style>
+<h1>Локации Danganronpa</h1>
+<p>Игровые помещения и виды местности для сцен с персонажами. Нажми на фон, чтобы открыть исходный размер. Это частичная коллекция DR1, DR2 и V3; проверенных фонов UDG и Danganronpa S пока нет. Некоторые помещения и детали могут раскрывать сюжет.</p>
+<label>Игра <select id="game"><option value="dr1">Danganronpa 1</option><option value="dr2">Danganronpa 2</option><option value="drv3">Danganronpa V3</option><option value="all">Все игры</option></select></label>
+<label>Поиск <input id="search" type="search" placeholder="Класс, библиотека, коридор…"></label>
+<output id="count" aria-live="polite"></output>
+<main id="gallery"></main>
+<script src="assets/backgrounds/catalog.js"></script>
+<script>
+  const game = document.getElementById('game');
+  const search = document.getElementById('search');
+  const gallery = document.getElementById('gallery');
+  function render() {
+    const query = search.value.trim().toLocaleLowerCase('ru');
+    const entries = window.backgroundCatalog.backgrounds.filter(b =>
+      (game.value === 'all' || b.game === game.value) &&
+      `${b.name} ${b.id} ${b.tags.join(' ')}`.toLocaleLowerCase('ru').includes(query));
+    const fragment = document.createDocumentFragment();
+    for (const b of entries) {
+      const card = document.createElement('article');
+      const link = document.createElement('a');
+      link.href = b.path; link.target = '_blank'; link.rel = 'noopener';
+      const img = document.createElement('img');
+      img.src = b.path; img.alt = b.name; img.loading = 'lazy'; img.decoding = 'async';
+      img.width = b.width; img.height = b.height;
+      link.append(img);
+      const details = document.createElement('div');
+      const title = document.createElement('h2'); title.textContent = b.name;
+      const info = document.createElement('small');
+      info.textContent = `${b.id} · ${b.width} × ${b.height}`;
+      details.append(title, info); card.append(link, details); fragment.append(card);
+    }
+    gallery.replaceChildren(fragment);
+    document.getElementById('count').textContent = `Показано: ${entries.length} из ${window.backgroundCatalog.backgrounds.length}`;
+  }
+  game.addEventListener('change', render); search.addEventListener('input', render); render();
+</script>
+</html>

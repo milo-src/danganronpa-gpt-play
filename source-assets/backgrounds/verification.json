@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "images": 147,
+  "bytes": 82083550,
+  "byGame": {
+    "dr1": 52,
+    "dr2": 57,
+    "drv3": 38
+  },
+  "brokenReferences": 0,
+  "checksumFailures": 0,
+  "pixelHashFailures": 0
+}

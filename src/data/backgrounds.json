@@ -1,0 +1,1626 @@
+{
+  "version": 1,
+  "complete": false,
+  "coverage": {
+    "dr1": {
+      "status": "partial",
+      "images": 52
+    },
+    "dr2": {
+      "status": "partial",
+      "images": 57
+    },
+    "drv3": {
+      "status": "partial",
+      "images": 38
+    },
+    "udg": {
+      "status": "not-imported",
+      "reason": "Available candidates include concept art and unverified locations; rejected."
+    },
+    "drs": {
+      "status": "not-imported",
+      "reason": "Verified downloadable clean location pack not obtained."
+    }
+  },
+  "backgrounds": [
+    {
+      "id": "dr1.bgd-002out",
+      "game": "dr1",
+      "name": "Класс — боковой вид",
+      "path": "assets/backgrounds/dr1/bgd-002out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "classroom"
+      ]
+    },
+    {
+      "id": "dr1.bgd-003out",
+      "game": "dr1",
+      "name": "Спортзал — собрание",
+      "path": "assets/backgrounds/dr1/bgd-003out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-004out",
+      "game": "dr1",
+      "name": "Комната общежития — дверь",
+      "path": "assets/backgrounds/dr1/bgd-004out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-006out",
+      "game": "dr1",
+      "name": "Столовая",
+      "path": "assets/backgrounds/dr1/bgd-006out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dining"
+      ]
+    },
+    {
+      "id": "dr1.bgd-007out",
+      "game": "dr1",
+      "name": "Мусоросжигательная",
+      "path": "assets/backgrounds/dr1/bgd-007out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-008out",
+      "game": "dr1",
+      "name": "Класс — доска",
+      "path": "assets/backgrounds/dr1/bgd-008out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "classroom"
+      ]
+    },
+    {
+      "id": "dr1.bgd-043out",
+      "game": "dr1",
+      "name": "Класс — надпись на доске",
+      "path": "assets/backgrounds/dr1/bgd-043out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "classroom"
+      ]
+    },
+    {
+      "id": "dr1.bgd-072out",
+      "game": "dr1",
+      "name": "Комната совещаний",
+      "path": "assets/backgrounds/dr1/bgd-072out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-069out",
+      "game": "dr1",
+      "name": "Круглый зал — вид сверху",
+      "path": "assets/backgrounds/dr1/bgd-069out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-017out",
+      "game": "dr1",
+      "name": "Пустое белое помещение",
+      "path": "assets/backgrounds/dr1/bgd-017out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-011out",
+      "game": "dr1",
+      "name": "Прачечная",
+      "path": "assets/backgrounds/dr1/bgd-011out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-014out",
+      "game": "dr1",
+      "name": "Склад",
+      "path": "assets/backgrounds/dr1/bgd-014out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "storage"
+      ]
+    },
+    {
+      "id": "dr1.bgd-083out",
+      "game": "dr1",
+      "name": "Магазин",
+      "path": "assets/backgrounds/dr1/bgd-083out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-015out",
+      "game": "dr1",
+      "name": "Спортзал — сцена",
+      "path": "assets/backgrounds/dr1/bgd-015out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-016out",
+      "game": "dr1",
+      "name": "Раздевалка",
+      "path": "assets/backgrounds/dr1/bgd-016out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-020out",
+      "game": "dr1",
+      "name": "Библиотека — стол",
+      "path": "assets/backgrounds/dr1/bgd-020out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "library"
+      ]
+    },
+    {
+      "id": "dr1.bgd-013out",
+      "game": "dr1",
+      "name": "Библиотека",
+      "path": "assets/backgrounds/dr1/bgd-013out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "library"
+      ]
+    },
+    {
+      "id": "dr1.bgd-031out",
+      "game": "dr1",
+      "name": "Библиотека — следы расследования",
+      "path": "assets/backgrounds/dr1/bgd-031out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": [
+        "library"
+      ]
+    },
+    {
+      "id": "dr1.bgd-023out",
+      "game": "dr1",
+      "name": "Зелёный коридор",
+      "path": "assets/backgrounds/dr1/bgd-023out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "corridor"
+      ]
+    },
+    {
+      "id": "dr1.bgd-024out",
+      "game": "dr1",
+      "name": "Фиолетовый коридор",
+      "path": "assets/backgrounds/dr1/bgd-024out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "corridor"
+      ]
+    },
+    {
+      "id": "dr1.bgd-101out",
+      "game": "dr1",
+      "name": "Синий коридор",
+      "path": "assets/backgrounds/dr1/bgd-101out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "corridor"
+      ]
+    },
+    {
+      "id": "dr1.bgd-028out",
+      "game": "dr1",
+      "name": "Бассейн",
+      "path": "assets/backgrounds/dr1/bgd-028out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-053out",
+      "game": "dr1",
+      "name": "Вход в баню",
+      "path": "assets/backgrounds/dr1/bgd-053out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-036out",
+      "game": "dr1",
+      "name": "Комната отдыха",
+      "path": "assets/backgrounds/dr1/bgd-036out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-037out",
+      "game": "dr1",
+      "name": "Подсобное помещение",
+      "path": "assets/backgrounds/dr1/bgd-037out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-038out",
+      "game": "dr1",
+      "name": "Бильярдная",
+      "path": "assets/backgrounds/dr1/bgd-038out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-047out",
+      "game": "dr1",
+      "name": "Кладовая с садовым инвентарём",
+      "path": "assets/backgrounds/dr1/bgd-047out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-050out",
+      "game": "dr1",
+      "name": "Двойная дверь",
+      "path": "assets/backgrounds/dr1/bgd-050out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-064out",
+      "game": "dr1",
+      "name": "Разрушенная комната",
+      "path": "assets/backgrounds/dr1/bgd-064out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-067out",
+      "game": "dr1",
+      "name": "Холодильное хранилище",
+      "path": "assets/backgrounds/dr1/bgd-067out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-070out",
+      "game": "dr1",
+      "name": "Комната управления",
+      "path": "assets/backgrounds/dr1/bgd-070out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-085out",
+      "game": "dr1",
+      "name": "Вход в лифт",
+      "path": "assets/backgrounds/dr1/bgd-085out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr1.bgd-009out",
+      "game": "dr1",
+      "name": "Зал суда — первый вариант",
+      "path": "assets/backgrounds/dr1/bgd-009out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr1.bgd-021out",
+      "game": "dr1",
+      "name": "Зал суда — второй вариант",
+      "path": "assets/backgrounds/dr1/bgd-021out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr1.bgd-041out",
+      "game": "dr1",
+      "name": "Зал суда — третий вариант",
+      "path": "assets/backgrounds/dr1/bgd-041out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr1.bgd-045out",
+      "game": "dr1",
+      "name": "Зал суда — четвёртый вариант",
+      "path": "assets/backgrounds/dr1/bgd-045out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr1.bgd-054out",
+      "game": "dr1",
+      "name": "Зал суда — пятый вариант",
+      "path": "assets/backgrounds/dr1/bgd-054out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr1.bgd-071out",
+      "game": "dr1",
+      "name": "Зал суда — шестой вариант",
+      "path": "assets/backgrounds/dr1/bgd-071out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr1.bgd-086out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 01",
+      "path": "assets/backgrounds/dr1/bgd-086out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-087out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 02",
+      "path": "assets/backgrounds/dr1/bgd-087out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-088out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 03",
+      "path": "assets/backgrounds/dr1/bgd-088out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-089out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 04",
+      "path": "assets/backgrounds/dr1/bgd-089out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-090out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 05",
+      "path": "assets/backgrounds/dr1/bgd-090out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-091out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 06",
+      "path": "assets/backgrounds/dr1/bgd-091out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-092out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 07",
+      "path": "assets/backgrounds/dr1/bgd-092out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-093out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 08",
+      "path": "assets/backgrounds/dr1/bgd-093out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-094out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 09",
+      "path": "assets/backgrounds/dr1/bgd-094out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-095out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 10",
+      "path": "assets/backgrounds/dr1/bgd-095out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-096out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 11",
+      "path": "assets/backgrounds/dr1/bgd-096out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-097out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 12",
+      "path": "assets/backgrounds/dr1/bgd-097out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-098out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 13",
+      "path": "assets/backgrounds/dr1/bgd-098out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr1.bgd-100out",
+      "game": "dr1",
+      "name": "Комната общежития — вариант 15",
+      "path": "assets/backgrounds/dr1/bgd-100out.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "dormitory"
+      ]
+    },
+    {
+      "id": "dr2.bgd-104",
+      "game": "dr2",
+      "name": "Пляж",
+      "path": "assets/backgrounds/dr2/bgd-104.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-140",
+      "game": "dr2",
+      "name": "Ресторан отеля",
+      "path": "assets/backgrounds/dr2/bgd-140.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-106",
+      "game": "dr2",
+      "name": "Холл отеля",
+      "path": "assets/backgrounds/dr2/bgd-106.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-101",
+      "game": "dr2",
+      "name": "Супермаркет",
+      "path": "assets/backgrounds/dr2/bgd-101.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-102",
+      "game": "dr2",
+      "name": "Ранчо",
+      "path": "assets/backgrounds/dr2/bgd-102.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-018",
+      "game": "dr2",
+      "name": "Аэропорт",
+      "path": "assets/backgrounds/dr2/bgd-018.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-007",
+      "game": "dr2",
+      "name": "Старый корпус — вход ночью",
+      "path": "assets/backgrounds/dr2/bgd-007.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-008",
+      "game": "dr2",
+      "name": "Старый корпус — коридор",
+      "path": "assets/backgrounds/dr2/bgd-008.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "corridor"
+      ]
+    },
+    {
+      "id": "dr2.bgd-009",
+      "game": "dr2",
+      "name": "Старый корпус — прихожая",
+      "path": "assets/backgrounds/dr2/bgd-009.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-004",
+      "game": "dr2",
+      "name": "Старый корпус — банкетный зал",
+      "path": "assets/backgrounds/dr2/bgd-004.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-002",
+      "game": "dr2",
+      "name": "Кухня старого корпуса",
+      "path": "assets/backgrounds/dr2/bgd-002.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-105",
+      "game": "dr2",
+      "name": "Старый корпус — кладовая",
+      "path": "assets/backgrounds/dr2/bgd-105.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-014",
+      "game": "dr2",
+      "name": "Парк — статуя",
+      "path": "assets/backgrounds/dr2/bgd-014.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-108",
+      "game": "dr2",
+      "name": "Парк — монумент",
+      "path": "assets/backgrounds/dr2/bgd-108.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-003",
+      "game": "dr2",
+      "name": "Парк ночью",
+      "path": "assets/backgrounds/dr2/bgd-003.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-011",
+      "game": "dr2",
+      "name": "Пляж ночью",
+      "path": "assets/backgrounds/dr2/bgd-011.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-021",
+      "game": "dr2",
+      "name": "Закусочная — снаружи",
+      "path": "assets/backgrounds/dr2/bgd-021.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-020",
+      "game": "dr2",
+      "name": "Закусочная — внутри",
+      "path": "assets/backgrounds/dr2/bgd-020.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-022",
+      "game": "dr2",
+      "name": "Домик у пляжа",
+      "path": "assets/backgrounds/dr2/bgd-022.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-024",
+      "game": "dr2",
+      "name": "Домик у пляжа — душевая",
+      "path": "assets/backgrounds/dr2/bgd-024.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-019",
+      "game": "dr2",
+      "name": "Домик у пляжа — кладовая",
+      "path": "assets/backgrounds/dr2/bgd-019.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-065",
+      "game": "dr2",
+      "name": "Древние руины — снаружи",
+      "path": "assets/backgrounds/dr2/bgd-065.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-066",
+      "game": "dr2",
+      "name": "Древние руины — дверь",
+      "path": "assets/backgrounds/dr2/bgd-066.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-030",
+      "game": "dr2",
+      "name": "Мотель",
+      "path": "assets/backgrounds/dr2/bgd-030.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-031",
+      "game": "dr2",
+      "name": "Кинотеатр — внутри",
+      "path": "assets/backgrounds/dr2/bgd-031.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-027",
+      "game": "dr2",
+      "name": "Кинотеатр — снаружи",
+      "path": "assets/backgrounds/dr2/bgd-027.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-036",
+      "game": "dr2",
+      "name": "Музыкальный клуб",
+      "path": "assets/backgrounds/dr2/bgd-036.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-029",
+      "game": "dr2",
+      "name": "Комната с игровыми автоматами",
+      "path": "assets/backgrounds/dr2/bgd-029.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-038",
+      "game": "dr2",
+      "name": "Больница — палата",
+      "path": "assets/backgrounds/dr2/bgd-038.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-037",
+      "game": "dr2",
+      "name": "Больница — холл",
+      "path": "assets/backgrounds/dr2/bgd-037.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-052",
+      "game": "dr2",
+      "name": "Замок — вход",
+      "path": "assets/backgrounds/dr2/bgd-052.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-049",
+      "game": "dr2",
+      "name": "Клубничный дом — гостиная",
+      "path": "assets/backgrounds/dr2/bgd-049.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-051",
+      "game": "dr2",
+      "name": "Клубничный дом — комната",
+      "path": "assets/backgrounds/dr2/bgd-051.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-061",
+      "game": "dr2",
+      "name": "Клубничный дом — проход к башне",
+      "path": "assets/backgrounds/dr2/bgd-061.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-048",
+      "game": "dr2",
+      "name": "Клубничный дом — Final Dead Room",
+      "path": "assets/backgrounds/dr2/bgd-048.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-043",
+      "game": "dr2",
+      "name": "Башня — коридор",
+      "path": "assets/backgrounds/dr2/bgd-043.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "corridor"
+      ]
+    },
+    {
+      "id": "dr2.bgd-053",
+      "game": "dr2",
+      "name": "Клубничная башня",
+      "path": "assets/backgrounds/dr2/bgd-053.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-044",
+      "game": "dr2",
+      "name": "Виноградный дом — коридор",
+      "path": "assets/backgrounds/dr2/bgd-044.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "corridor"
+      ]
+    },
+    {
+      "id": "dr2.bgd-045",
+      "game": "dr2",
+      "name": "Виноградный дом — комната",
+      "path": "assets/backgrounds/dr2/bgd-045.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-060",
+      "game": "dr2",
+      "name": "Виноградный дом — проход к башне",
+      "path": "assets/backgrounds/dr2/bgd-060.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-056",
+      "game": "dr2",
+      "name": "Башня — другая дверь",
+      "path": "assets/backgrounds/dr2/bgd-056.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-050",
+      "game": "dr2",
+      "name": "Виноградная башня",
+      "path": "assets/backgrounds/dr2/bgd-050.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-046",
+      "game": "dr2",
+      "name": "Зал с механизмами",
+      "path": "assets/backgrounds/dr2/bgd-046.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-099",
+      "game": "dr2",
+      "name": "Коридор с металлической дверью",
+      "path": "assets/backgrounds/dr2/bgd-099.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": [
+        "corridor"
+      ]
+    },
+    {
+      "id": "dr2.bgd-054",
+      "game": "dr2",
+      "name": "Помещение с оборудованием",
+      "path": "assets/backgrounds/dr2/bgd-054.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-070",
+      "game": "dr2",
+      "name": "Дом Мономи",
+      "path": "assets/backgrounds/dr2/bgd-070.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-068",
+      "game": "dr2",
+      "name": "Завод — главный цех",
+      "path": "assets/backgrounds/dr2/bgd-068.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-067",
+      "game": "dr2",
+      "name": "Склад завода",
+      "path": "assets/backgrounds/dr2/bgd-067.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "storage"
+      ]
+    },
+    {
+      "id": "dr2.bgd-075",
+      "game": "dr2",
+      "name": "Площадка с грузовиком",
+      "path": "assets/backgrounds/dr2/bgd-075.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-109",
+      "game": "dr2",
+      "name": "Верхний этаж завода",
+      "path": "assets/backgrounds/dr2/bgd-109.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "dr2.bgd-026",
+      "game": "dr2",
+      "name": "Зал суда — первый вариант",
+      "path": "assets/backgrounds/dr2/bgd-026.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr2.bgd-041",
+      "game": "dr2",
+      "name": "Зал суда — второй вариант",
+      "path": "assets/backgrounds/dr2/bgd-041.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr2.bgd-017",
+      "game": "dr2",
+      "name": "Зал суда — третий вариант",
+      "path": "assets/backgrounds/dr2/bgd-017.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr2.bgd-064",
+      "game": "dr2",
+      "name": "Зал суда — четвёртый вариант",
+      "path": "assets/backgrounds/dr2/bgd-064.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr2.bgd-110",
+      "game": "dr2",
+      "name": "Зал суда — пятый вариант",
+      "path": "assets/backgrounds/dr2/bgd-110.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": false,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr2.bgd-079",
+      "game": "dr2",
+      "name": "Финальный зал суда",
+      "path": "assets/backgrounds/dr2/bgd-079.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "dr2.bgd-116",
+      "game": "dr2",
+      "name": "Финальный зал суда — другой ракурс",
+      "path": "assets/backgrounds/dr2/bgd-116.webp",
+      "width": 960,
+      "height": 544,
+      "spoiler": true,
+      "tags": [
+        "trial"
+      ]
+    },
+    {
+      "id": "drv3.1f",
+      "game": "drv3",
+      "name": "Академия — холл первого этажа",
+      "path": "assets/backgrounds/drv3/1f.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.classroom1a",
+      "game": "drv3",
+      "name": "Класс A",
+      "path": "assets/backgrounds/drv3/classroom1a.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "classroom"
+      ]
+    },
+    {
+      "id": "drv3.classroomb",
+      "game": "drv3",
+      "name": "Класс B",
+      "path": "assets/backgrounds/drv3/classroomb.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "classroom"
+      ]
+    },
+    {
+      "id": "drv3.dininghall",
+      "game": "drv3",
+      "name": "Столовая",
+      "path": "assets/backgrounds/drv3/dininghall.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "dining"
+      ]
+    },
+    {
+      "id": "drv3.store",
+      "game": "drv3",
+      "name": "Магазин",
+      "path": "assets/backgrounds/drv3/store.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.warehouse",
+      "game": "drv3",
+      "name": "Склад",
+      "path": "assets/backgrounds/drv3/warehouse.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "storage"
+      ]
+    },
+    {
+      "id": "drv3.boysbathroom",
+      "game": "drv3",
+      "name": "Мужской туалет",
+      "path": "assets/backgrounds/drv3/boysbathroom.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.gym",
+      "game": "drv3",
+      "name": "Спортзал",
+      "path": "assets/backgrounds/drv3/gym.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.courtyard1",
+      "game": "drv3",
+      "name": "Двор академии",
+      "path": "assets/backgrounds/drv3/courtyard1.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.dormitory",
+      "game": "drv3",
+      "name": "Общежитие — снаружи",
+      "path": "assets/backgrounds/drv3/dormitory.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.backyard",
+      "game": "drv3",
+      "name": "Задний двор",
+      "path": "assets/backgrounds/drv3/backyard.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.underground",
+      "game": "drv3",
+      "name": "Подземный проход",
+      "path": "assets/backgrounds/drv3/underground.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.library",
+      "game": "drv3",
+      "name": "Библиотека",
+      "path": "assets/backgrounds/drv3/library.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "library"
+      ]
+    },
+    {
+      "id": "drv3.recroom",
+      "game": "drv3",
+      "name": "Комната отдыха",
+      "path": "assets/backgrounds/drv3/recroom.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.avroom",
+      "game": "drv3",
+      "name": "Кинозал",
+      "path": "assets/backgrounds/drv3/avroom.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.classroomc",
+      "game": "drv3",
+      "name": "Класс C",
+      "path": "assets/backgrounds/drv3/classroomc.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "classroom"
+      ]
+    },
+    {
+      "id": "drv3.shuichi",
+      "game": "drv3",
+      "name": "Комната Шуити",
+      "path": "assets/backgrounds/drv3/shuichi.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.pool",
+      "game": "drv3",
+      "name": "Бассейн",
+      "path": "assets/backgrounds/drv3/pool.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.casino",
+      "game": "drv3",
+      "name": "Казино",
+      "path": "assets/backgrounds/drv3/casino.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.basement",
+      "game": "drv3",
+      "name": "Казино — нижний этаж",
+      "path": "assets/backgrounds/drv3/basement.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.empty",
+      "game": "drv3",
+      "name": "Пустая комната",
+      "path": "assets/backgrounds/drv3/empty.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.computer",
+      "game": "drv3",
+      "name": "Компьютерная комната",
+      "path": "assets/backgrounds/drv3/computer.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.hangar",
+      "game": "drv3",
+      "name": "Ангар",
+      "path": "assets/backgrounds/drv3/hangar.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.shrine",
+      "game": "drv3",
+      "name": "Святилище",
+      "path": "assets/backgrounds/drv3/shrine.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": []
+    },
+    {
+      "id": "drv3.aikidolab",
+      "game": "drv3",
+      "name": "Лаборатория айкидо",
+      "path": "assets/backgrounds/drv3/aikidolab.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.anthropologist",
+      "game": "drv3",
+      "name": "Лаборатория антрополога",
+      "path": "assets/backgrounds/drv3/anthropologist.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.artist",
+      "game": "drv3",
+      "name": "Лаборатория художницы",
+      "path": "assets/backgrounds/drv3/artist.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.assassin",
+      "game": "drv3",
+      "name": "Лаборатория убийцы",
+      "path": "assets/backgrounds/drv3/assassin.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": true,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.astronaut",
+      "game": "drv3",
+      "name": "Лаборатория космонавта",
+      "path": "assets/backgrounds/drv3/astronaut.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.cosplayer",
+      "game": "drv3",
+      "name": "Лаборатория косплеера",
+      "path": "assets/backgrounds/drv3/cosplayer.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.detective",
+      "game": "drv3",
+      "name": "Лаборатория детектива",
+      "path": "assets/backgrounds/drv3/detective.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.entomologist",
+      "game": "drv3",
+      "name": "Лаборатория энтомолога",
+      "path": "assets/backgrounds/drv3/entomologist.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.inventor",
+      "game": "drv3",
+      "name": "Лаборатория изобретательницы",
+      "path": "assets/backgrounds/drv3/inventor.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.magician",
+      "game": "drv3",
+      "name": "Лаборатория фокусницы",
+      "path": "assets/backgrounds/drv3/magician.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.maid",
+      "game": "drv3",
+      "name": "Лаборатория горничной",
+      "path": "assets/backgrounds/drv3/maid.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.pianist",
+      "game": "drv3",
+      "name": "Лаборатория пианистки",
+      "path": "assets/backgrounds/drv3/pianist.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.robot",
+      "game": "drv3",
+      "name": "Лаборатория робота",
+      "path": "assets/backgrounds/drv3/robot.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    },
+    {
+      "id": "drv3.tennispro",
+      "game": "drv3",
+      "name": "Лаборатория теннисиста",
+      "path": "assets/backgrounds/drv3/tennispro.webp",
+      "width": 1422,
+      "height": 800,
+      "spoiler": false,
+      "tags": [
+        "lab"
+      ]
+    }
+  ]
+}
