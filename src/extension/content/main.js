@@ -12,10 +12,12 @@
   let settings = {speed: 22, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches};
   let lastRead = {messages: [], streaming: false, invalid: 0, assistantCount: 0};
   let sending = false, waiting = null, actionVersion = 0;
+  let disposed = false, routePoll;
   const url = path => api.runtime.getURL(path);
   const keyFor = key => 'dgp-session:' + key;
   const storageGet = async key => { try { return (await api.storage.local.get(key))[key]; } catch { return undefined; } };
   const storageSet = async (key, value) => {
+    if (disposed) return;
     try { await api.storage.local.set({[key]: value}); }
     catch { player.notice('Не удалось сохранить настройки. Игра продолжает работать в этой вкладке.'); }
   };
@@ -46,6 +48,7 @@
     onExpand: () => { if (enabled) { render(); receive(adapter.read()); } },
     onSettings: patch => { settings = {...settings, ...patch}; player.setSettings(settings); storageSet('dgp-settings', settings); },
     onDraft: async text => {
+      if (disposed) return;
       if (adapter.route() !== route) { await switchRoute(); return; }
       const value = String(text || '').trim().slice(0, 3000);
       if (!value) { player.notice('Сначала напиши действие или выбери вариант.'); return; }
@@ -80,9 +83,10 @@
     }
   });
   function receive(data) {
-    if (!enabled || adapter.route() !== route) return;
+    if (disposed || !enabled || adapter.route() !== route) return;
     const wasAtEnd = timeline.cursor >= timeline.entries.length - 1;
     const previousMessage = timeline.entries.at(-1)?.message;
+    const previousCount = lastRead.assistantCount;
     lastRead = data;
     const newMessage = data.messages.at(-1)?.id;
     const answered = waiting && newMessage && newMessage !== waiting.message;
@@ -103,6 +107,8 @@
     player.setBusy(sending || !!waiting || data.streaming);
     player.setFormatIssue(!data.streaming && !!data.assistantCount && (data.latestHasCommands === false || data.latestInvalid > 0));
     player.setDiagnostics({route, ...data, composer: !!adapter.findComposer(), events: timeline.entries.length});
+    // Also reopen for a newly rendered answer whose format needs repairing.
+    if (data.assistantCount > previousCount && player.collapsed) player.setCollapsed(false);
   }
   function armHandoff(text) {
     if (!enabled || !route.startsWith('draft:')) return;
@@ -125,10 +131,12 @@
     } finally { checkingHandoff = false; }
   }
   async function toggle(value, manual = true) {
+    if (disposed) return {enabled: false};
     if (manual) {
       manualChoice = true;
       if (!value) { handoff = null; await storageSet(handoffKey, null); }
     }
+    if (disposed) return {enabled: false};
     enabled = value; player.setEnabled(value);
     if (!value) { waiting = null; sending = false; actionVersion++; }
     if (value) { player.lastDialogue = ''; adapter.start(receive); render(); }
@@ -141,6 +149,7 @@
     return {enabled};
   }
   async function switchRoute() {
+    if (disposed) return;
     const next = adapter.route(); if (next === route) {
       if (waiting && Date.now() > waiting.deadline) {
         waiting = null; player.setBusy(sending || lastRead.streaming);
@@ -166,14 +175,21 @@
     await toggle((transfer && !manualChoice) || saved?.enabled === true, false);
     await resumeHandoff();
   }
-  api.runtime.onMessage.addListener((message, sender, respond) => {
+  const onRuntimeMessage = (message, sender, respond) => {
     if (message?.type === 'DGP_STATUS') { respond({enabled, route}); return false; }
     if (message?.type === 'DGP_TOGGLE') { toggle(!enabled).then(respond); return true; }
     return false;
-  });
+  };
+  api.runtime.onMessage.addListener(onRuntimeMessage);
+  function dispose() {
+    disposed = true; enabled = false; routeVersion++; actionVersion++;
+    clearTimeout(saveTimer); clearInterval(routePoll);
+    adapter.destroy(); api.runtime.onMessage.removeListener?.(onRuntimeMessage);
+  }
+  player.host?.addEventListener('dgp-dispose', dispose, {once: true});
   D.app = {player, adapter, toggle};
   // Poll just the URL: no conversation reads while disabled. Handles SPA navigation.
-  setInterval(switchRoute, 500);
+  routePoll = setInterval(switchRoute, 500);
   (async () => {
     const version = routeVersion;
     const savedSettings = await storageGet('dgp-settings');

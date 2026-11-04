@@ -14,10 +14,16 @@
       this.version = version; this.busy = false;
       this.lastDialogue = ''; this.lastCast = ''; this.animation = null; this.autoTimer = null;
       this.settings = {speed: 22, auto: false, reduced: false}; this.enabled = false; this.collapsed = false;
+      // Firefox can leave a previous content script's DOM behind on add-on reload.
+      for (const previous of document.querySelectorAll('#dgp-extension-root')) {
+        previous.dispatchEvent(new Event('dgp-dispose'));
+        previous.remove();
+      }
       this.host = el('div'); this.host.id = 'dgp-extension-root';
+      this.host.dataset.version = version;
       this.host.style.cssText = 'position:fixed;z-index:2147483000;inset:0;pointer-events:none;';
       this.shadow = this.host.attachShadow({mode: 'open'});
-      const css = el('link'); css.rel = 'stylesheet'; css.href = url('src/ui/styles/player.css');
+      const css = el('link'); css.rel = 'stylesheet'; css.href = url('src/ui/styles/player.css') + '?v=' + encodeURIComponent(version);
       this.shadow.append(css);
       this.launch = this.button('RONPA · ВЫКЛ', () => this.enabled ? this.setCollapsed(!this.collapsed) : onToggle(), 'launcher');
       this.launch.setAttribute('aria-label', 'Включить или выключить игровой режим');
@@ -66,6 +72,8 @@
       this.drawer = el('aside', 'drawer'); this.drawer.hidden = true;
       this.panel.append(toolbar, this.stage, this.dialogue, statusRow, compose, this.drawer);
       this.draftHelp = el('aside', 'draft-help'); this.draftHelp.hidden = true;
+      // Essential placement and hit testing must survive a stale or failed stylesheet.
+      this.draftHelp.style.cssText = 'position:fixed;z-index:10;top:80px;right:24px;max-height:calc(100vh - 100px);overflow:auto;pointer-events:auto;';
       this.draftHelp.setAttribute('aria-label', 'Перенос действия в ChatGPT');
       this.shadow.append(this.launch, this.panel, this.draftHelp); document.documentElement.append(this.host);
       this.panel.addEventListener('keydown', e => {
@@ -76,7 +84,12 @@
       });
       this.panel.tabIndex = -1;
       this.panel.addEventListener('focusout', () => this.scheduleAuto());
-      document.addEventListener('visibilitychange', () => this.scheduleAuto());
+      this.onVisibility = () => this.scheduleAuto();
+      document.addEventListener('visibilitychange', this.onVisibility);
+      this.host.addEventListener('dgp-dispose', () => {
+        this.stopTyping(); clearTimeout(this.autoTimer);
+        document.removeEventListener('visibilitychange', this.onVisibility);
+      }, {once: true});
       this.drawSettings();
     }
     button(text, callback, cls = '') {
@@ -129,7 +142,7 @@
       });
       this.draftHelp.replaceChildren(this.button('Закрыть ×', () => { this.draftHelp.hidden = true; }, 'close-drawer'),
         el('strong', '', 'Действие сохранено'), explanation, copyText, copy,
-        this.button('Открыть чат и проверить', () => this.setCollapsed(true)));
+        this.button('Открыть чат и проверить', () => { this.draftHelp.hidden = true; this.setCollapsed(true); }));
     }
     setSettings(settings) {
       this.settings = {...this.settings, ...settings}; this.panel.classList.toggle('reduced', this.settings.reduced);
@@ -152,7 +165,7 @@
         el('p', 'hint', 'Space / → — далее. Enter — отправить действие; Shift+Enter — новая строка. Esc — открыть чат. Кнопки выбора отправляют выбранное действие через сайт ChatGPT.'));
       const info = this.diagnostics;
       this.settingsBody.append(el('p', 'diagnostics', `Версия ${this.version}. ` + (info ?
-        `Ответов на странице: ${info.assistantCount}. Команд: ${info.events}. Ошибок формата: ${info.invalid}. Поле ввода: ${info.composer ? 'найдено' : 'не найдено'}.` : 'Ожидание чтения страницы.')));
+        `Ответов на странице: ${info.assistantCount}. Команд: ${info.events}. Ошибок формата: ${info.invalid}. Поле ввода: ${info.composer ? 'найдено' : 'не найдено'}. Блоков без разметки автора: ${info.fallbackCount || 0}.` : 'Ожидание чтения страницы.')));
       if (this.drawerName === 'settings' && !this.drawer.hidden) this.renderDrawer();
     }
     render(state, meta) {

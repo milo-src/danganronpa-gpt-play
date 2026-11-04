@@ -5,16 +5,19 @@
     constructor(doc = document, win = window) {
       this.doc = doc; this.win = win; this.timer = null; this.interval = null;
       this.observer = null; this.callback = null; this.pendingSubmit = false;
+      this.messageIDs = new WeakMap(); this.messageSerial = 0;
       this.onSubmit = e => {
         if (e.target.closest?.('form') || e.target.closest?.('[data-testid="send-button"]')) this.markSubmit();
       };
       doc.addEventListener('submit', this.onSubmit, true);
-      doc.addEventListener('click', e => {
+      this.onClick = e => {
         if (e.target.closest?.('[data-testid="send-button"]')) this.onSubmit(e);
-      }, true);
-      doc.addEventListener('keydown', e => {
+      };
+      this.onKeydown = e => {
         if (e.key === 'Enter' && !e.shiftKey && e.target === this.findComposer()) this.markSubmit();
-      }, true);
+      };
+      doc.addEventListener('click', this.onClick, true);
+      doc.addEventListener('keydown', this.onKeydown, true);
     }
     route() {
       const path = this.win.location.pathname;
@@ -46,31 +49,54 @@
     read() {
       const nodes = [...this.doc.querySelectorAll('[data-message-author-role="assistant"], article[data-turn="assistant"]')]
         .filter(node => !node.querySelector('[data-message-author-role="assistant"]'));
+      // Some site layouts omit the author wrapper around the code renderer.
+      // Read explicit game code in the conversation, excluding identified user turns.
+      const fallback = new Set();
+      const blocks = this.doc.querySelectorAll('main pre, main code, main [data-language="dgp"], main .cm-content, [role="main"] pre, [role="main"] code');
+      for (const block of blocks) {
+        if (!(block.textContent || '').includes('DGP|') ||
+            block.closest('#dgp-extension-root, [data-message-author-role="user"], [data-turn="user"], [role="dialog"], nav, aside') ||
+            nodes.some(node => node.contains(block))) continue;
+        const container = block.closest('article') || block.closest('pre') || block;
+        if (container.querySelector('[data-message-author-role="user"]')) continue;
+        fallback.add(container);
+      }
+      const extra = [...fallback].filter(node => ![...fallback].some(other => other !== node && other.contains(node)));
+      nodes.push(...extra);
+      nodes.sort((a, b) => a.compareDocumentPosition(b) & 2 ? 1 : -1);
       const messages = []; let invalid = 0, latestHasCommands = false, latestInvalid = 0;
       const streaming = !!this.doc.querySelector('[data-testid="stop-button"], button[aria-label="Stop generating"], button[aria-label="Остановить генерацию"]');
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
         // Code blocks preserve line breaks, including while ChatGPT is streaming.
-        const codes = [...node.querySelectorAll('pre')].filter(c => (c.textContent || '').includes('DGP|'));
+        const isCode = node.matches('pre, code, [data-language="dgp"], .cm-content');
+        const codes = isCode ? [node] : [...node.querySelectorAll('pre, [data-language="dgp"], .cm-content')]
+          .filter(c => (c.textContent || '').includes('DGP|'))
+          .filter((c, index, all) => !all.some(other => other !== c && other.contains(c)));
         const sources = codes.length ? codes : [node];
         const parsed = {events: [], invalid: 0};
         for (const source of sources) {
           // Syntax highlighters can use spans, divs or <br>, rather than <code>.
           const code = source.querySelector('code') || source;
           const options = {complete: !streaming || i < nodes.length - 1};
-          const candidates = [code.innerText, code.textContent].filter(Boolean).map(raw => D.protocol.parse(raw, options));
+          const candidates = [code.innerText, code.textContent, source.innerText, source.textContent].filter(Boolean).map(raw => {
+            // A renderer may concatenate its language toolbar with the first line.
+            const start = codes.length ? raw.indexOf('DGP|') : -1;
+            return D.protocol.parse(start >= 0 ? raw.slice(start) : raw, options);
+          });
           candidates.sort((a, b) => b.events.length - a.events.length || a.invalid - b.invalid);
           const best = candidates[0] || {events: [], invalid: 0};
           parsed.events.push(...best.events); parsed.invalid += best.invalid;
         }
         invalid += parsed.invalid;
         if (i === nodes.length - 1) { latestHasCommands = parsed.events.length > 0; latestInvalid = parsed.invalid; }
+        if (!this.messageIDs.has(node)) this.messageIDs.set(node, `dom-message-${++this.messageSerial}`);
         const messageID = node.getAttribute('data-message-id') ||
           node.closest('[data-message-id]')?.getAttribute('data-message-id') ||
-          node.closest('article')?.getAttribute('data-testid') || `assistant-${i}`;
+          node.closest('article')?.getAttribute('data-testid') || this.messageIDs.get(node);
         if (parsed.events.length) messages.push({id: messageID, events: parsed.events});
       }
-      return {messages, invalid, assistantCount: nodes.length, streaming, latestHasCommands, latestInvalid};
+      return {messages, invalid, assistantCount: nodes.length, streaming, latestHasCommands, latestInvalid, fallbackCount: extra.length};
     }
     isStreaming() {
       return !!this.doc.querySelector('[data-testid="stop-button"], button[aria-label="Stop generating"], button[aria-label="Остановить генерацию"]');
@@ -93,7 +119,9 @@
       const route = this.route();
       const delay = () => new Promise(resolve => this.win.setTimeout(resolve, 80));
       try {
-        const result = this.insertDraft(text);
+        // A previous attempt may have inserted this very action before the site
+        // enabled Send. Reuse it on an explicit retry; never overwrite a different draft.
+        const result = this.insertDraft(text, {reuseMatching: true});
         if (!result.ok) return result;
         const composer = this.findComposer();
         const originalUsers = new Set(this.doc.querySelectorAll('[data-message-author-role="user"]'));
@@ -138,6 +166,12 @@
       if (this.timer !== null) this.win.clearTimeout(this.timer);
       this.timer = null; this.callback = null;
     }
+    destroy() {
+      this.stop();
+      this.doc.removeEventListener('submit', this.onSubmit, true);
+      this.doc.removeEventListener('click', this.onClick, true);
+      this.doc.removeEventListener('keydown', this.onKeydown, true);
+    }
     findComposer() {
       const candidates = [...this.doc.querySelectorAll('textarea, [contenteditable], .ProseMirror, [role="textbox"]')];
       const ranked = candidates.filter(el => {
@@ -161,10 +195,12 @@
         }).filter(c => c.score > 0).sort((a, b) => b.score - a.score);
       return ranked.length && ranked[0].score !== ranked[1]?.score ? ranked[0].el : null;
     }
-    insertDraft(text) {
+    insertDraft(text, {reuseMatching = false} = {}) {
       const el = this.findComposer();
       if (!el) return {ok: false, reason: 'Поле сообщения не найдено. Сначала скопируй текст ниже, затем открой новый чат внутри этого проекта и вставь его в сообщение.'};
       const existing = el.tagName === 'TEXTAREA' ? el.value : el.textContent;
+      const normalize = value => String(value).normalize('NFC').replace(/\s+/g, ' ').trim();
+      if (reuseMatching && normalize(existing) === normalize(text)) return {ok: true, reused: true};
       if (existing.trim()) return {ok: false, reason: 'В поле ChatGPT уже есть черновик. Он сохранён: очисти или отправь его перед переносом действия.'};
       try {
         el.scrollIntoView({block: 'center', behavior: 'instant'}); el.focus();

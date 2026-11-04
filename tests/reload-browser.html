@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><title>Reload regression checks</title>
+<body><h1>Повторная загрузка и отправка существующего действия</h1><pre id="results"></pre>
+<main id="conversation"></main>
+<form id="native-form"><div id="prompt-textarea" contenteditable="true" style="min-height:40px;border:1px solid gray"></div><button type="submit" data-testid="send-button">Отправить</button></form>
+<div id="dgp-extension-root">Старое окно расширения</div>
+<script src="../src/data/runtime-assets.js"></script><script src="../src/game/dialogue/protocol.js"></script>
+<script src="../src/game/scene/timeline.js"></script><script src="../src/adapters/chatgpt/adapter.js"></script>
+<script src="../src/ui/components/player.js"></script><script src="reload-browser.js"></script>
+</body></html>

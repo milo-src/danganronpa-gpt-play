@@ -52,6 +52,30 @@
     let result = adapter.read(); assert(result.streaming); assert(result.messages[0].events.length === 1); assert(result.invalid === 0);
     code.textContent += 'o"}'; result = adapter.read(); assert(result.messages[0].events.length === 2);
   });
+  await test('reads game code without assistant attributes and with a joined language label', () => {
+    const article = node('article');
+    const pre = node('pre', {}, article);
+    pre.textContent = 'dgp' + command('Recovered scene');
+    const result = adapter.read();
+    assert(result.messages[0]?.events[0]?.text === 'Recovered scene');
+    assert(result.fallbackCount === 1 && result.assistantCount === 1);
+    assert(adapter.read().messages[0].id === result.messages[0].id, 'stable identity on reread');
+  });
+  await test('fallback excludes user code and deduplicates nested renderer containers', () => {
+    const user = node('article', {'data-turn': 'user'}); node('pre', {}, user).textContent = command('User example');
+    const assistant = node('article');
+    const pre = node('pre', {}, assistant); const code = node('code', {}, pre);
+    code.textContent = command('Actual game');
+    const result = adapter.read();
+    assert(result.assistantCount === 1); assert(result.messages[0].events.length === 1);
+    assert(result.messages[0].events[0].text === 'Actual game');
+  });
+  await test('recognizes CodeMirror rendering and keeps turn order', () => {
+    const first = node('article', {'data-message-author-role': 'assistant'}); node('pre', {}, first).textContent = command('First');
+    const second = node('article'); node('div', {class: 'cm-content'}, second).textContent = command('Second');
+    const result = adapter.read(); assert(result.assistantCount === 2);
+    assert(result.messages[0].events[0].text === 'First'); assert(result.messages[1].events[0].text === 'Second');
+  });
   await test('waits for site editor, sends once and confirms new user message', async () => {
     const form = composer({delayed: true});
     const first = adapter.sendAction('Осматриваю класс.');
@@ -62,6 +86,19 @@
     const form = composer(); form.editor.textContent = 'My unfinished draft';
     assert(!(await adapter.sendAction('New action')).ok);
     assert(form.editor.textContent === 'My unfinished draft'); assert(form.clicks() === 0);
+  });
+  await test('retry sends the matching draft already inserted in the native composer', async () => {
+    const form = composer(); form.editor.textContent = 'Начни новую игру.\nВыбери героя.';
+    let inputs = 0; form.editor.addEventListener('input', () => inputs++);
+    const result = await adapter.sendAction('Начни новую игру. Выбери героя.');
+    assert(result.ok); assert(form.clicks() === 1); assert(inputs === 0, 'matching draft must not be rewritten');
+  });
+  await test('explicit retry recovers after a missing Send button becomes available', async () => {
+    const form = composer({button: false});
+    const first = await adapter.sendAction('Осмотреть дверь'); assert(!first.ok && !first.clicked);
+    const send = node('button', {type: 'submit', 'data-testid': 'send-button'}, form.editor.closest('form')); send.textContent = 'Send';
+    const second = await adapter.sendAction('Осмотреть дверь');
+    assert(second.ok); assert(form.clicks() === 1);
   });
   await test('streaming prevents inserting or sending another action', async () => {
     const form = composer(); node('button', {'data-testid': 'stop-button'});

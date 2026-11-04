@@ -180,3 +180,10 @@ test('plain text reply after a game scene offers format recovery and unlocks inp
   assert.equal(h.player.formatIssue, true); assert.equal(h.player.busy, false);
   assert.match(h.player.status, /не содержит игровых команд/);
 });
+
+test('new assistant response reopens a collapsed game even when its format is broken', async () => {
+  const h = await harness(); await h.toggle(true);
+  h.player.setCollapsed(true);
+  h.adapter.cb({messages: [], assistantCount: 1, latestHasCommands: false, latestInvalid: 1, invalid: 1, streaming: false});
+  assert.equal(h.player.collapsed, false); assert.equal(h.player.formatIssue, true);
+});
