@@ -1,0 +1,35 @@
+{
+  "characters": 65,
+  "images": 2801,
+  "bytes": 654101459,
+  "missingSourceCharacters": [
+    "kotoko",
+    "kurokuma",
+    "masaru",
+    "monaka",
+    "shirokuma",
+    "natsumi",
+    "kyouko_mirai",
+    "yasuhiro_mirai",
+    "mukuro_mirai",
+    "kyousuke_mirai",
+    "ruruka_mirai",
+    "miaya_mirai",
+    "makoto_mirai",
+    "juuzo_mirai",
+    "aoi_mirai",
+    "daisaku_mirai",
+    "kazuo_mirai",
+    "gozu_mirai",
+    "kouichi_mirai",
+    "sounosuke_mirai",
+    "seiko_mirai"
+  ],
+  "groups": {
+    "custom": 2,
+    "dr1": 19,
+    "dr2": 18,
+    "drv3": 22,
+    "udg": 4
+  }
+}

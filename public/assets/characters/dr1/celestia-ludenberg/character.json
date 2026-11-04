@@ -1,0 +1,25 @@
+{
+  "id": "dr1.celestia-ludenberg",
+  "name": "Celestia Ludenberg",
+  "defaultSprite": "archive/celes-001",
+  "sprites": {
+    "archive/celes-001": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-001.webp",
+    "archive/celes-002": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-002.webp",
+    "archive/celes-003": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-003.webp",
+    "archive/celes-004": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-004.webp",
+    "archive/celes-005": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-005.webp",
+    "archive/celes-006": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-006.webp",
+    "archive/celes-007": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-007.webp",
+    "archive/celes-008": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-008.webp",
+    "archive/celes-009": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-009.webp",
+    "archive/celes-010": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-010.webp",
+    "archive/celes-011": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-011.webp",
+    "archive/celes-012": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-012.webp",
+    "archive/celes-013": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-013.webp",
+    "archive/celes-014": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-014.webp",
+    "archive/celes-015": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-015.webp",
+    "archive/celes-016": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-016.webp",
+    "archive/celes-017": "assets/characters/dr1/celestia-ludenberg/sprites/archive/celes-017.webp"
+  },
+  "emotionsMapped": false
+}

@@ -1,0 +1,33 @@
+{
+  "id": "dr2.teruteru-hanamura",
+  "name": "Teruteru Hanamura",
+  "defaultSprite": "archive/teruteru-001",
+  "sprites": {
+    "archive/teruteru-001": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-001.webp",
+    "archive/teruteru-002": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-002.webp",
+    "archive/teruteru-003": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-003.webp",
+    "archive/teruteru-004": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-004.webp",
+    "archive/teruteru-005": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-005.webp",
+    "archive/teruteru-006": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-006.webp",
+    "archive/teruteru-007": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-007.webp",
+    "archive/teruteru-008": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-008.webp",
+    "archive/teruteru-009": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-009.webp",
+    "archive/teruteru-010": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-010.webp",
+    "archive/teruteru-011": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-011.webp",
+    "archive/teruteru-012": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-012.webp",
+    "archive/teruteru-013": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-013.webp",
+    "archive/teruteru-014": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-014.webp",
+    "archive/teruteru-015": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-015.webp",
+    "archive/teruteru-016": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-016.webp",
+    "archive/teruteru-017": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-017.webp",
+    "archive/teruteru-018": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-018.webp",
+    "archive/teruteru-019": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-019.webp",
+    "archive/teruteru-020": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-020.webp",
+    "archive/teruteru-021": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-021.webp",
+    "archive/teruteru-022": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-022.webp",
+    "archive/teruteru-023": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-023.webp",
+    "archive/teruteru-024": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-024.webp",
+    "archive/teruteru-025": "assets/characters/dr2/teruteru-hanamura/sprites/archive/teruteru-025.webp"
+  },
+  "emotionsMapped": false
+}

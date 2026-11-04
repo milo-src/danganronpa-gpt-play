@@ -1,0 +1,9 @@
+{
+  "id": "custom.yasuke-matsuda",
+  "name": "Yasuke Matsuda",
+  "defaultSprite": "archive/yasuke-001",
+  "sprites": {
+    "archive/yasuke-001": "assets/characters/custom/yasuke-matsuda/sprites/archive/yasuke-001.webp"
+  },
+  "emotionsMapped": false
+}

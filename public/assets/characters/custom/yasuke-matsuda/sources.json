@@ -1,0 +1,26 @@
+{
+  "images": [
+    {
+      "game": "custom",
+      "name": "Yasuke Matsuda",
+      "key": "archive/yasuke-001",
+      "path": "assets/characters/custom/yasuke-matsuda/sprites/archive/yasuke-001.webp",
+      "width": 480,
+      "height": 280,
+      "format": "WEBP",
+      "transparent": true,
+      "sha256": "922a156a5828ca8e4fa982885956f8d5291c447bfe058f5c3e4b1a5051e4da43",
+      "source": "https://68.media.tumblr.com/0993d6c6353ddd5d93012a21fc94663a/tumblr_inline_o76ta2JTvh1qzytu7_540.png",
+      "sourceIndex": "https://github.com/Wh1teZz/danganronpa_sprite_bucket/blob/b4c448c3453a449013024ef07141999b1351e971/busts.json",
+      "origin": "fan-or-anime-adaptation",
+      "alias": "yasuke",
+      "index": 0,
+      "originalSha256": "c97b0b187c9c80f9c738d571ca5eb39597276187e4d25fc1b8728fef7196c444",
+      "originalBytes": 73227,
+      "originalFormat": "PNG",
+      "rgbaSha256": "9866244bccc979d8c8779a3e66fde7d653bafed2441f5b4685d8cdf4cec6d26c",
+      "encoding": "webp-lossless-exact",
+      "originalPath": "assets/characters/custom/yasuke-matsuda/sprites/archive/yasuke-001.png"
+    }
+  ]
+}

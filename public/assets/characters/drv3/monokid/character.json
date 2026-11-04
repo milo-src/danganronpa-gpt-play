@@ -1,0 +1,33 @@
+{
+  "id": "drv3.monokid",
+  "name": "Monokid",
+  "defaultSprite": "fullbody/monokid/monokid/stand-025-000",
+  "sprites": {
+    "fullbody/monokid/monokid/stand-025-000": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-000.webp",
+    "fullbody/monokid/monokid/stand-025-001": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-001.webp",
+    "fullbody/monokid/monokid/stand-025-002": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-002.webp",
+    "fullbody/monokid/monokid/stand-025-003": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-003.webp",
+    "fullbody/monokid/monokid/stand-025-004": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-004.webp",
+    "fullbody/monokid/monokid/stand-025-005": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-005.webp",
+    "fullbody/monokid/monokid/stand-025-006": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-006.webp",
+    "fullbody/monokid/monokid/stand-025-007": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-007.webp",
+    "fullbody/monokid/monokid/stand-025-008": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-008.webp",
+    "fullbody/monokid/monokid/stand-025-009": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-009.webp",
+    "fullbody/monokid/monokid/stand-025-010": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-010.webp",
+    "fullbody/monokid/monokid/stand-025-011": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-011.webp",
+    "fullbody/monokid/monokid/stand-025-monokid": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-monokid.webp",
+    "archive/monokid-001": "assets/characters/drv3/monokid/sprites/archive/monokid-001.webp",
+    "archive/monokid-002": "assets/characters/drv3/monokid/sprites/archive/monokid-002.webp",
+    "archive/monokid-003": "assets/characters/drv3/monokid/sprites/archive/monokid-003.webp",
+    "archive/monokid-004": "assets/characters/drv3/monokid/sprites/archive/monokid-004.webp",
+    "archive/monokid-005": "assets/characters/drv3/monokid/sprites/archive/monokid-005.webp",
+    "archive/monokid-006": "assets/characters/drv3/monokid/sprites/archive/monokid-006.webp",
+    "archive/monokid-007": "assets/characters/drv3/monokid/sprites/archive/monokid-007.webp",
+    "archive/monokid-008": "assets/characters/drv3/monokid/sprites/archive/monokid-008.webp",
+    "archive/monokid-009": "assets/characters/drv3/monokid/sprites/archive/monokid-009.webp",
+    "archive/monokid-010": "assets/characters/drv3/monokid/sprites/archive/monokid-010.webp",
+    "archive/monokid-011": "assets/characters/drv3/monokid/sprites/archive/monokid-011.webp",
+    "archive/monokid-012": "assets/characters/drv3/monokid/sprites/archive/monokid-012.webp"
+  },
+  "emotionsMapped": false
+}

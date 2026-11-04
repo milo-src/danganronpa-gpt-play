@@ -1,0 +1,28 @@
+{
+  "id": "custom.ryoko-otonashi",
+  "name": "Ryoko Otonashi",
+  "defaultSprite": "archive/ryouko-001",
+  "sprites": {
+    "archive/ryouko-001": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-001.webp",
+    "archive/ryouko-002": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-002.webp",
+    "archive/ryouko-003": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-003.webp",
+    "archive/ryouko-004": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-004.webp",
+    "archive/ryouko-005": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-005.webp",
+    "archive/ryouko-006": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-006.webp",
+    "archive/ryouko-007": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-007.webp",
+    "archive/ryouko-008": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-008.webp",
+    "archive/ryouko-009": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-009.webp",
+    "archive/ryouko-010": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-010.webp",
+    "archive/ryouko-011": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-011.webp",
+    "archive/ryouko-012": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-012.webp",
+    "archive/ryouko-013": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-013.webp",
+    "archive/ryouko-014": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-014.webp",
+    "archive/ryouko-015": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-015.webp",
+    "archive/ryouko-016": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-016.webp",
+    "archive/ryouko-017": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-017.webp",
+    "archive/ryouko-018": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-018.webp",
+    "archive/ryouko-019": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-019.webp",
+    "archive/ryouko-020": "assets/characters/custom/ryoko-otonashi/sprites/archive/ryouko-020.webp"
+  },
+  "emotionsMapped": false
+}

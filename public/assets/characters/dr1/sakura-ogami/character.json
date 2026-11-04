@@ -1,0 +1,21 @@
+{
+  "id": "dr1.sakura-ogami",
+  "name": "Sakura Ogami",
+  "defaultSprite": "archive/sakura-001",
+  "sprites": {
+    "archive/sakura-001": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-001.webp",
+    "archive/sakura-002": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-002.webp",
+    "archive/sakura-003": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-003.webp",
+    "archive/sakura-004": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-004.webp",
+    "archive/sakura-005": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-005.webp",
+    "archive/sakura-006": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-006.webp",
+    "archive/sakura-007": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-007.webp",
+    "archive/sakura-008": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-008.webp",
+    "archive/sakura-009": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-009.webp",
+    "archive/sakura-010": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-010.webp",
+    "archive/sakura-011": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-011.webp",
+    "archive/sakura-012": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-012.webp",
+    "archive/sakura-013": "assets/characters/dr1/sakura-ogami/sprites/archive/sakura-013.webp"
+  },
+  "emotionsMapped": false
+}

@@ -1,0 +1,28 @@
+{
+  "id": "dr1.byakuya-togami",
+  "name": "Byakuya Togami",
+  "defaultSprite": "archive/byakuya-001",
+  "sprites": {
+    "archive/byakuya-001": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-001.webp",
+    "archive/byakuya-002": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-002.webp",
+    "archive/byakuya-003": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-003.webp",
+    "archive/byakuya-004": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-004.webp",
+    "archive/byakuya-005": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-005.webp",
+    "archive/byakuya-006": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-006.webp",
+    "archive/byakuya-007": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-007.webp",
+    "archive/byakuya-008": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-008.webp",
+    "archive/byakuya-009": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-009.webp",
+    "archive/byakuya-010": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-010.webp",
+    "archive/byakuya-011": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-011.webp",
+    "archive/byakuya-012": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-012.webp",
+    "archive/byakuya-013": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-013.webp",
+    "archive/byakuya-014": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-014.webp",
+    "archive/byakuya-015": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-015.webp",
+    "archive/byakuya-016": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-016.webp",
+    "archive/byakuya-017": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-017.webp",
+    "archive/byakuya-018": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-018.webp",
+    "archive/byakuya-019": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-019.webp",
+    "archive/byakuya-021": "assets/characters/dr1/byakuya-togami/sprites/archive/byakuya-021.webp"
+  },
+  "emotionsMapped": false
+}

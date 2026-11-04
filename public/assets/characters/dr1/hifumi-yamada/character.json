@@ -1,0 +1,31 @@
+{
+  "id": "dr1.hifumi-yamada",
+  "name": "Hifumi Yamada",
+  "defaultSprite": "archive/hifumi-001",
+  "sprites": {
+    "archive/hifumi-001": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-001.webp",
+    "archive/hifumi-002": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-002.webp",
+    "archive/hifumi-003": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-003.webp",
+    "archive/hifumi-004": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-004.webp",
+    "archive/hifumi-005": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-005.webp",
+    "archive/hifumi-006": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-006.webp",
+    "archive/hifumi-007": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-007.webp",
+    "archive/hifumi-008": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-008.webp",
+    "archive/hifumi-009": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-009.webp",
+    "archive/hifumi-010": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-010.webp",
+    "archive/hifumi-011": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-011.webp",
+    "archive/hifumi-012": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-012.webp",
+    "archive/hifumi-013": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-013.webp",
+    "archive/hifumi-014": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-014.webp",
+    "archive/hifumi-015": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-015.webp",
+    "archive/hifumi-016": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-016.webp",
+    "archive/hifumi-017": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-017.webp",
+    "archive/hifumi-018": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-018.webp",
+    "archive/hifumi-019": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-019.webp",
+    "archive/hifumi-020": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-020.webp",
+    "archive/hifumi-021": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-021.webp",
+    "archive/hifumi-022": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-022.webp",
+    "archive/hifumi-023": "assets/characters/dr1/hifumi-yamada/sprites/archive/hifumi-023.webp"
+  },
+  "emotionsMapped": false
+}

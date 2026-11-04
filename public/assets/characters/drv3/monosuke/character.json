@@ -1,0 +1,29 @@
+{
+  "id": "drv3.monosuke",
+  "name": "Monosuke",
+  "defaultSprite": "fullbody/monosuke/monosuke/stand-022-000",
+  "sprites": {
+    "fullbody/monosuke/monosuke/stand-022-000": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-000.webp",
+    "fullbody/monosuke/monosuke/stand-022-001": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-001.webp",
+    "fullbody/monosuke/monosuke/stand-022-002": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-002.webp",
+    "fullbody/monosuke/monosuke/stand-022-003": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-003.webp",
+    "fullbody/monosuke/monosuke/stand-022-004": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-004.webp",
+    "fullbody/monosuke/monosuke/stand-022-005": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-005.webp",
+    "fullbody/monosuke/monosuke/stand-022-006": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-006.webp",
+    "fullbody/monosuke/monosuke/stand-022-007": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-007.webp",
+    "fullbody/monosuke/monosuke/stand-022-008": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-008.webp",
+    "fullbody/monosuke/monosuke/stand-022-009": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-009.webp",
+    "fullbody/monosuke/monosuke/stand-022-monosuke": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-monosuke.webp",
+    "archive/monosuke-001": "assets/characters/drv3/monosuke/sprites/archive/monosuke-001.webp",
+    "archive/monosuke-002": "assets/characters/drv3/monosuke/sprites/archive/monosuke-002.webp",
+    "archive/monosuke-003": "assets/characters/drv3/monosuke/sprites/archive/monosuke-003.webp",
+    "archive/monosuke-004": "assets/characters/drv3/monosuke/sprites/archive/monosuke-004.webp",
+    "archive/monosuke-005": "assets/characters/drv3/monosuke/sprites/archive/monosuke-005.webp",
+    "archive/monosuke-006": "assets/characters/drv3/monosuke/sprites/archive/monosuke-006.webp",
+    "archive/monosuke-007": "assets/characters/drv3/monosuke/sprites/archive/monosuke-007.webp",
+    "archive/monosuke-008": "assets/characters/drv3/monosuke/sprites/archive/monosuke-008.webp",
+    "archive/monosuke-009": "assets/characters/drv3/monosuke/sprites/archive/monosuke-009.webp",
+    "archive/monosuke-010": "assets/characters/drv3/monosuke/sprites/archive/monosuke-010.webp"
+  },
+  "emotionsMapped": false
+}

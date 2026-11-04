@@ -1,0 +1,25 @@
+{
+  "id": "dr1.sayaka-maizono",
+  "name": "Sayaka Maizono",
+  "defaultSprite": "archive/sayaka-001",
+  "sprites": {
+    "archive/sayaka-001": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-001.webp",
+    "archive/sayaka-002": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-002.webp",
+    "archive/sayaka-003": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-003.webp",
+    "archive/sayaka-004": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-004.webp",
+    "archive/sayaka-005": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-005.webp",
+    "archive/sayaka-006": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-006.webp",
+    "archive/sayaka-007": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-007.webp",
+    "archive/sayaka-008": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-008.webp",
+    "archive/sayaka-009": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-009.webp",
+    "archive/sayaka-010": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-010.webp",
+    "archive/sayaka-011": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-011.webp",
+    "archive/sayaka-012": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-012.webp",
+    "archive/sayaka-013": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-013.webp",
+    "archive/sayaka-014": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-014.webp",
+    "archive/sayaka-015": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-015.webp",
+    "archive/sayaka-016": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-016.webp",
+    "archive/sayaka-017": "assets/characters/dr1/sayaka-maizono/sprites/archive/sayaka-017.webp"
+  },
+  "emotionsMapped": false
+}

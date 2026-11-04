@@ -4,3 +4,8 @@ build/
 *.log
 .DS_Store
 Thumbs.db
+__pycache__/
+source-assets/downloads/
+/docs
+docs/
+*.md

@@ -1,0 +1,30 @@
+{
+  "id": "dr2.peko-pekoyama",
+  "name": "Peko Pekoyama",
+  "defaultSprite": "archive/peko-001",
+  "sprites": {
+    "archive/peko-001": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-001.webp",
+    "archive/peko-002": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-002.webp",
+    "archive/peko-003": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-003.webp",
+    "archive/peko-004": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-004.webp",
+    "archive/peko-005": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-005.webp",
+    "archive/peko-006": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-006.webp",
+    "archive/peko-007": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-007.webp",
+    "archive/peko-008": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-008.webp",
+    "archive/peko-009": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-009.webp",
+    "archive/peko-010": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-010.webp",
+    "archive/peko-011": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-011.webp",
+    "archive/peko-012": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-012.webp",
+    "archive/peko-013": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-013.webp",
+    "archive/peko-014": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-014.webp",
+    "archive/peko-015": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-015.webp",
+    "archive/peko-016": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-016.webp",
+    "archive/peko-017": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-017.webp",
+    "archive/peko-018": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-018.webp",
+    "archive/peko-019": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-019.webp",
+    "archive/peko-020": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-020.webp",
+    "archive/peko-021": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-021.webp",
+    "archive/peko-022": "assets/characters/dr2/peko-pekoyama/sprites/archive/peko-022.webp"
+  },
+  "emotionsMapped": false
+}

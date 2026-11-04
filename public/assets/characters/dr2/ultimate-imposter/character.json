@@ -1,0 +1,27 @@
+{
+  "id": "dr2.ultimate-imposter",
+  "name": "Ultimate Imposter",
+  "defaultSprite": "archive/imposter-001",
+  "sprites": {
+    "archive/imposter-001": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-001.webp",
+    "archive/imposter-002": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-002.webp",
+    "archive/imposter-003": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-003.webp",
+    "archive/imposter-004": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-004.webp",
+    "archive/imposter-005": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-005.webp",
+    "archive/imposter-006": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-006.webp",
+    "archive/imposter-007": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-007.webp",
+    "archive/imposter-008": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-008.webp",
+    "archive/imposter-009": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-009.webp",
+    "archive/imposter-010": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-010.webp",
+    "archive/imposter-011": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-011.webp",
+    "archive/imposter-012": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-012.webp",
+    "archive/imposter-013": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-013.webp",
+    "archive/imposter-014": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-014.webp",
+    "archive/imposter-015": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-015.webp",
+    "archive/imposter-017": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-017.webp",
+    "archive/imposter-018": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-018.webp",
+    "archive/imposter-019": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-019.webp",
+    "archive/imposter-020": "assets/characters/dr2/ultimate-imposter/sprites/archive/imposter-020.webp"
+  },
+  "emotionsMapped": false
+}

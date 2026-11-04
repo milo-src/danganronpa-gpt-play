@@ -1,0 +1,29 @@
+{
+  "id": "dr1.genocide-jack",
+  "name": "Genocide Jack",
+  "defaultSprite": "archive/touko-023",
+  "sprites": {
+    "archive/touko-023": "assets/characters/dr1/genocide-jack/sprites/archive/touko-023.webp",
+    "archive/touko-024": "assets/characters/dr1/genocide-jack/sprites/archive/touko-024.webp",
+    "archive/touko-025": "assets/characters/dr1/genocide-jack/sprites/archive/touko-025.webp",
+    "archive/touko-026": "assets/characters/dr1/genocide-jack/sprites/archive/touko-026.webp",
+    "archive/touko-027": "assets/characters/dr1/genocide-jack/sprites/archive/touko-027.webp",
+    "archive/touko-028": "assets/characters/dr1/genocide-jack/sprites/archive/touko-028.webp",
+    "archive/touko-029": "assets/characters/dr1/genocide-jack/sprites/archive/touko-029.webp",
+    "archive/touko-030": "assets/characters/dr1/genocide-jack/sprites/archive/touko-030.webp",
+    "archive/touko-031": "assets/characters/dr1/genocide-jack/sprites/archive/touko-031.webp",
+    "archive/touko-032": "assets/characters/dr1/genocide-jack/sprites/archive/touko-032.webp",
+    "archive/touko-033": "assets/characters/dr1/genocide-jack/sprites/archive/touko-033.webp",
+    "archive/touko-034": "assets/characters/dr1/genocide-jack/sprites/archive/touko-034.webp",
+    "archive/touko-059": "assets/characters/dr1/genocide-jack/sprites/archive/touko-059.webp",
+    "archive/touko-060": "assets/characters/dr1/genocide-jack/sprites/archive/touko-060.webp",
+    "archive/touko-061": "assets/characters/dr1/genocide-jack/sprites/archive/touko-061.webp",
+    "archive/touko-062": "assets/characters/dr1/genocide-jack/sprites/archive/touko-062.webp",
+    "archive/touko-063": "assets/characters/dr1/genocide-jack/sprites/archive/touko-063.webp",
+    "archive/touko-064": "assets/characters/dr1/genocide-jack/sprites/archive/touko-064.webp",
+    "archive/touko-065": "assets/characters/dr1/genocide-jack/sprites/archive/touko-065.webp",
+    "archive/touko-066": "assets/characters/dr1/genocide-jack/sprites/archive/touko-066.webp",
+    "archive/touko-067": "assets/characters/dr1/genocide-jack/sprites/archive/touko-067.webp"
+  },
+  "emotionsMapped": false
+}

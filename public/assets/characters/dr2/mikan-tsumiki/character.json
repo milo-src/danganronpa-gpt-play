@@ -1,0 +1,32 @@
+{
+  "id": "dr2.mikan-tsumiki",
+  "name": "Mikan Tsumiki",
+  "defaultSprite": "archive/mikan-001",
+  "sprites": {
+    "archive/mikan-001": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-001.webp",
+    "archive/mikan-002": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-002.webp",
+    "archive/mikan-003": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-003.webp",
+    "archive/mikan-004": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-004.webp",
+    "archive/mikan-005": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-005.webp",
+    "archive/mikan-006": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-006.webp",
+    "archive/mikan-007": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-007.webp",
+    "archive/mikan-008": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-008.webp",
+    "archive/mikan-009": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-009.webp",
+    "archive/mikan-010": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-010.webp",
+    "archive/mikan-011": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-011.webp",
+    "archive/mikan-012": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-012.webp",
+    "archive/mikan-013": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-013.webp",
+    "archive/mikan-014": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-014.webp",
+    "archive/mikan-015": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-015.webp",
+    "archive/mikan-016": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-016.webp",
+    "archive/mikan-017": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-017.webp",
+    "archive/mikan-018": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-018.webp",
+    "archive/mikan-019": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-019.webp",
+    "archive/mikan-020": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-020.webp",
+    "archive/mikan-021": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-021.webp",
+    "archive/mikan-022": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-022.webp",
+    "archive/mikan-023": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-023.webp",
+    "archive/mikan-024": "assets/characters/dr2/mikan-tsumiki/sprites/archive/mikan-024.webp"
+  },
+  "emotionsMapped": false
+}

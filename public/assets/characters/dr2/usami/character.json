@@ -1,0 +1,20 @@
+{
+  "id": "dr2.usami",
+  "name": "Usami",
+  "defaultSprite": "archive/usami-001",
+  "sprites": {
+    "archive/usami-001": "assets/characters/dr2/usami/sprites/archive/usami-001.webp",
+    "archive/usami-002": "assets/characters/dr2/usami/sprites/archive/usami-002.webp",
+    "archive/usami-003": "assets/characters/dr2/usami/sprites/archive/usami-003.webp",
+    "archive/usami-004": "assets/characters/dr2/usami/sprites/archive/usami-004.webp",
+    "archive/usami-005": "assets/characters/dr2/usami/sprites/archive/usami-005.webp",
+    "archive/usami-006": "assets/characters/dr2/usami/sprites/archive/usami-006.webp",
+    "archive/usami-007": "assets/characters/dr2/usami/sprites/archive/usami-007.webp",
+    "archive/usami-008": "assets/characters/dr2/usami/sprites/archive/usami-008.webp",
+    "archive/usami-009": "assets/characters/dr2/usami/sprites/archive/usami-009.webp",
+    "archive/usami-010": "assets/characters/dr2/usami/sprites/archive/usami-010.webp",
+    "archive/usami-011": "assets/characters/dr2/usami/sprites/archive/usami-011.webp",
+    "archive/usami-012": "assets/characters/dr2/usami/sprites/archive/usami-012.webp"
+  },
+  "emotionsMapped": false
+}

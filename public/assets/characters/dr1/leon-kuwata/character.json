@@ -1,0 +1,24 @@
+{
+  "id": "dr1.leon-kuwata",
+  "name": "Leon Kuwata",
+  "defaultSprite": "archive/leon-001",
+  "sprites": {
+    "archive/leon-001": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-001.webp",
+    "archive/leon-002": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-002.webp",
+    "archive/leon-003": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-003.webp",
+    "archive/leon-004": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-004.webp",
+    "archive/leon-005": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-005.webp",
+    "archive/leon-006": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-006.webp",
+    "archive/leon-007": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-007.webp",
+    "archive/leon-008": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-008.webp",
+    "archive/leon-009": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-009.webp",
+    "archive/leon-010": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-010.webp",
+    "archive/leon-011": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-011.webp",
+    "archive/leon-012": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-012.webp",
+    "archive/leon-013": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-013.webp",
+    "archive/leon-014": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-014.webp",
+    "archive/leon-015": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-015.webp",
+    "archive/leon-016": "assets/characters/dr1/leon-kuwata/sprites/archive/leon-016.webp"
+  },
+  "emotionsMapped": false
+}

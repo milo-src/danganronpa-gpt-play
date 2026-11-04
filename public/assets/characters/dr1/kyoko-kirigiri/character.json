@@ -1,0 +1,28 @@
+{
+  "id": "dr1.kyoko-kirigiri",
+  "name": "Kyoko Kirigiri",
+  "defaultSprite": "archive/kyouko-001",
+  "sprites": {
+    "archive/kyouko-001": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-001.webp",
+    "archive/kyouko-002": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-002.webp",
+    "archive/kyouko-003": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-003.webp",
+    "archive/kyouko-004": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-004.webp",
+    "archive/kyouko-005": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-005.webp",
+    "archive/kyouko-006": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-006.webp",
+    "archive/kyouko-007": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-007.webp",
+    "archive/kyouko-008": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-008.webp",
+    "archive/kyouko-009": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-009.webp",
+    "archive/kyouko-010": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-010.webp",
+    "archive/kyouko-011": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-011.webp",
+    "archive/kyouko-012": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-012.webp",
+    "archive/kyouko-013": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-013.webp",
+    "archive/kyouko-014": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-014.webp",
+    "archive/kyouko-015": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-015.webp",
+    "archive/kyouko-016": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-016.webp",
+    "archive/kyouko-017": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-017.webp",
+    "archive/kyouko-018": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-018.webp",
+    "archive/kyouko-019": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-019.webp",
+    "archive/kyouko-020": "assets/characters/dr1/kyoko-kirigiri/sprites/archive/kyouko-020.webp"
+  },
+  "emotionsMapped": false
+}

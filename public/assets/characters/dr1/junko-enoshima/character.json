@@ -1,0 +1,27 @@
+{
+  "id": "dr1.junko-enoshima",
+  "name": "Junko Enoshima",
+  "defaultSprite": "archive/junko-001",
+  "sprites": {
+    "archive/junko-001": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-001.webp",
+    "archive/junko-002": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-002.webp",
+    "archive/junko-003": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-003.webp",
+    "archive/junko-004": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-004.webp",
+    "archive/junko-005": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-005.webp",
+    "archive/junko-006": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-006.webp",
+    "archive/junko-007": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-007.webp",
+    "archive/junko-008": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-008.webp",
+    "archive/junko-009": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-009.webp",
+    "archive/junko-010": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-010.webp",
+    "archive/junko-011": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-011.webp",
+    "archive/junko-012": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-012.webp",
+    "archive/junko-013": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-013.webp",
+    "archive/junko-014": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-014.webp",
+    "archive/junko-015": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-015.webp",
+    "archive/junko-016": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-016.webp",
+    "archive/junko-017": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-017.webp",
+    "archive/junko-018": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-018.webp",
+    "archive/junko-019": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-019.webp"
+  },
+  "emotionsMapped": false
+}

@@ -1,0 +1,32 @@
+{
+  "id": "dr2.monomi",
+  "name": "Monomi",
+  "defaultSprite": "archive/monomi-001",
+  "sprites": {
+    "archive/monomi-001": "assets/characters/dr2/monomi/sprites/archive/monomi-001.webp",
+    "archive/monomi-002": "assets/characters/dr2/monomi/sprites/archive/monomi-002.webp",
+    "archive/monomi-003": "assets/characters/dr2/monomi/sprites/archive/monomi-003.webp",
+    "archive/monomi-004": "assets/characters/dr2/monomi/sprites/archive/monomi-004.webp",
+    "archive/monomi-005": "assets/characters/dr2/monomi/sprites/archive/monomi-005.webp",
+    "archive/monomi-006": "assets/characters/dr2/monomi/sprites/archive/monomi-006.webp",
+    "archive/monomi-007": "assets/characters/dr2/monomi/sprites/archive/monomi-007.webp",
+    "archive/monomi-008": "assets/characters/dr2/monomi/sprites/archive/monomi-008.webp",
+    "archive/monomi-009": "assets/characters/dr2/monomi/sprites/archive/monomi-009.webp",
+    "archive/monomi-010": "assets/characters/dr2/monomi/sprites/archive/monomi-010.webp",
+    "archive/monomi-011": "assets/characters/dr2/monomi/sprites/archive/monomi-011.webp",
+    "archive/monomi-012": "assets/characters/dr2/monomi/sprites/archive/monomi-012.webp",
+    "archive/monomi-013": "assets/characters/dr2/monomi/sprites/archive/monomi-013.webp",
+    "archive/monomi-014": "assets/characters/dr2/monomi/sprites/archive/monomi-014.webp",
+    "archive/monomi-015": "assets/characters/dr2/monomi/sprites/archive/monomi-015.webp",
+    "archive/monomi-016": "assets/characters/dr2/monomi/sprites/archive/monomi-016.webp",
+    "archive/monomi-017": "assets/characters/dr2/monomi/sprites/archive/monomi-017.webp",
+    "archive/monomi-018": "assets/characters/dr2/monomi/sprites/archive/monomi-018.webp",
+    "archive/monomi-019": "assets/characters/dr2/monomi/sprites/archive/monomi-019.webp",
+    "archive/monomi-020": "assets/characters/dr2/monomi/sprites/archive/monomi-020.webp",
+    "archive/monomi-021": "assets/characters/dr2/monomi/sprites/archive/monomi-021.webp",
+    "archive/monomi-022": "assets/characters/dr2/monomi/sprites/archive/monomi-022.webp",
+    "archive/monomi-023": "assets/characters/dr2/monomi/sprites/archive/monomi-023.webp",
+    "archive/monomi-026": "assets/characters/dr2/monomi/sprites/archive/monomi-026.webp"
+  },
+  "emotionsMapped": false
+}

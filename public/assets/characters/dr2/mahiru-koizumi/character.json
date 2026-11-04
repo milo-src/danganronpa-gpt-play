@@ -1,0 +1,30 @@
+{
+  "id": "dr2.mahiru-koizumi",
+  "name": "Mahiru Koizumi",
+  "defaultSprite": "archive/mahiru-001",
+  "sprites": {
+    "archive/mahiru-001": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-001.webp",
+    "archive/mahiru-002": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-002.webp",
+    "archive/mahiru-003": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-003.webp",
+    "archive/mahiru-004": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-004.webp",
+    "archive/mahiru-005": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-005.webp",
+    "archive/mahiru-006": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-006.webp",
+    "archive/mahiru-007": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-007.webp",
+    "archive/mahiru-008": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-008.webp",
+    "archive/mahiru-009": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-009.webp",
+    "archive/mahiru-010": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-010.webp",
+    "archive/mahiru-011": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-011.webp",
+    "archive/mahiru-012": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-012.webp",
+    "archive/mahiru-013": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-013.webp",
+    "archive/mahiru-014": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-014.webp",
+    "archive/mahiru-015": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-015.webp",
+    "archive/mahiru-016": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-016.webp",
+    "archive/mahiru-017": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-017.webp",
+    "archive/mahiru-018": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-018.webp",
+    "archive/mahiru-019": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-019.webp",
+    "archive/mahiru-020": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-020.webp",
+    "archive/mahiru-021": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-021.webp",
+    "archive/mahiru-022": "assets/characters/dr2/mahiru-koizumi/sprites/archive/mahiru-022.webp"
+  },
+  "emotionsMapped": false
+}

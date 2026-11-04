@@ -1,0 +1,26 @@
+{
+  "images": [
+    {
+      "game": "udg",
+      "name": "Jataro Kemuri",
+      "key": "archive/jatarou-011",
+      "path": "assets/characters/udg/jataro-kemuri/sprites/archive/jatarou-011.webp",
+      "width": 480,
+      "height": 280,
+      "format": "WEBP",
+      "transparent": true,
+      "sha256": "ce0a987b2f1c739d1fb69581d9dceab7d34fa418ce7bceb35410747115b2fce9",
+      "source": "https://66.media.tumblr.com/3188bf111a3f1bf1201743bf86f35949/tumblr_ndxgio7RQB1taphvqo2_500.png",
+      "sourceIndex": "https://github.com/Wh1teZz/danganronpa_sprite_bucket/blob/b4c448c3453a449013024ef07141999b1351e971/busts.json",
+      "origin": "fan-edit",
+      "alias": "jatarou",
+      "index": 10,
+      "originalSha256": "f46740619de86157dab771b727f4db197ac4760e7dfb0295e6e28480bd471103",
+      "originalBytes": 61563,
+      "originalFormat": "PNG",
+      "rgbaSha256": "4ee608888b145cfc593c0447b3e515b89e8b2a7bcc88653a43c15afe72656e1e",
+      "encoding": "webp-lossless-exact",
+      "originalPath": "assets/characters/udg/jataro-kemuri/sprites/archive/jatarou-011.png"
+    }
+  ]
+}

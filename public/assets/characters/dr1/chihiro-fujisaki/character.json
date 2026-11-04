@@ -1,0 +1,26 @@
+{
+  "id": "dr1.chihiro-fujisaki",
+  "name": "Chihiro Fujisaki",
+  "defaultSprite": "archive/chihiro-001",
+  "sprites": {
+    "archive/chihiro-001": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-001.webp",
+    "archive/chihiro-002": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-002.webp",
+    "archive/chihiro-003": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-003.webp",
+    "archive/chihiro-004": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-004.webp",
+    "archive/chihiro-005": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-005.webp",
+    "archive/chihiro-006": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-006.webp",
+    "archive/chihiro-007": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-007.webp",
+    "archive/chihiro-008": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-008.webp",
+    "archive/chihiro-009": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-009.webp",
+    "archive/chihiro-010": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-010.webp",
+    "archive/chihiro-011": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-011.webp",
+    "archive/chihiro-012": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-012.webp",
+    "archive/chihiro-013": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-013.webp",
+    "archive/chihiro-014": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-014.webp",
+    "archive/chihiro-015": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-015.webp",
+    "archive/chihiro-016": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-016.webp",
+    "archive/chihiro-019": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-019.webp",
+    "archive/chihiro-020": "assets/characters/dr1/chihiro-fujisaki/sprites/archive/chihiro-020.webp"
+  },
+  "emotionsMapped": false
+}

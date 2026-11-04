@@ -1,0 +1,23 @@
+{
+  "id": "udg.nagisa-shingetsu",
+  "name": "Nagisa Shingetsu",
+  "defaultSprite": "archive/nagisa-001",
+  "sprites": {
+    "archive/nagisa-001": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-001.webp",
+    "archive/nagisa-002": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-002.webp",
+    "archive/nagisa-003": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-003.webp",
+    "archive/nagisa-004": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-004.webp",
+    "archive/nagisa-005": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-005.webp",
+    "archive/nagisa-006": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-006.webp",
+    "archive/nagisa-007": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-007.webp",
+    "archive/nagisa-008": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-008.webp",
+    "archive/nagisa-009": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-009.webp",
+    "archive/nagisa-010": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-010.webp",
+    "archive/nagisa-011": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-011.webp",
+    "archive/nagisa-012": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-012.webp",
+    "archive/nagisa-013": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-013.webp",
+    "archive/nagisa-014": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-014.webp",
+    "archive/nagisa-015": "assets/characters/udg/nagisa-shingetsu/sprites/archive/nagisa-015.webp"
+  },
+  "emotionsMapped": false
+}

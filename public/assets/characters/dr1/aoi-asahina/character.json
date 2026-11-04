@@ -1,0 +1,33 @@
+{
+  "id": "dr1.aoi-asahina",
+  "name": "Aoi Asahina",
+  "defaultSprite": "archive/aoi-001",
+  "sprites": {
+    "archive/aoi-001": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-001.webp",
+    "archive/aoi-002": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-002.webp",
+    "archive/aoi-003": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-003.webp",
+    "archive/aoi-004": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-004.webp",
+    "archive/aoi-005": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-005.webp",
+    "archive/aoi-006": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-006.webp",
+    "archive/aoi-007": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-007.webp",
+    "archive/aoi-008": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-008.webp",
+    "archive/aoi-009": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-009.webp",
+    "archive/aoi-010": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-010.webp",
+    "archive/aoi-011": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-011.webp",
+    "archive/aoi-012": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-012.webp",
+    "archive/aoi-013": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-013.webp",
+    "archive/aoi-014": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-014.webp",
+    "archive/aoi-015": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-015.webp",
+    "archive/aoi-016": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-016.webp",
+    "archive/aoi-017": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-017.webp",
+    "archive/aoi-018": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-018.webp",
+    "archive/aoi-019": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-019.webp",
+    "archive/aoi-020": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-020.webp",
+    "archive/aoi-021": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-021.webp",
+    "archive/aoi-022": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-022.webp",
+    "archive/aoi-023": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-023.webp",
+    "archive/aoi-024": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-024.webp",
+    "archive/aoi-025": "assets/characters/dr1/aoi-asahina/sprites/archive/aoi-025.webp"
+  },
+  "emotionsMapped": false
+}

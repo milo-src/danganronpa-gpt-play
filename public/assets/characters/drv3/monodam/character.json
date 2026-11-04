@@ -1,0 +1,31 @@
+{
+  "id": "drv3.monodam",
+  "name": "Monodam",
+  "defaultSprite": "fullbody/monodam/monodam/stand-024-000",
+  "sprites": {
+    "fullbody/monodam/monodam/stand-024-000": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-000.webp",
+    "fullbody/monodam/monodam/stand-024-001": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-001.webp",
+    "fullbody/monodam/monodam/stand-024-002": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-002.webp",
+    "fullbody/monodam/monodam/stand-024-003": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-003.webp",
+    "fullbody/monodam/monodam/stand-024-004": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-004.webp",
+    "fullbody/monodam/monodam/stand-024-005": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-005.webp",
+    "fullbody/monodam/monodam/stand-024-006": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-006.webp",
+    "fullbody/monodam/monodam/stand-024-007": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-007.webp",
+    "fullbody/monodam/monodam/stand-024-008": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-008.webp",
+    "fullbody/monodam/monodam/stand-024-009": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-009.webp",
+    "fullbody/monodam/monodam/stand-024-010": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-010.webp",
+    "fullbody/monodam/monodam/stand-024-monodam": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-monodam.webp",
+    "archive/monodam-001": "assets/characters/drv3/monodam/sprites/archive/monodam-001.webp",
+    "archive/monodam-002": "assets/characters/drv3/monodam/sprites/archive/monodam-002.webp",
+    "archive/monodam-003": "assets/characters/drv3/monodam/sprites/archive/monodam-003.webp",
+    "archive/monodam-004": "assets/characters/drv3/monodam/sprites/archive/monodam-004.webp",
+    "archive/monodam-005": "assets/characters/drv3/monodam/sprites/archive/monodam-005.webp",
+    "archive/monodam-006": "assets/characters/drv3/monodam/sprites/archive/monodam-006.webp",
+    "archive/monodam-007": "assets/characters/drv3/monodam/sprites/archive/monodam-007.webp",
+    "archive/monodam-008": "assets/characters/drv3/monodam/sprites/archive/monodam-008.webp",
+    "archive/monodam-009": "assets/characters/drv3/monodam/sprites/archive/monodam-009.webp",
+    "archive/monodam-010": "assets/characters/drv3/monodam/sprites/archive/monodam-010.webp",
+    "archive/monodam-011": "assets/characters/drv3/monodam/sprites/archive/monodam-011.webp"
+  },
+  "emotionsMapped": false
+}

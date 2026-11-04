@@ -1,0 +1,9 @@
+{
+  "id": "udg.jataro-kemuri",
+  "name": "Jataro Kemuri",
+  "defaultSprite": "archive/jatarou-011",
+  "sprites": {
+    "archive/jatarou-011": "assets/characters/udg/jataro-kemuri/sprites/archive/jatarou-011.webp"
+  },
+  "emotionsMapped": false
+}

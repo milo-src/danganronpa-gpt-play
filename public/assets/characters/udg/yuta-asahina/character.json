@@ -1,0 +1,13 @@
+{
+  "id": "udg.yuta-asahina",
+  "name": "Yuta Asahina",
+  "defaultSprite": "archive/yuuta-001",
+  "sprites": {
+    "archive/yuuta-001": "assets/characters/udg/yuta-asahina/sprites/archive/yuuta-001.webp",
+    "archive/yuuta-002": "assets/characters/udg/yuta-asahina/sprites/archive/yuuta-002.webp",
+    "archive/yuuta-003": "assets/characters/udg/yuta-asahina/sprites/archive/yuuta-003.webp",
+    "archive/yuuta-004": "assets/characters/udg/yuta-asahina/sprites/archive/yuuta-004.webp",
+    "archive/yuuta-005": "assets/characters/udg/yuta-asahina/sprites/archive/yuuta-005.webp"
+  },
+  "emotionsMapped": false
+}

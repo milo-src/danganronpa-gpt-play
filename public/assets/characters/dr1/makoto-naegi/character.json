@@ -1,0 +1,33 @@
+{
+  "id": "dr1.makoto-naegi",
+  "name": "Makoto Naegi",
+  "defaultSprite": "archive/makoto-001",
+  "sprites": {
+    "archive/makoto-001": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-001.webp",
+    "archive/makoto-002": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-002.webp",
+    "archive/makoto-003": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-003.webp",
+    "archive/makoto-004": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-004.webp",
+    "archive/makoto-005": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-005.webp",
+    "archive/makoto-006": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-006.webp",
+    "archive/makoto-007": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-007.webp",
+    "archive/makoto-008": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-008.webp",
+    "archive/makoto-009": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-009.webp",
+    "archive/makoto-010": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-010.webp",
+    "archive/makoto-011": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-011.webp",
+    "archive/makoto-012": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-012.webp",
+    "archive/makoto-013": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-013.webp",
+    "archive/makoto-014": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-014.webp",
+    "archive/makoto-015": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-015.webp",
+    "archive/makoto-016": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-016.webp",
+    "archive/makoto-017": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-017.webp",
+    "archive/makoto-018": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-018.webp",
+    "archive/makoto-019": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-019.webp",
+    "archive/makoto-020": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-020.webp",
+    "archive/makoto-021": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-021.webp",
+    "archive/makoto-023": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-023.webp",
+    "archive/makoto-024": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-024.webp",
+    "archive/makoto-025": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-025.webp",
+    "archive/makoto-022": "assets/characters/dr1/makoto-naegi/sprites/archive/makoto-022.jpg"
+  },
+  "emotionsMapped": false
+}

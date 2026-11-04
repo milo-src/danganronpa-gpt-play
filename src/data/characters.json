@@ -1,3 +1,394 @@
 {
-  "characters": []
+  "characters": [
+    {
+      "id": "custom.ryoko-otonashi",
+      "name": "Ryoko Otonashi",
+      "manifest": "assets/characters/custom/ryoko-otonashi/character.json",
+      "spriteCount": 20
+    },
+    {
+      "id": "custom.yasuke-matsuda",
+      "name": "Yasuke Matsuda",
+      "manifest": "assets/characters/custom/yasuke-matsuda/character.json",
+      "spriteCount": 1
+    },
+    {
+      "id": "dr1.alter-ego",
+      "name": "Alter Ego",
+      "manifest": "assets/characters/dr1/alter-ego/character.json",
+      "spriteCount": 33
+    },
+    {
+      "id": "dr1.aoi-asahina",
+      "name": "Aoi Asahina",
+      "manifest": "assets/characters/dr1/aoi-asahina/character.json",
+      "spriteCount": 25
+    },
+    {
+      "id": "dr1.byakuya-togami",
+      "name": "Byakuya Togami",
+      "manifest": "assets/characters/dr1/byakuya-togami/character.json",
+      "spriteCount": 20
+    },
+    {
+      "id": "dr1.celestia-ludenberg",
+      "name": "Celestia Ludenberg",
+      "manifest": "assets/characters/dr1/celestia-ludenberg/character.json",
+      "spriteCount": 17
+    },
+    {
+      "id": "dr1.chihiro-fujisaki",
+      "name": "Chihiro Fujisaki",
+      "manifest": "assets/characters/dr1/chihiro-fujisaki/character.json",
+      "spriteCount": 18
+    },
+    {
+      "id": "dr1.genocide-jack",
+      "name": "Genocide Jack",
+      "manifest": "assets/characters/dr1/genocide-jack/character.json",
+      "spriteCount": 21
+    },
+    {
+      "id": "dr1.hifumi-yamada",
+      "name": "Hifumi Yamada",
+      "manifest": "assets/characters/dr1/hifumi-yamada/character.json",
+      "spriteCount": 23
+    },
+    {
+      "id": "dr1.junko-enoshima",
+      "name": "Junko Enoshima",
+      "manifest": "assets/characters/dr1/junko-enoshima/character.json",
+      "spriteCount": 19
+    },
+    {
+      "id": "dr1.kiyotaka-ishimaru",
+      "name": "Kiyotaka Ishimaru",
+      "manifest": "assets/characters/dr1/kiyotaka-ishimaru/character.json",
+      "spriteCount": 38
+    },
+    {
+      "id": "dr1.kyoko-kirigiri",
+      "name": "Kyoko Kirigiri",
+      "manifest": "assets/characters/dr1/kyoko-kirigiri/character.json",
+      "spriteCount": 20
+    },
+    {
+      "id": "dr1.leon-kuwata",
+      "name": "Leon Kuwata",
+      "manifest": "assets/characters/dr1/leon-kuwata/character.json",
+      "spriteCount": 16
+    },
+    {
+      "id": "dr1.makoto-naegi",
+      "name": "Makoto Naegi",
+      "manifest": "assets/characters/dr1/makoto-naegi/character.json",
+      "spriteCount": 25
+    },
+    {
+      "id": "dr1.mondo-owada",
+      "name": "Mondo Owada",
+      "manifest": "assets/characters/dr1/mondo-owada/character.json",
+      "spriteCount": 31
+    },
+    {
+      "id": "dr1.monokuma",
+      "name": "Monokuma",
+      "manifest": "assets/characters/dr1/monokuma/character.json",
+      "spriteCount": 26
+    },
+    {
+      "id": "dr1.mukuro-ikusaba",
+      "name": "Mukuro Ikusaba",
+      "manifest": "assets/characters/dr1/mukuro-ikusaba/character.json",
+      "spriteCount": 40
+    },
+    {
+      "id": "dr1.sakura-ogami",
+      "name": "Sakura Ogami",
+      "manifest": "assets/characters/dr1/sakura-ogami/character.json",
+      "spriteCount": 13
+    },
+    {
+      "id": "dr1.sayaka-maizono",
+      "name": "Sayaka Maizono",
+      "manifest": "assets/characters/dr1/sayaka-maizono/character.json",
+      "spriteCount": 17
+    },
+    {
+      "id": "dr1.toko-fukawa",
+      "name": "Toko Fukawa",
+      "manifest": "assets/characters/dr1/toko-fukawa/character.json",
+      "spriteCount": 47
+    },
+    {
+      "id": "dr1.yasuhiro-hagakure",
+      "name": "Yasuhiro Hagakure",
+      "manifest": "assets/characters/dr1/yasuhiro-hagakure/character.json",
+      "spriteCount": 39
+    },
+    {
+      "id": "dr2.akane-owari",
+      "name": "Akane Owari",
+      "manifest": "assets/characters/dr2/akane-owari/character.json",
+      "spriteCount": 27
+    },
+    {
+      "id": "dr2.chiaki-nanami",
+      "name": "Chiaki Nanami",
+      "manifest": "assets/characters/dr2/chiaki-nanami/character.json",
+      "spriteCount": 30
+    },
+    {
+      "id": "dr2.fuyuhiko-kuzuryu",
+      "name": "Fuyuhiko Kuzuryu",
+      "manifest": "assets/characters/dr2/fuyuhiko-kuzuryu/character.json",
+      "spriteCount": 44
+    },
+    {
+      "id": "dr2.gundham-tanaka",
+      "name": "Gundham Tanaka",
+      "manifest": "assets/characters/dr2/gundham-tanaka/character.json",
+      "spriteCount": 31
+    },
+    {
+      "id": "dr2.hajime-hinata",
+      "name": "Hajime Hinata",
+      "manifest": "assets/characters/dr2/hajime-hinata/character.json",
+      "spriteCount": 47
+    },
+    {
+      "id": "dr2.hiyoko-saionji",
+      "name": "Hiyoko Saionji",
+      "manifest": "assets/characters/dr2/hiyoko-saionji/character.json",
+      "spriteCount": 27
+    },
+    {
+      "id": "dr2.ibuki-mioda",
+      "name": "Ibuki Mioda",
+      "manifest": "assets/characters/dr2/ibuki-mioda/character.json",
+      "spriteCount": 28
+    },
+    {
+      "id": "dr2.kazuichi-soda",
+      "name": "Kazuichi Soda",
+      "manifest": "assets/characters/dr2/kazuichi-soda/character.json",
+      "spriteCount": 29
+    },
+    {
+      "id": "dr2.mahiru-koizumi",
+      "name": "Mahiru Koizumi",
+      "manifest": "assets/characters/dr2/mahiru-koizumi/character.json",
+      "spriteCount": 22
+    },
+    {
+      "id": "dr2.mikan-tsumiki",
+      "name": "Mikan Tsumiki",
+      "manifest": "assets/characters/dr2/mikan-tsumiki/character.json",
+      "spriteCount": 24
+    },
+    {
+      "id": "dr2.monomi",
+      "name": "Monomi",
+      "manifest": "assets/characters/dr2/monomi/character.json",
+      "spriteCount": 24
+    },
+    {
+      "id": "dr2.nagito-komaeda",
+      "name": "Nagito Komaeda",
+      "manifest": "assets/characters/dr2/nagito-komaeda/character.json",
+      "spriteCount": 44
+    },
+    {
+      "id": "dr2.nekomaru-nidai",
+      "name": "Nekomaru Nidai",
+      "manifest": "assets/characters/dr2/nekomaru-nidai/character.json",
+      "spriteCount": 28
+    },
+    {
+      "id": "dr2.peko-pekoyama",
+      "name": "Peko Pekoyama",
+      "manifest": "assets/characters/dr2/peko-pekoyama/character.json",
+      "spriteCount": 22
+    },
+    {
+      "id": "dr2.sonia-nevermind",
+      "name": "Sonia Nevermind",
+      "manifest": "assets/characters/dr2/sonia-nevermind/character.json",
+      "spriteCount": 26
+    },
+    {
+      "id": "dr2.teruteru-hanamura",
+      "name": "Teruteru Hanamura",
+      "manifest": "assets/characters/dr2/teruteru-hanamura/character.json",
+      "spriteCount": 25
+    },
+    {
+      "id": "dr2.ultimate-imposter",
+      "name": "Ultimate Imposter",
+      "manifest": "assets/characters/dr2/ultimate-imposter/character.json",
+      "spriteCount": 19
+    },
+    {
+      "id": "dr2.usami",
+      "name": "Usami",
+      "manifest": "assets/characters/dr2/usami/character.json",
+      "spriteCount": 12
+    },
+    {
+      "id": "drv3.angie-yonaga",
+      "name": "Angie Yonaga",
+      "manifest": "assets/characters/drv3/angie-yonaga/character.json",
+      "spriteCount": 55
+    },
+    {
+      "id": "drv3.gonta-gokuhara",
+      "name": "Gonta Gokuhara",
+      "manifest": "assets/characters/drv3/gonta-gokuhara/character.json",
+      "spriteCount": 69
+    },
+    {
+      "id": "drv3.himiko-yumeno",
+      "name": "Himiko Yumeno",
+      "manifest": "assets/characters/drv3/himiko-yumeno/character.json",
+      "spriteCount": 80
+    },
+    {
+      "id": "drv3.k1-b0",
+      "name": "K1-B0",
+      "manifest": "assets/characters/drv3/k1-b0/character.json",
+      "spriteCount": 92
+    },
+    {
+      "id": "drv3.kaede-akamatsu",
+      "name": "Kaede Akamatsu",
+      "manifest": "assets/characters/drv3/kaede-akamatsu/character.json",
+      "spriteCount": 106
+    },
+    {
+      "id": "drv3.kaito-momota",
+      "name": "Kaito Momota",
+      "manifest": "assets/characters/drv3/kaito-momota/character.json",
+      "spriteCount": 99
+    },
+    {
+      "id": "drv3.kirumi-tojo",
+      "name": "Kirumi Tojo",
+      "manifest": "assets/characters/drv3/kirumi-tojo/character.json",
+      "spriteCount": 69
+    },
+    {
+      "id": "drv3.kokichi-oma",
+      "name": "Kokichi Oma",
+      "manifest": "assets/characters/drv3/kokichi-oma/character.json",
+      "spriteCount": 101
+    },
+    {
+      "id": "drv3.korekiyo-shinguji",
+      "name": "Korekiyo Shinguji",
+      "manifest": "assets/characters/drv3/korekiyo-shinguji/character.json",
+      "spriteCount": 51
+    },
+    {
+      "id": "drv3.maki-harukawa",
+      "name": "Maki Harukawa",
+      "manifest": "assets/characters/drv3/maki-harukawa/character.json",
+      "spriteCount": 53
+    },
+    {
+      "id": "drv3.miu-iruma",
+      "name": "Miu Iruma",
+      "manifest": "assets/characters/drv3/miu-iruma/character.json",
+      "spriteCount": 70
+    },
+    {
+      "id": "drv3.monodam",
+      "name": "Monodam",
+      "manifest": "assets/characters/drv3/monodam/character.json",
+      "spriteCount": 23
+    },
+    {
+      "id": "drv3.monokid",
+      "name": "Monokid",
+      "manifest": "assets/characters/drv3/monokid/character.json",
+      "spriteCount": 25
+    },
+    {
+      "id": "drv3.monokuma",
+      "name": "Monokuma",
+      "manifest": "assets/characters/drv3/monokuma/character.json",
+      "spriteCount": 35
+    },
+    {
+      "id": "drv3.monophanie",
+      "name": "Monophanie",
+      "manifest": "assets/characters/drv3/monophanie/character.json",
+      "spriteCount": 29
+    },
+    {
+      "id": "drv3.monosuke",
+      "name": "Monosuke",
+      "manifest": "assets/characters/drv3/monosuke/character.json",
+      "spriteCount": 21
+    },
+    {
+      "id": "drv3.monotaro",
+      "name": "Monotaro",
+      "manifest": "assets/characters/drv3/monotaro/character.json",
+      "spriteCount": 29
+    },
+    {
+      "id": "drv3.rantaro-amami",
+      "name": "Rantaro Amami",
+      "manifest": "assets/characters/drv3/rantaro-amami/character.json",
+      "spriteCount": 53
+    },
+    {
+      "id": "drv3.ryoma-hoshi",
+      "name": "Ryoma Hoshi",
+      "manifest": "assets/characters/drv3/ryoma-hoshi/character.json",
+      "spriteCount": 45
+    },
+    {
+      "id": "drv3.shuichi-saihara",
+      "name": "Shuichi Saihara",
+      "manifest": "assets/characters/drv3/shuichi-saihara/character.json",
+      "spriteCount": 166
+    },
+    {
+      "id": "drv3.tenko-chabashira",
+      "name": "Tenko Chabashira",
+      "manifest": "assets/characters/drv3/tenko-chabashira/character.json",
+      "spriteCount": 75
+    },
+    {
+      "id": "drv3.tsumugi-shirogane",
+      "name": "Tsumugi Shirogane",
+      "manifest": "assets/characters/drv3/tsumugi-shirogane/character.json",
+      "spriteCount": 354
+    },
+    {
+      "id": "udg.jataro-kemuri",
+      "name": "Jataro Kemuri",
+      "manifest": "assets/characters/udg/jataro-kemuri/character.json",
+      "spriteCount": 1
+    },
+    {
+      "id": "udg.komaru-naegi",
+      "name": "Komaru Naegi",
+      "manifest": "assets/characters/udg/komaru-naegi/character.json",
+      "spriteCount": 62
+    },
+    {
+      "id": "udg.nagisa-shingetsu",
+      "name": "Nagisa Shingetsu",
+      "manifest": "assets/characters/udg/nagisa-shingetsu/character.json",
+      "spriteCount": 15
+    },
+    {
+      "id": "udg.yuta-asahina",
+      "name": "Yuta Asahina",
+      "manifest": "assets/characters/udg/yuta-asahina/character.json",
+      "spriteCount": 5
+    }
+  ]
 }
