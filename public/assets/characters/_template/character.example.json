@@ -1,0 +1,12 @@
+{
+  "id": "custom.example-character",
+  "name": "Имя персонажа",
+  "defaultSprite": "neutral",
+  "portrait": "assets/characters/custom/example-character/portraits/default.png",
+  "sprites": {
+    "neutral": "assets/characters/custom/example-character/sprites/neutral.png",
+    "happy": "assets/characters/custom/example-character/sprites/happy.png",
+    "angry": "assets/characters/custom/example-character/sprites/angry.png",
+    "thinking": "assets/characters/custom/example-character/sprites/thinking.png"
+  }
+}
