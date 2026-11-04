@@ -76,49 +76,38 @@
     const result = adapter.read(); assert(result.assistantCount === 2);
     assert(result.messages[0].events[0].text === 'First'); assert(result.messages[1].events[0].text === 'Second');
   });
-  await test('waits for site editor, sends once and confirms new user message', async () => {
-    const form = composer({delayed: true});
-    const first = adapter.sendAction('Осматриваю класс.');
-    const second = await adapter.sendAction('Осматриваю класс.');
-    assert(!second.ok); assert((await first).ok); assert(form.clicks() === 1); assert(form.editor.textContent === '');
+  await test('choice inserts draft without clicking native send', () => {
+    const form = composer();
+    assert(adapter.insertDraft('Осматриваю класс.').ok);
+    assert(form.editor.textContent === 'Осматриваю класс.'); assert(form.clicks() === 0);
   });
-  await test('existing user draft is preserved and never submitted', async () => {
+  await test('existing user draft is preserved and never submitted', () => {
     const form = composer(); form.editor.textContent = 'My unfinished draft';
-    assert(!(await adapter.sendAction('New action')).ok);
+    assert(!adapter.insertDraft('New action').ok);
     assert(form.editor.textContent === 'My unfinished draft'); assert(form.clicks() === 0);
   });
-  await test('retry sends the matching draft already inserted in the native composer', async () => {
-    const form = composer(); form.editor.textContent = 'Начни новую игру.\nВыбери героя.';
+  await test('matching draft is reused without rewriting or sending', () => {
+    const form = composer(); form.editor.textContent = 'Начни новую игру. Выбери героя.';
     let inputs = 0; form.editor.addEventListener('input', () => inputs++);
-    const result = await adapter.sendAction('Начни новую игру. Выбери героя.');
-    assert(result.ok); assert(form.clicks() === 1); assert(inputs === 0, 'matching draft must not be rewritten');
+    assert(adapter.insertDraft(form.editor.textContent, {reuseMatching: true}).reused);
+    assert(form.clicks() === 0 && inputs === 0);
   });
-  await test('explicit retry recovers after a missing Send button becomes available', async () => {
-    const form = composer({button: false});
-    const first = await adapter.sendAction('Осмотреть дверь'); assert(!first.ok && !first.clicked);
-    const send = node('button', {type: 'submit', 'data-testid': 'send-button'}, form.editor.closest('form')); send.textContent = 'Send';
-    const second = await adapter.sendAction('Осмотреть дверь');
-    assert(second.ok); assert(form.clicks() === 1);
+  await test('layout reserves native form including its send controls', () => {
+    const form = composer(); const container = form.editor.closest('form');
+    container.style.cssText = 'position:fixed;bottom:12px;left:20px;right:20px;height:160px';
+    const layout = adapter.composerLayout();
+    assert(layout.available); assert(innerHeight - layout.gap < container.getBoundingClientRect().top);
+    container.style.height = '230px';
+    assert(adapter.composerLayout().gap > layout.gap);
+    assert(adapter.focusComposer() && document.activeElement === form.editor);
   });
-  await test('streaming prevents inserting or sending another action', async () => {
-    const form = composer(); node('button', {'data-testid': 'stop-button'});
-    assert(!(await adapter.sendAction('Wait')).ok); assert(form.editor.textContent === ''); assert(form.clicks() === 0);
+  await test('native Enter is observed but never prevented by extension', () => {
+    const form = composer();
+    const event = new KeyboardEvent('keydown', {key: 'Enter', bubbles: true, cancelable: true});
+    form.editor.dispatchEvent(event);
+    assert(!event.defaultPrevented); assert(form.clicks() === 0);
   });
-  await test('navigation cancellation prevents clicking send', async () => {
-    const form = composer(); let current = true;
-    const result = adapter.sendAction('Cancelled', () => current); current = false;
-    assert((await result).cancelled); assert(form.clicks() === 0);
-  });
-  await test('missing send button leaves the action in the native composer', async () => {
-    const form = composer({button: false}); const result = await adapter.sendAction('Preserve this');
-    assert(!result.ok && !result.clicked); assert(form.editor.textContent === 'Preserve this');
-  });
-  await test('unconfirmed click is not retried, even if an old matching user message exists', async () => {
-    const form = composer({acknowledge: false});
-    node('div', {'data-message-author-role': 'user'}).textContent = 'Same action';
-    const result = await adapter.sendAction('Same action');
-    assert(!result.ok && result.clicked); assert(form.clicks() === 1); assert(form.editor.textContent === 'Same action');
-  });
+  adapter.destroy();
   fixture.replaceChildren(); output.textContent += `\n${passed} passed; ${failed} failed`;
   document.title = `Transport: ${passed} passed, ${failed} failed`;
 })();

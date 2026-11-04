@@ -2,7 +2,7 @@
   const base = new URL('../', location.href);
   const memory = {};
   globalThis.browser = {
-    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.2.2 · ДЕМО'}), onMessage: {addListener() {}}},
+    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.0 · ДЕМО'}), onMessage: {addListener() {}}},
     storage: {local: {
       async get(key) {
         if (key.startsWith('dgp-session:')) return {[key]: {enabled: true}};
@@ -54,6 +54,12 @@
     document.getElementById('conversation').append(p);
   });
   document.getElementById('reset-demo').addEventListener('click', () => location.reload());
+  // Demo-only site behavior. The extension never intercepts native editor keys.
+  document.getElementById('prompt-textarea').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+      e.preventDefault(); document.getElementById('demo-form').requestSubmit();
+    }
+  });
   document.getElementById('demo-form').addEventListener('submit', e => {
     e.preventDefault(); const input = document.getElementById('prompt-textarea');
     if (!input.textContent.trim()) return;

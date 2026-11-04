@@ -17,7 +17,7 @@ const rules = String.raw`DANGANRONPA GPT PLAY
 scene: начинай каждый ответ полным снимком background,location,chapter,mode,objective,cast,evidence. mode=daily/investigation/trial. cast — до 3 объектов {"id":"ID","sprite":"default"}. evidence — полный список известных улик {"id":"note","title":"Название","description":"Факты"}, до 60. [] очищает список; background="" убирает фон. Не помещай сюда секреты.
 say: who=ID персонажа; для рассказчика/героя без спрайта who="". name=русское имя; text=реплика до 2000 символов; sprite="default"; effect=none/shake/flash/objection. Говорящего включай в cast, иначе он появится один. Рассказчик сохраняет состав. Эффекты используй редко; objection — при обоснованном возражении.
 evidence: добавить/обновить улику через id,title,description; удалить через id,remove:true. Ставь перед объявляющей её репликой и включай в следующий снимок scene. ID улики постоянен.
-choices: в конце ответа items=[{"label":"Кнопка","text":"Полное действие игрока"}], максимум 6. Нажатие кнопки отправляет действие игрока в этот чат.
+choices: в конце ответа items=[{"label":"Кнопка","text":"Полное действие игрока"}], максимум 6. Кнопка готовит черновик; игрок отправляет его обычной кнопкой ChatGPT.
 
 Пример (заменяй события, не повторяй дословно):
 \x60\x60\x60dgp

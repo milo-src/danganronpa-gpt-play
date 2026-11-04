@@ -9,8 +9,8 @@
   };
   const modes = {daily: 'ПОВСЕДНЕВНАЯ ЖИЗНЬ', investigation: 'РАССЛЕДОВАНИЕ', trial: 'КЛАССНЫЙ СУД'};
   class Player {
-    constructor({url, version = 'dev', onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand}) {
-      this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand};
+    constructor({url, version = 'dev', onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer}) {
+      this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer};
       this.version = version; this.busy = false;
       this.lastDialogue = ''; this.lastCast = ''; this.animation = null; this.autoTimer = null;
       this.settings = {speed: 22, auto: false, reduced: false}; this.enabled = false; this.collapsed = false;
@@ -25,6 +25,8 @@
       this.shadow = this.host.attachShadow({mode: 'open'});
       const css = el('link'); css.rel = 'stylesheet'; css.href = url('src/ui/styles/player.css') + '?v=' + encodeURIComponent(version);
       this.shadow.append(css);
+      this.backdrop = el('div', 'native-backdrop'); this.backdrop.hidden = true;
+      this.shadow.append(this.backdrop);
       this.launch = this.button('RONPA · ВЫКЛ', () => this.enabled ? this.setCollapsed(!this.collapsed) : onToggle(), 'launcher');
       this.launch.setAttribute('aria-label', 'Включить или выключить игровой режим');
       this.panel = el('section', 'player'); this.panel.hidden = true;
@@ -62,13 +64,10 @@
       this.repairButton = this.button('Исправить формат ответа', () => onDraft('Переформатируй только свой последний ответ по инструкциям проекта: блок dgp, команды DGP| и строгий JSON. Сохрани сюжет, текущую сцену и варианты выбора; не начинай игру заново.'), 'repair');
       this.repairButton.hidden = true;
       const statusRow = el('div', 'status-row'); statusRow.append(this.status, this.repairButton);
-      const compose = el('div', 'compose'); this.input = el('textarea'); this.input.rows = 1; this.input.maxLength = 3000;
-      this.input.placeholder = 'Твоё действие, реплика или возражение…'; this.input.setAttribute('aria-label', 'Действие игрока');
-      this.sendButton = this.button('Отправить ▸', () => onDraft(this.input.value), 'draft');
-      this.input.addEventListener('keydown', e => {
-        if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); if (!this.busy) onDraft(this.input.value); }
-      });
-      compose.append(this.input, this.sendButton);
+      this.input = el('textarea'); // Recovery buffer only; never a second message editor.
+      const compose = el('div', 'native-hint');
+      this.composerHint = el('span', '', 'Пиши действие в поле ChatGPT под сценой. Enter или стрелка ↑ — отправить.');
+      compose.append(this.composerHint, this.button('К полю сообщения ↓', () => this.actions.onFocusComposer?.()));
       this.drawer = el('aside', 'drawer'); this.drawer.hidden = true;
       this.panel.append(toolbar, this.stage, this.dialogue, statusRow, compose, this.drawer);
       this.draftHelp = el('aside', 'draft-help'); this.draftHelp.hidden = true;
@@ -101,23 +100,32 @@
       this.launch.textContent = value ? 'RONPA · ВКЛ' : 'RONPA · ВЫКЛ';
       this.launch.setAttribute('aria-pressed', String(value));
       this.host.classList.toggle('enabled', value);
+      this.backdrop.hidden = !value;
       if (!value) { this.stopTyping(); clearTimeout(this.autoTimer); }
       else this.panel.focus({preventScroll: true});
     }
     setCollapsed(value) {
       if (!value) this.draftHelp.hidden = true;
       this.collapsed = value; this.panel.hidden = value || !this.enabled;
+      this.backdrop.hidden = value || !this.enabled;
       this.launch.textContent = value ? 'RONPA · ОТКРЫТЬ' : (this.enabled ? 'RONPA · ВКЛ' : 'RONPA · ВЫКЛ');
       this.scheduleAuto();
-      if (!value) { this.actions.onExpand?.(); this.panel.focus({preventScroll: true}); }
+      if (!value) { this.actions.onExpand?.(); if (!this.collapsed) this.panel.focus({preventScroll: true}); }
     }
     notice(text) { this.status.textContent = text; }
+    setComposerLayout(layout) {
+      // A tall native editor takes priority over the scene; never cover its controls.
+      if (layout && !layout.available && this.enabled && !this.collapsed) this.setCollapsed(true);
+      const gap = layout?.available ? layout.gap : 180;
+      this.host.style.setProperty('--composer-gap', `${gap}px`);
+      this.composerHint.textContent = layout ? 'Пиши действие в поле ChatGPT под сценой. Enter или стрелка ↑ — отправить.' :
+        'Поле ChatGPT пока не найдено. Открой диалог внутри проекта через «Открыть чат».';
+    }
     setBusy(value) {
       this.busy = value;
       this.panel.setAttribute('aria-busy', String(value));
-      this.sendButton.disabled = value; this.startButton.disabled = value;
+      this.startButton.disabled = value;
       this.repairButton.disabled = value;
-      this.sendButton.textContent = value ? 'Ожидание…' : 'Отправить ▸';
       for (const button of this.choices.querySelectorAll('button')) button.disabled = value;
       for (const button of this.drawer.querySelectorAll('.evidence-card button')) button.disabled = value;
     }
@@ -162,7 +170,7 @@
       }
       this.settingsBody.append(this.button('Повторить последний ответ', this.actions.onReplay),
         this.button('Перечитать сообщения', this.actions.onExpand),
-        el('p', 'hint', 'Space / → — далее. Enter — отправить действие; Shift+Enter — новая строка. Esc — открыть чат. Кнопки выбора отправляют выбранное действие через сайт ChatGPT.'));
+        el('p', 'hint', 'Space / → — далее. Действие пиши в настоящем поле ChatGPT под сценой; его кнопка и клавиатура работают как обычно. Выбор подготавливает текст, который можно изменить перед отправкой. Esc — открыть чат.'));
       const info = this.diagnostics;
       this.settingsBody.append(el('p', 'diagnostics', `Версия ${this.version}. ` + (info ?
         `Ответов на странице: ${info.assistantCount}. Команд: ${info.events}. Ошибок формата: ${info.invalid}. Поле ввода: ${info.composer ? 'найдено' : 'не найдено'}. Блоков без разметки автора: ${info.fallbackCount || 0}.` : 'Ожидание чтения страницы.')));

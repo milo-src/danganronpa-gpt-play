@@ -11,7 +11,6 @@
   const handoffKey = 'dgp-start-handoff';
   let settings = {speed: 22, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches};
   let lastRead = {messages: [], streaming: false, invalid: 0, assistantCount: 0};
-  let sending = false, waiting = null, actionVersion = 0;
   let disposed = false, routePoll;
   const url = path => api.runtime.getURL(path);
   const keyFor = key => 'dgp-session:' + key;
@@ -31,13 +30,12 @@
     player.render(state, {pending: timeline.pending, total: timeline.entries.length,
       history: timeline.entries.slice(0, timeline.cursor + 1).filter(e => e.event.type === 'say').slice(-60).map(e => e.event)});
     const errors = lastRead.latestInvalid ? ` В последнем ответе пропущено строк с ошибкой: ${lastRead.latestInvalid}.` : '';
-    player.setBusy(sending || !!waiting || lastRead.streaming);
-    player.notice((sending ? 'Отправляю действие через ChatGPT…' :
-      waiting ? 'Действие отправлено. Ждём ответ ChatGPT…' :
-      lastRead.streaming ? 'ChatGPT пишет — готовые реплики появляются в сцене.' :
+    player.setBusy(lastRead.streaming);
+    player.setComposerLayout(adapter.composerLayout());
+    player.notice((lastRead.streaming ? 'ChatGPT пишет — готовые реплики появляются в сцене.' :
       !timeline.entries.length ? 'Ожидание ответа DGP. Инструкции: instructions/CHATGPT_PROJECT_INSTRUCTIONS.txt.' :
       timeline.pending ? `Продолжай читать: ещё ${timeline.pending} реплик.` :
-      'Твой ход. Выбери действие или напиши своё и нажми «Отправить».') + errors);
+      'Твой ход. Пиши в поле ChatGPT под сценой; отправляй его обычной стрелкой или Enter.') + errors);
     save();
   }
   const player = new D.Player({url, version: api.runtime.getManifest?.().version || 'dev',
@@ -46,39 +44,29 @@
     onBack: () => { timeline.back(); render(); },
     onReplay: () => { timeline.replay(); player.lastDialogue = ''; render(); },
     onExpand: () => { if (enabled) { render(); receive(adapter.read()); } },
+    onFocusComposer: () => { adapter.focusComposer(); player.setComposerLayout(adapter.composerLayout()); },
     onSettings: patch => { settings = {...settings, ...patch}; player.setSettings(settings); storageSet('dgp-settings', settings); },
     onDraft: async text => {
       if (disposed) return;
       if (adapter.route() !== route) { await switchRoute(); return; }
       const value = String(text || '').trim().slice(0, 3000);
       if (!value) { player.notice('Сначала напиши действие или выбери вариант.'); return; }
-      if (sending || waiting || lastRead.streaming) { player.notice('Дождись ответа ChatGPT на предыдущее действие.'); return; }
-      const version = routeVersion;
-      const action = ++actionVersion;
+      if (lastRead.streaming) { player.notice('Дождись ответа ChatGPT на предыдущее действие.'); return; }
       player.input.value = value;
       armHandoff(value);
-      sending = true;
-      waiting = {message: lastRead.messages.at(-1)?.id, count: lastRead.assistantCount, deadline: Date.now() + 45000};
-      player.drawer.hidden = true; render();
+      player.drawer.hidden = true;
       try {
-        const result = await adapter.sendAction(value, () => enabled && routeVersion === version && actionVersion === action);
-        if (routeVersion !== version || actionVersion !== action || !enabled) return;
+        const result = adapter.insertDraft(value, {reuseMatching: true});
+        player.setComposerLayout(adapter.composerLayout());
         if (result.ok) {
           player.input.value = '';
           player.draftHelp.hidden = true;
-          // Keep the scene on screen throughout the turn.
-          player.setCollapsed(false);
+          player.notice('Действие подготовлено в поле под сценой. Отправь его стрелкой ChatGPT или Enter.');
         } else {
-          waiting = null;
-          if (!result.cancelled) player.showDraftHelp(value, result.reason);
+          player.showDraftHelp(value, result.reason);
         }
       } catch {
-        if (routeVersion === version && actionVersion === action && enabled) {
-          waiting = null;
-          player.showDraftHelp(value, 'Не удалось передать действие. Открой чат и проверь сообщение; текст сохранён ниже.');
-        }
-      } finally {
-        if (routeVersion === version && actionVersion === action) { sending = false; render(); }
+        player.showDraftHelp(value, 'Не удалось подготовить выбранный вариант. Можно написать своё действие прямо в поле под сценой.');
       }
     }
   });
@@ -89,8 +77,7 @@
     const previousCount = lastRead.assistantCount;
     lastRead = data;
     const newMessage = data.messages.at(-1)?.id;
-    const answered = waiting && newMessage && newMessage !== waiting.message;
-    if (answered || (waiting && !data.streaming && data.assistantCount > waiting.count)) waiting = null;
+    const answered = previousMessage && newMessage && newMessage !== previousMessage;
     if (wasAtEnd && previousMessage && previousMessage !== newMessage) timeline.awaiting = true;
     if (timeline.update(data.messages, resume)) {
       resume = '';
@@ -104,7 +91,8 @@
         data.assistantCount && data.latestHasCommands === false ? 'Последний ответ ChatGPT не содержит игровых команд. Нажми «Исправить формат ответа» или открой чат.' : '';
       if (status) player.notice(status);
     }
-    player.setBusy(sending || !!waiting || data.streaming);
+    player.setBusy(data.streaming);
+    player.setComposerLayout(adapter.composerLayout());
     player.setFormatIssue(!data.streaming && !!data.assistantCount && (data.latestHasCommands === false || data.latestInvalid > 0));
     player.setDiagnostics({route, ...data, composer: !!adapter.findComposer(), events: timeline.entries.length});
     // Also reopen for a newly rendered answer whose format needs repairing.
@@ -138,7 +126,6 @@
     }
     if (disposed) return {enabled: false};
     enabled = value; player.setEnabled(value);
-    if (!value) { waiting = null; sending = false; actionVersion++; }
     if (value) { player.lastDialogue = ''; adapter.start(receive); render(); }
     else adapter.stop();
     // A click must survive immediate navigation, not just a debounce timer.
@@ -151,10 +138,7 @@
   async function switchRoute() {
     if (disposed) return;
     const next = adapter.route(); if (next === route) {
-      if (waiting && Date.now() > waiting.deadline) {
-        waiting = null; player.setBusy(sending || lastRead.streaming);
-        player.notice('Ответ задерживается. Через «Открыть чат» проверь, не просит ли ChatGPT войти в аккаунт, повторить запрос или дождаться лимита.');
-      }
+      if (enabled) player.setComposerLayout(adapter.composerLayout());
       await resumeHandoff(); return;
     }
     const version = ++routeVersion;
@@ -164,7 +148,7 @@
     await storageSet(keyFor(previousRoute), {enabled, manual: manualChoice, cursor: timeline.key, updated: Date.now()});
     if (version !== routeVersion) return;
     adapter.stop(); route = next; scope = adapter.scope(); timeline = new D.Timeline(); resume = ''; adapter.pendingSubmit = false;
-    player.reset(); enabled = false; sending = false; waiting = null;
+    player.reset(); enabled = false;
     lastRead = {messages: [], streaming: false, invalid: 0, assistantCount: 0}; player.setEnabled(false);
     const saved = await storageGet(keyFor(route));
     handoff = await storageGet(handoffKey);
@@ -182,7 +166,7 @@
   };
   api.runtime.onMessage.addListener(onRuntimeMessage);
   function dispose() {
-    disposed = true; enabled = false; routeVersion++; actionVersion++;
+    disposed = true; enabled = false; routeVersion++;
     clearTimeout(saveTimer); clearInterval(routePoll);
     adapter.destroy(); api.runtime.onMessage.removeListener?.(onRuntimeMessage);
   }

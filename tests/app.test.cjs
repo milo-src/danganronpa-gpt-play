@@ -16,8 +16,9 @@ async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope 
     read() { this.reads++; return {messages: this.messages, invalid: 0, streaming: false, assistantCount: this.messages.length}; }
     start(cb) { this.started = true; this.cb = cb; cb(this.read()); }
     stop() { this.started = false; this.cb = null; }
-    insertDraft() { return this.draftResult || {ok: true}; }
-    async sendAction(text, isCurrent) { this.sent = (this.sent || []).concat(text); return this.sendResult ? this.sendResult(text, isCurrent) : this.insertDraft(text); }
+    insertDraft(text) { this.prepared = text; return this.draftResult || {ok: true}; }
+    composerLayout() { return {gap: 180, available: true}; }
+    focusComposer() { this.focused = true; }
     findComposer() { return {}; }
   }
   class Player {
@@ -29,6 +30,7 @@ async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope 
     render(state) { this.state = state; }
     setCollapsed(value) { this.collapsed = value; }
     showDraftHelp(text, reason) { this.help = {text, reason}; }
+    setComposerLayout(value) { this.layout = value; }
     setBusy(value) { this.busy = value; }
     setDiagnostics(value) { this.diagnostics = value; }
     setFormatIssue(value) { this.formatIssue = value; }
@@ -134,42 +136,31 @@ test('project home and named conversation URL resolve to the same project scope'
   assert.equal(prototype.route.call(chat), 'chat:6aeb6280-a0b8-83eb-8428-8bf9ec30bbcd');
 });
 
-test('action sends once, stays in game and unlocks when the new reply arrives', async () => {
+test('choice only prepares native draft and new reply advances scene', async () => {
   const h = await harness();
   h.adapter.messages = [{id: 'old', events: [{type: 'say', text: 'Before'}]}];
   await h.toggle(true);
-  let finish;
-  h.adapter.sendResult = () => new Promise(resolve => { finish = resolve; });
-  const first = h.player.actions.onDraft('Осмотреть комнату');
   await h.player.actions.onDraft('Осмотреть комнату');
-  assert.equal(h.adapter.sent.length, 1); assert.equal(h.player.busy, true);
-  assert.equal(h.player.collapsed, false);
-  finish({ok: true}); await first;
-  assert.equal(h.player.collapsed, false); assert.equal(h.player.input.value, '');
-  assert.equal(h.player.busy, true);
-  h.adapter.messages.push({id: 'new', events: [{type: 'say', text: 'After'}, {type: 'choices', items: [{label: 'Door', text: 'Open door'}]}]});
+  assert.equal(h.adapter.prepared, 'Осмотреть комнату');
+  assert.equal(h.player.busy, false); assert.equal(h.player.collapsed, false);
+  assert.match(h.player.status, /подготовлено/);
+  h.adapter.messages.push({id: 'new', events: [{type: 'say', text: 'After'}]});
   h.adapter.cb(h.adapter.read());
-  assert.equal(h.player.state.dialogue.text, 'After'); assert.equal(h.player.busy, false);
+  assert.equal(h.player.state.dialogue.text, 'After');
 });
 
-test('pending send cannot change the next conversation', async () => {
+test('native composer focus and layout are exposed without a send operation', async () => {
   const h = await harness(); await h.toggle(true);
-  let finish;
-  h.adapter.sendResult = (text, current) => new Promise(resolve => { finish = () => resolve(current() ? {ok: true} : {ok: false, cancelled: true}); });
-  const task = h.player.actions.onDraft('Action');
-  h.adapter.current = 'chat:b'; await h.poll();
-  h.player.input.value = 'New conversation draft'; finish(); await task;
-  assert.equal(h.player.enabled, false); assert.equal(h.player.input.value, 'New conversation draft');
+  h.player.actions.onFocusComposer();
+  assert.equal(h.adapter.focused, true); assert.equal(h.player.layout.gap, 180);
+  assert.equal(h.realAdapter.prototype.sendAction, undefined);
 });
 
-test('turning the game off cancels a pending send even if enabled again immediately', async () => {
+test('streaming does not replace native draft with a choice', async () => {
   const h = await harness(); await h.toggle(true);
-  let finish;
-  h.adapter.sendResult = (text, current) => new Promise(resolve => { finish = () => { assert.equal(current(), false); resolve({ok: false, cancelled: true}); }; });
-  const task = h.player.actions.onDraft('Old action');
-  await h.toggle(false); await h.toggle(true);
-  h.player.input.value = 'New draft'; finish(); await task;
-  assert.equal(h.player.input.value, 'New draft'); assert.equal(h.player.busy, false);
+  h.adapter.cb({...h.adapter.read(), streaming: true});
+  await h.player.actions.onDraft('Action');
+  assert.equal(h.adapter.prepared, undefined); assert.equal(h.player.busy, true);
 });
 
 test('plain text reply after a game scene offers format recovery and unlocks input', async () => {

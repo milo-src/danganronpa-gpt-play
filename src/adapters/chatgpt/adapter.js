@@ -101,53 +101,21 @@
     isStreaming() {
       return !!this.doc.querySelector('[data-testid="stop-button"], button[aria-label="Stop generating"], button[aria-label="Остановить генерацию"]');
     }
-    findSendButton(composer) {
-      const selectors = 'button[data-testid="send-button"], button#composer-submit-button, button[aria-label="Send prompt"], button[aria-label="Send message"], button[aria-label="Отправить сообщение"], button[aria-label="Отправить запрос"]';
-      const candidates = [...this.doc.querySelectorAll(selectors)].filter(button =>
-        !button.closest('#dgp-extension-root, [hidden], [inert], [role="dialog"]') &&
-        !button.disabled && button.getAttribute('aria-disabled') !== 'true' && button.getClientRects().length &&
-        this.win.getComputedStyle(button).visibility !== 'hidden');
-      const form = composer?.closest('form');
-      const local = form ? candidates.filter(button => form.contains(button)) : [];
-      return local.length === 1 ? local[0] : candidates.length === 1 ? candidates[0] : null;
+    composerLayout() {
+      const editor = this.findComposer();
+      if (!editor) return null;
+      const rect = editor.getBoundingClientRect();
+      const form = editor.closest('form');
+      const formRect = form?.getBoundingClientRect();
+      // Reserve the site's own editor and controls without moving React-owned DOM.
+      const top = formRect && formRect.height < 320 && formRect.top > 100 ? Math.min(rect.top, formRect.top) : rect.top - 28;
+      return {gap: Math.max(120, this.win.innerHeight - top + 12), available: top > 140};
     }
-    async sendAction(text, isCurrent = () => true) {
-      if (!isCurrent()) return {ok: false, cancelled: true};
-      if (this.sending) return {ok: false, reason: 'Действие уже отправляется.'};
-      if (this.isStreaming()) return {ok: false, reason: 'Дождись окончания ответа ChatGPT.'};
-      this.sending = true;
-      const route = this.route();
-      const delay = () => new Promise(resolve => this.win.setTimeout(resolve, 80));
-      try {
-        // A previous attempt may have inserted this very action before the site
-        // enabled Send. Reuse it on an explicit retry; never overwrite a different draft.
-        const result = this.insertDraft(text, {reuseMatching: true});
-        if (!result.ok) return result;
-        const composer = this.findComposer();
-        const originalUsers = new Set(this.doc.querySelectorAll('[data-message-author-role="user"]'));
-        const fingerprint = this.fingerprint(text);
-        // Let the site's editor update its own state and enable its send button.
-        for (let attempt = 0; attempt < 38; attempt++) {
-          await delay();
-          if (!isCurrent() || this.route() !== route) return {ok: false, cancelled: true};
-          if (this.findComposer() !== composer || this.fingerprint(composer.tagName === 'TEXTAREA' ? composer.value : composer.textContent) !== fingerprint)
-            return {ok: false, reason: 'Черновик изменился. Автоматическая отправка отменена; проверь поле ChatGPT.'};
-          if (this.isStreaming()) return {ok: false, reason: 'ChatGPT уже отвечает. Действие осталось в его поле.'};
-          const button = this.findSendButton(composer);
-          if (!button) continue;
-          this.markSubmit(); button.click(); // One click only; never retry a potentially sent message.
-          for (let acknowledgement = 0; acknowledgement < 32; acknowledgement++) {
-            await delay();
-            if (!isCurrent()) return {ok: false, cancelled: true};
-            if (this.route() !== route && !route.startsWith('draft:')) return {ok: false, cancelled: true};
-            const appeared = [...this.doc.querySelectorAll('[data-message-author-role="user"]')].some(node =>
-              !originalUsers.has(node) && this.fingerprint(node.innerText || node.textContent) === fingerprint);
-            if (appeared || (this.isStreaming() && !(composer.tagName === 'TEXTAREA' ? composer.value : composer.textContent).trim())) return {ok: true};
-          }
-          return {ok: false, clicked: true, reason: 'Кнопка отправки нажата, но сайт пока не подтвердил сообщение. Открой чат и проверь его перед повторной отправкой.'};
-        }
-        return {ok: false, reason: 'Кнопка отправки ChatGPT недоступна. Текст сохранён в его поле; открой чат и отправь вручную.'};
-      } finally { this.sending = false; }
+    focusComposer() {
+      const editor = this.findComposer();
+      if (!editor) return false;
+      editor.scrollIntoView({block: 'nearest', behavior: 'instant'});
+      editor.focus({preventScroll: true}); return true;
     }
     start(callback) {
       this.stop(); this.callback = callback;
