@@ -36,6 +36,19 @@ test('a malformed final line is reported once generation finishes', () => {
   assert.equal(D.protocol.parse('DGP|{broken', {complete: false}).invalid, 0);
   assert.equal(D.protocol.parse('DGP|{broken', {complete: true}).invalid, 1);
 });
+
+test('pretty-printed and adjacent objects survive code-block line changes', () => {
+  const events = [say('Quotes: " } [ and DGP| inside a string'), {type: 'choices', items: [{label: 'Go', text: 'Go'}]}];
+  const raw = events.map(e => 'DGP|' + JSON.stringify(e, null, 2)).join('');
+  const result = D.protocol.parse(raw, {complete: true});
+  assert.equal(result.invalid, 0); assert.equal(result.events.length, 2);
+  assert.equal(result.events[0].text, events[0].text);
+});
+
+test('broken JSON string does not swallow the next explicit command', () => {
+  const result = D.protocol.parse('DGP|{"type":"say","text":"broken\n  DGP|{"type":"say","text":"Recovered"}', {complete: true});
+  assert.equal(result.invalid, 1); assert.equal(result.events[0].text, 'Recovered');
+});
 test('limits and malformed nested values are enforced', () => {
   const result = parse([{type: 'scene', cast: [null, 'x', {id: 'dr1.kyoko-kirigiri'}], evidence: [null, {}]},
     {type: 'say', text: 'A'.repeat(3000)}, {type: 'choices', items: [null, {}, {label: 'Go', text: 'Act'}]}]);

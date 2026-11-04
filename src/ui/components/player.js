@@ -9,8 +9,9 @@
   };
   const modes = {daily: 'ПОВСЕДНЕВНАЯ ЖИЗНЬ', investigation: 'РАССЛЕДОВАНИЕ', trial: 'КЛАССНЫЙ СУД'};
   class Player {
-    constructor({url, onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand}) {
+    constructor({url, version = 'dev', onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand}) {
       this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand};
+      this.version = version; this.busy = false;
       this.lastDialogue = ''; this.lastCast = ''; this.animation = null; this.autoTimer = null;
       this.settings = {speed: 22, auto: false, reduced: false}; this.enabled = false; this.collapsed = false;
       this.host = el('div'); this.host.id = 'dgp-extension-root';
@@ -18,15 +19,15 @@
       this.shadow = this.host.attachShadow({mode: 'open'});
       const css = el('link'); css.rel = 'stylesheet'; css.href = url('src/ui/styles/player.css');
       this.shadow.append(css);
-      this.launch = this.button('RONPA · ВЫКЛ', () => this.enabled && this.collapsed ? this.setCollapsed(false) : onToggle(), 'launcher');
+      this.launch = this.button('RONPA · ВЫКЛ', () => this.enabled ? this.setCollapsed(!this.collapsed) : onToggle(), 'launcher');
       this.launch.setAttribute('aria-label', 'Включить или выключить игровой режим');
       this.panel = el('section', 'player'); this.panel.hidden = true;
       this.panel.setAttribute('aria-label', 'Игровая сцена Danganronpa');
       const toolbar = el('header', 'toolbar');
-      const brand = el('div', 'brand', 'DANGANRONPA'); brand.append(el('small', '', 'GPT PLAY / LOCAL'));
+      const brand = el('div', 'brand', 'DANGANRONPA'); brand.append(el('small', '', `GPT PLAY · ${version}`));
       const controls = el('nav', 'controls'); controls.setAttribute('aria-label', 'Управление игрой');
       controls.append(this.button('Улики', () => this.toggleDrawer('evidence')), this.button('Журнал', () => this.toggleDrawer('history')),
-        this.button('Настройки', () => this.toggleDrawer('settings')), this.button('Свернуть', () => this.setCollapsed(true)),
+        this.button('Настройки', () => this.toggleDrawer('settings')), this.button('Открыть чат', () => this.setCollapsed(true)),
         this.button('Выкл', onToggle, 'off'));
       toolbar.append(brand, controls);
       this.stage = el('div', 'stage'); this.background = el('img', 'background'); this.background.alt = '';
@@ -39,7 +40,8 @@
       this.welcome = el('div', 'welcome');
       this.welcome.append(el('span', 'eyebrow', 'ТВОЯ ИСТОРИЯ НАЧИНАЕТСЯ ЗДЕСЬ'), el('h1', '', 'Надежда или отчаяние?'),
         el('p', '', 'Вставь единый TXT в инструкции проекта ChatGPT и открой в нём новый чат. Отправь «Начни новую игру» — сцена появится по мере ответа.'));
-      this.welcome.append(this.button('Вставить стартовый запрос', () => onDraft('Начни новую игру Danganronpa по инструкциям проекта, в формате DGP. Сначала предложи выбрать часть, героя и режим спойлеров.')));
+      this.startButton = this.button('Начать игру', () => onDraft('Начни новую игру Danganronpa по инструкциям проекта, в формате DGP. Сначала предложи выбрать часть, героя и режим спойлеров.'));
+      this.welcome.append(this.startButton);
       this.stage.append(this.welcome);
       this.dialogue = el('section', 'dialogue');
       const dialogueTop = el('div', 'dialogue-top'); this.speaker = el('strong', 'speaker'); this.progress = el('small', 'progress');
@@ -51,11 +53,18 @@
       this.choices = el('div', 'choices');
       this.dialogue.append(dialogueTop, this.text, this.choices, actions);
       this.status = el('div', 'status'); this.status.setAttribute('role', 'status');
+      this.repairButton = this.button('Исправить формат ответа', () => onDraft('Переформатируй только свой последний ответ по инструкциям проекта: блок dgp, команды DGP| и строгий JSON. Сохрани сюжет, текущую сцену и варианты выбора; не начинай игру заново.'), 'repair');
+      this.repairButton.hidden = true;
+      const statusRow = el('div', 'status-row'); statusRow.append(this.status, this.repairButton);
       const compose = el('div', 'compose'); this.input = el('textarea'); this.input.rows = 1; this.input.maxLength = 3000;
       this.input.placeholder = 'Твоё действие, реплика или возражение…'; this.input.setAttribute('aria-label', 'Действие игрока');
-      compose.append(this.input, this.button('В поле ChatGPT ↗', () => onDraft(this.input.value), 'draft'));
+      this.sendButton = this.button('Отправить ▸', () => onDraft(this.input.value), 'draft');
+      this.input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); if (!this.busy) onDraft(this.input.value); }
+      });
+      compose.append(this.input, this.sendButton);
       this.drawer = el('aside', 'drawer'); this.drawer.hidden = true;
-      this.panel.append(toolbar, this.stage, this.dialogue, this.status, compose, this.drawer);
+      this.panel.append(toolbar, this.stage, this.dialogue, statusRow, compose, this.drawer);
       this.draftHelp = el('aside', 'draft-help'); this.draftHelp.hidden = true;
       this.draftHelp.setAttribute('aria-label', 'Перенос действия в ChatGPT');
       this.shadow.append(this.launch, this.panel, this.draftHelp); document.documentElement.append(this.host);
@@ -90,8 +99,21 @@
       if (!value) { this.actions.onExpand?.(); this.panel.focus({preventScroll: true}); }
     }
     notice(text) { this.status.textContent = text; }
+    setBusy(value) {
+      this.busy = value;
+      this.panel.setAttribute('aria-busy', String(value));
+      this.sendButton.disabled = value; this.startButton.disabled = value;
+      this.repairButton.disabled = value;
+      this.sendButton.textContent = value ? 'Ожидание…' : 'Отправить ▸';
+      for (const button of this.choices.querySelectorAll('button')) button.disabled = value;
+      for (const button of this.drawer.querySelectorAll('.evidence-card button')) button.disabled = value;
+    }
+    setDiagnostics(data) {
+      this.diagnostics = data;
+      if (this.drawerName === 'settings' && !this.drawer.hidden) this.drawSettings();
+    }
+    setFormatIssue(value) { this.repairButton.hidden = !value; }
     showDraftHelp(text, reason) {
-      this.setCollapsed(true);
       this.draftHelp.hidden = false;
       const explanation = el('p', '', reason); explanation.setAttribute('role', 'status');
       const copyText = el('textarea'); copyText.value = text; copyText.readOnly = true; copyText.rows = 4;
@@ -106,7 +128,8 @@
         }
       });
       this.draftHelp.replaceChildren(this.button('Закрыть ×', () => { this.draftHelp.hidden = true; }, 'close-drawer'),
-        el('strong', '', 'Продолжить в ChatGPT'), explanation, copyText, copy);
+        el('strong', '', 'Действие сохранено'), explanation, copyText, copy,
+        this.button('Открыть чат и проверить', () => this.setCollapsed(true)));
     }
     setSettings(settings) {
       this.settings = {...this.settings, ...settings}; this.panel.classList.toggle('reduced', this.settings.reduced);
@@ -125,7 +148,11 @@
         input.addEventListener('change', () => this.actions.onSettings({[key]: input.checked})); row.append(input); this.settingsBody.append(row);
       }
       this.settingsBody.append(this.button('Повторить последний ответ', this.actions.onReplay),
-        el('p', 'hint', 'Space / → — далее, когда фокус на сцене. Esc — свернуть. Действия переносятся в черновик; отправь их обычной кнопкой ChatGPT.'));
+        this.button('Перечитать сообщения', this.actions.onExpand),
+        el('p', 'hint', 'Space / → — далее. Enter — отправить действие; Shift+Enter — новая строка. Esc — открыть чат. Кнопки выбора отправляют выбранное действие через сайт ChatGPT.'));
+      const info = this.diagnostics;
+      this.settingsBody.append(el('p', 'diagnostics', `Версия ${this.version}. ` + (info ?
+        `Ответов на странице: ${info.assistantCount}. Команд: ${info.events}. Ошибок формата: ${info.invalid}. Поле ввода: ${info.composer ? 'найдено' : 'не найдено'}.` : 'Ожидание чтения страницы.')));
       if (this.drawerName === 'settings' && !this.drawer.hidden) this.renderDrawer();
     }
     render(state, meta) {
@@ -148,8 +175,8 @@
           figure.append(image); this.cast.append(figure);
         }
       }
-      this.welcome.hidden = !!state.dialogue;
-      this.dialogue.hidden = !state.dialogue;
+      this.welcome.hidden = !!state.dialogue || state.choices.length > 0;
+      this.dialogue.hidden = !state.dialogue && !state.choices.length;
       if (state.dialogue) {
         const d = state.dialogue;
         const character = Object.hasOwn(D.assets.characters, d.who) ? D.assets.characters[d.who] : null;
@@ -161,10 +188,11 @@
         }
       } else { this.lastDialogue = ''; this.stopTyping(); }
       this.choices.replaceChildren(...state.choices.map(c => this.button(c.label, () => this.actions.onDraft(c.text))));
-      this.nextButton.disabled = meta.total === 0;
-      this.nextButton.textContent = meta.pending ? 'Далее ▸' : 'Дочитать / ждать ▸';
+      this.nextButton.disabled = !meta.pending && !this.animation;
+      this.nextButton.textContent = meta.pending ? 'Далее ▸' : this.animation ? 'Показать текст ▸' : state.choices.length ? 'Выбери действие выше' : 'Твой ход';
       if (!this.drawer.hidden) this.renderDrawer();
       this.scheduleAuto();
+      this.setBusy(this.busy);
     }
     typeText(text) {
       this.stopTyping(); this.fullText = text;
@@ -173,12 +201,12 @@
       this.animation = setInterval(() => {
         pos = Math.min(chars.length, pos + Math.max(1, Math.ceil(chars.length / 450)));
         this.text.textContent = chars.slice(0, pos).join('');
-        if (pos === chars.length) { this.stopTyping(); this.scheduleAuto(); }
+        if (pos === chars.length) { this.stopTyping(); this.nextButton.disabled = !this.meta?.pending; this.scheduleAuto(); }
       }, this.settings.speed);
     }
     stopTyping() { clearInterval(this.animation); this.animation = null; }
     advance() {
-      if (this.animation) { this.stopTyping(); this.text.textContent = this.fullText; this.scheduleAuto(); }
+      if (this.animation) { this.stopTyping(); this.text.textContent = this.fullText; this.nextButton.disabled = !this.meta?.pending; this.scheduleAuto(); }
       else this.actions.onNext();
     }
     scheduleAuto() {
@@ -228,6 +256,7 @@
     reset() {
       this.stopTyping(); clearTimeout(this.autoTimer); this.lastDialogue = ''; this.lastCast = '';
       this.input.value = ''; this.drawer.hidden = true; this.draftHelp.hidden = true; this.effect.textContent = ''; this.background.dataset.path = '';
+      this.repairButton.hidden = true; this.diagnostics = null; this.setBusy(false);
     }
   }
   D.Player = Player;

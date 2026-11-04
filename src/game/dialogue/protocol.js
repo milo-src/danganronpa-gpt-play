@@ -44,17 +44,40 @@
   function parse(raw, {complete = false} = {}) {
     const events = [];
     let invalid = 0;
-    // The unfinished final line is retried on the next DOM mutation.
-    const lines = String(raw || '').slice(0, 300000).split(/\r?\n/);
-    for (let i = 0; i < lines.length && events.length < 160; i++) {
-      const line = lines[i].trim();
-      if (!line.startsWith('DGP|')) continue;
+    // Frame JSON objects, not visual lines: rich code blocks may join lines or
+    // pretty-print an object. Quoted braces and escaped quotes are data.
+    const source = String(raw || '').slice(0, 300000);
+    const marker = /(?:^|\n)[\t ]*DGP\|/g;
+    let position = 0, adjacent = false;
+    while (position < source.length && events.length < 160) {
+      marker.lastIndex = position;
+      const joined = adjacent ? source.slice(position).match(/^\s*DGP\|/) : null;
+      const match = joined || marker.exec(source);
+      if (!match) break;
+      const start = joined ? position + joined[0].length : marker.lastIndex;
+      let end = start, depth = 0, quoted = false, escaped = false, opened = false;
+      for (; end < source.length; end++) {
+        const char = source[end];
+        // A physical newline inside a JSON string is invalid; recover the next
+        // explicit command rather than losing the rest of the response.
+        if (/^\n[\t ]*DGP\|/.test(source.slice(end, end + 80))) break;
+        if (quoted) {
+          if (escaped) escaped = false;
+          else if (char === '\\') escaped = true;
+          else if (char === '"') quoted = false;
+          continue;
+        }
+        if (char === '"') quoted = true;
+        if (char === '{' || char === '[') { depth++; opened = true; }
+        if (char === '}' || char === ']') { depth--; if (opened && depth === 0) { end++; break; } }
+      }
       try {
-        const event = normalize(JSON.parse(line.slice(4)));
+        const event = normalize(JSON.parse(source.slice(start, end)));
         if (event) events.push(event); else invalid++;
       } catch {
-        if (complete || i < lines.length - 1) invalid++;
+        if (complete || end < source.length || source.endsWith('\n')) invalid++;
       }
+      position = end; adjacent = opened && depth === 0;
     }
     return {events, invalid};
   }
