@@ -4,7 +4,7 @@
   const action = 'Осматриваю дверь.';
   let sent = 0, generation = 0;
   globalThis.browser = {
-    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.5'}), onMessage: {addListener() {}, removeListener() {}}},
+    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.6'}), onMessage: {addListener() {}, removeListener() {}}},
     storage: {local: {async get(key) { return {[key]: key.startsWith('dgp-session:') ? {enabled: true} : memory[key]}; }, async set(values) { Object.assign(memory, values); }}}
   };
   document.getElementById('native-form').addEventListener('submit', e => {
@@ -32,7 +32,7 @@
     assert(disposed && old.adapter.observer === null, 'previous observer and listeners disposed on reinjection');
     assert(document.querySelectorAll('#dgp-extension-root').length === 1, 'only one game window after reinjection');
     const css = current.player.shadow.querySelector('link');
-    assert(css.href.includes('?v=0.3.5'), 'stylesheet URL includes the installed version');
+    assert(css.href.includes('?v=0.3.6'), 'stylesheet URL includes the installed version');
     await until(() => getComputedStyle(current.player.panel).position === 'fixed');
     current.player.showDraftHelp(action, 'Тест окна восстановления');
     assert(getComputedStyle(current.player.draftHelp).pointerEvents === 'auto' && Number(getComputedStyle(current.player.draftHelp).zIndex) > 0, 'recovery controls receive pointer input above game');

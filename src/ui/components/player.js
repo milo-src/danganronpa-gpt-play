@@ -65,10 +65,10 @@
       this.repairButton.hidden = true;
       const statusRow = el('div', 'status-row'); statusRow.append(this.status, this.repairButton);
       const compose = el('div', 'game-compose');
-      const inputLabel = el('label', 'input-label', 'Твоё действие или реплика');
+      const inputLabel = this.inputLabel = el('label', 'input-label', 'Твоё действие или реплика');
       this.input = el('textarea', 'action-input'); this.input.id = 'dgp-action';
       this.input.rows = 2; this.input.maxLength = 3000;
-      this.input.placeholder = 'Например: осматриваю дверь или спрашиваю Кёко о записке…';
+      this.input.placeholder = 'Опиши своё действие или напиши реплику от лица своего героя…';
       inputLabel.htmlFor = this.input.id;
       this.sendButton = this.button('Отправить ▸', () => this.actions.onDraft(this.input.value), 'send-action');
       this.input.addEventListener('keydown', e => {
@@ -205,6 +205,7 @@
     }
     render(state, meta) {
       this.currentState = state; this.meta = meta;
+      this.inputLabel.textContent = state.player?.name ? `Твоё действие или реплика · Ты — ${state.player.name}` : 'Твоё действие или реплика';
       this.panel.classList.toggle('menu', !!state.menu);
       this.panel.classList.toggle('text-scene', !state.background && !state.cast.length && !!state.dialogue);
       this.chapter.textContent = state.chapter; this.mode.textContent = state.menu ? 'НАСТРОЙКА ИСТОРИИ' : modes[state.mode]; this.panel.dataset.mode = state.mode;

@@ -2,7 +2,7 @@
   const base = new URL('../', location.href);
   const memory = {};
   globalThis.browser = {
-    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.5 · ДЕМО'}), onMessage: {addListener() {}}},
+    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.6 · ДЕМО'}), onMessage: {addListener() {}}},
     storage: {local: {
       async get(key) {
         if (key.startsWith('dgp-session:')) return {[key]: {enabled: true}};
@@ -57,7 +57,15 @@
     {type: 'say', who: 'drv3.kaede-akamatsu', name: 'Каэдэ Акамацу', sprite: 'sad', text: 'Жаль, что мы не заметили этого раньше.'}
   ];
   const params = new URLSearchParams(location.search);
-  add(params.has('sprites') ? spriteDemo : params.has('menu') ? setup : opening);
+  const emptyRoomDemo = [
+    {type: 'scene', background: 'drv3.classroom1a', location: 'Класс A', chapter: 'Проверка перехода', mode: 'daily',
+      player: {id: 'drv3.shuichi-saihara', name: 'Шуити Сайхара'}, cast: [{id: 'drv3.kaede-akamatsu'}]},
+    {type: 'say', who: 'drv3.kaede-akamatsu', name: 'Каэдэ Акамацу', text: 'Я останусь в классе.'},
+    {type: 'scene', background: 'drv3.1f', location: 'Холл первого этажа'},
+    {type: 'say', who: '', name: 'Рассказчик', text: 'Ты выходишь из класса. В холле никого нет; Каэдэ осталась за дверью.'},
+    {type: 'choices', items: [{label: 'Осмотреть холл', text: 'Осматриваю холл.'}]}
+  ];
+  add(params.has('empty-room') ? emptyRoomDemo : params.has('sprites') ? spriteDemo : params.has('menu') ? setup : opening);
   document.getElementById('sprites-demo').addEventListener('click', () => add(spriteDemo));
   document.getElementById('stream-demo').addEventListener('click', () => add([
     {...scene, cast: [{id: 'dr1.kyoko-kirigiri', sprite: 'default'}], evidence: [{id: 'note', title: 'Записка на столе', description: 'Время встречи исправлено другим почерком.'}]},

@@ -18,6 +18,10 @@
           if (typeof v[k] === 'string') out[k] = text(v[k], k === 'objective' ? 500 : 120);
         }
         if (modes.includes(v.mode)) out.mode = v.mode;
+        if (v.player === null) out.player = null;
+        else if (v.player && typeof v.player === 'object' && !Array.isArray(v.player)) {
+          out.player = {id: id(v.player.id), name: text(v.player.name, 100)};
+        }
         if (Array.isArray(v.cast)) out.cast = v.cast.slice(0, 3).filter(c => c && typeof c === 'object')
           .map(c => ({id: id(c.id), sprite: id(c.sprite) || 'default'})).filter(c => c.id);
         if (Array.isArray(v.evidence)) out.evidence = v.evidence.slice(0, 60).map(evidence).filter(Boolean);

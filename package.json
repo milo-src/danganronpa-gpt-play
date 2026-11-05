@@ -1,6 +1,6 @@
 {
   "name": "danganronpa-gpt-play",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "private": true,
   "description": "Local visual-novel overlay for ChatGPT, without an API",
   "scripts": {

@@ -16,6 +16,61 @@ const say = text => ({type: 'say', who: 'dr1.kyoko-kirigiri', text});
 const parse = events => D.protocol.parse(events.map(e => 'DGP|' + JSON.stringify(e)).join('\n')).events;
 const message = (events, id = 'message-1') => ({id, events: parse(events)});
 
+test('moving to a room without a cast clears previous inhabitants and rewinds correctly', () => {
+  const t = new D.Timeline();
+  t.update([message([
+    {type: 'scene', background: 'drv3.classroom1a', location: 'Класс', cast: [{id: 'drv3.kaede-akamatsu'}]},
+    {type: 'say', who: 'drv3.kaede-akamatsu', text: 'Я останусь здесь.'},
+    {type: 'scene', background: 'drv3.1f', location: 'Холл'},
+    {type: 'say', who: '', name: 'Рассказчик', text: 'Шуити выходит в пустой холл.'}
+  ])]);
+  assert.equal(t.state().cast.length, 1);
+  t.next(); assert.deepEqual(plain(t.state().cast), []);
+  assert.equal(t.state().dialogue.who, '');
+  t.back(); assert.equal(t.state().cast[0].id, 'drv3.kaede-akamatsu');
+});
+
+test('explicit empty cast stays empty for an off-screen voice until a new entrance scene', () => {
+  const t = new D.Timeline();
+  t.update([message([
+    {type: 'scene', location: 'Холл', cast: []},
+    {type: 'say', who: 'drv3.kaede-akamatsu', text: 'Голос из-за двери.'},
+    {type: 'scene', cast: [{id: 'drv3.kaede-akamatsu'}]},
+    {type: 'say', who: 'drv3.kaede-akamatsu', text: 'Каэдэ входит.'}
+  ])]);
+  assert.equal(t.state().cast.length, 0);
+  assert.equal(t.state().dialogue.who, 'drv3.kaede-akamatsu');
+  t.next(); assert.equal(t.state().cast.length, 1);
+});
+
+test('player identity is separate from NPCs, persists across rooms and cannot spawn a self portrait', () => {
+  const t = new D.Timeline();
+  t.update([message([
+    {type: 'scene', player: {id: 'drv3.shuichi-saihara', name: 'Шуити Сайхара'}, location: 'Класс',
+      cast: [{id: 'drv3.shuichi-saihara'}, {id: 'drv3.kaede-akamatsu'}]},
+    {type: 'say', who: '', text: 'Ты стоишь рядом с Каэдэ.'},
+    {type: 'scene', location: 'Холл'},
+    {type: 'say', who: 'drv3.shuichi-saihara', text: 'Моя мысль.'},
+    {type: 'scene', player: null, cast: []},
+    {type: 'say', text: 'Выбор другого героя.'}
+  ])]);
+  assert.deepEqual(plain(t.state().cast.map(c => c.id)), ['drv3.kaede-akamatsu']);
+  t.next(); assert.equal(t.state().player.name, 'Шуити Сайхара');
+  assert.equal(t.state().cast.length, 0);
+  t.next(); assert.equal(t.state().player, null);
+});
+
+test('narrator in the same room preserves visible NPCs; invalid backgrounds cannot clear them', () => {
+  const t = new D.Timeline();
+  t.update([message([
+    {type: 'scene', location: 'Класс', cast: [{id: 'drv3.kaede-akamatsu'}]},
+    {type: 'say', text: 'Каэдэ рядом.'},
+    {type: 'scene', mode: 'investigation', background: 'https://invalid.example/image'},
+    {type: 'say', text: 'Ты осматриваешь стол.'}
+  ])]);
+  t.next(); assert.equal(t.state().cast[0].id, 'drv3.kaede-akamatsu');
+});
+
 test('curated defaults exclude scrum poses, cosplay and alternate identities', () => {
   assert.equal(D.resolveSprite('drv3.kaede-akamatsu', 'default').key, 'archive/kaede-001');
   assert.equal(D.resolveSprite('drv3.tsumugi-shirogane', 'default').key, 'archive/tsumugi-001');
