@@ -123,3 +123,35 @@ test('instructions example parses and all referenced assets exist', () => {
     if (e.who) assert.ok(Object.hasOwn(D.assets.characters, e.who));
   }
 });
+
+
+const narrate = text => ({type: 'say', who: '', text});
+
+test('empty setup menu exposes all narration and choices without extra Next clicks', () => {
+  const t = new D.Timeline();
+  const events = [{type: 'scene', background: '', cast: [], location: 'Главное меню', chapter: 'Новая игра'},
+    narrate('Welcome'), narrate('Which game?'), {type: 'choices', items: [{label: 'DR1', text: 'Choose DR1'}]}];
+  t.update([message(events)]);
+  assert.equal(t.state().menu, true);
+  assert.equal(t.state().dialogue.text, 'Welcome\n\nWhich game?');
+  assert.equal(t.state().choices[0].label, 'DR1'); assert.equal(t.pending, 0);
+  const key = t.key; const resumed = new D.Timeline(); resumed.update([message(events)], key);
+  assert.deepEqual(resumed.state(), t.state());
+  t.update([message(events), message([{type: 'scene', background: 'dr1.bgd-008out', location: 'Класс', chapter: 'Глава 1'}, narrate('Awake'), narrate('Door')], 'next')]);
+  t.replay();
+  assert.equal(t.state().menu, undefined); assert.equal(t.state().dialogue.text, 'Awake'); assert.equal(t.pending, 1);
+});
+
+test('setup choices appear after streaming; actual characters and rooms keep dialogue pacing', () => {
+  const t = new D.Timeline();
+  const events = [{type: 'scene', background: '', cast: [], location: 'Настройка новой игры'}, narrate('Welcome')];
+  t.update([message(events)]); assert.equal(t.state().menu, true); assert.equal(t.state().choices.length, 0);
+  events.push(narrate('Pick a hero'), {type: 'choices', items: [{label: 'Custom', text: 'Custom hero'}]});
+  t.update([message(events)]); assert.equal(t.state().choices.length, 1); assert.equal(t.pending, 0);
+  const story = new D.Timeline();
+  story.update([message([{type: 'scene', background: 'dr1.bgd-008out', location: 'Главное меню'}, narrate('One'), narrate('Two')])]);
+  assert.equal(story.state().menu, undefined); assert.equal(story.pending, 1);
+  const character = new D.Timeline();
+  character.update([message([{type: 'scene', background: '', location: 'Новая игра'}, {type: 'say', who: 'dr1.kyoko-kirigiri', text: 'One'}, narrate('Two')])]);
+  assert.equal(character.state().menu, undefined); assert.equal(character.pending, 1);
+});

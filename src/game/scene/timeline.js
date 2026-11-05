@@ -82,10 +82,22 @@
     state() {
       const state = empty();
       for (let i = 0; i <= this.cursor; i++) apply(state, this.entries[i].event);
+      // Setup is a form, not a sequence of dialogue clicks. Present its question
+      // and options together, while keeping ordinary story scenes sequential.
+      const message = this.entries[this.cursor]?.message;
+      const events = this.entries.filter(e => e.message === message).map(e => e.event);
+      const isSetup = /меню|настройк|выбор|выберите|новая игра|новой игры|setup|main menu/i.test(state.location + ' ' + state.chapter);
+      const simple = events.every(e => e.type === 'choices' || (e.type === 'say' && !e.who) ||
+        (e.type === 'scene' && !e.background && !e.cast?.length));
+      if (isSetup && simple && !state.background && !state.cast.length && state.dialogue) {
+        state.menu = true;
+        state.dialogue = {...state.dialogue, text: events.filter(e => e.type === 'say').map(e => e.text).join('\n\n')};
+        state.choices = events.findLast(e => e.type === 'choices')?.items || [];
+      }
       return state;
     }
     get key() { return this.entries[this.cursor]?.key || ''; }
-    get pending() { return this.entries.slice(this.cursor + 1).filter(e => e.event.type === 'say').length; }
+    get pending() { return this.state().menu ? 0 : this.entries.slice(this.cursor + 1).filter(e => e.event.type === 'say').length; }
   }
   D.Timeline = Timeline;
 })();

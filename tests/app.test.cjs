@@ -17,6 +17,7 @@ async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope 
     start(cb) { this.started = true; this.cb = cb; cb(this.read()); }
     stop() { this.started = false; this.cb = null; }
     insertDraft(text) { this.prepared = text; return this.draftResult || {ok: true}; }
+    async sendAction(text, current) { this.sent = (this.sent || []).concat(text); return this.sendResult ? this.sendResult(text, current) : this.insertDraft(text); }
     composerLayout() { return {gap: 180, available: true}; }
     focusComposer() { this.focused = true; }
     findComposer() { return {}; }
@@ -30,7 +31,9 @@ async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope 
     render(state) { this.state = state; }
     setCollapsed(value) { this.collapsed = value; }
     showDraftHelp(text, reason) { this.help = {text, reason}; }
+    preserveDraft(text) { this.savedDrafts = [...(this.savedDrafts || []), text]; }
     setComposerLayout(value) { this.layout = value; }
+    setRetry(value) { this.retry = value; }
     setBusy(value) { this.busy = value; }
     setDiagnostics(value) { this.diagnostics = value; }
     setFormatIssue(value) { this.formatIssue = value; }
@@ -90,8 +93,8 @@ test('missing composer keeps the scene and retains action in recovery UI', async
   h.adapter.draftResult = {ok: false, reason: 'Поле сообщения не найдено'};
   await h.player.actions.onDraft('Начни новую игру');
   assert.equal(h.player.collapsed, false);
-  assert.equal(h.player.help.text, 'Начни новую игру');
-  assert.equal(h.player.help.reason, 'Поле сообщения не найдено');
+  assert.equal(h.player.input.value, 'Начни новую игру');
+  assert.equal(h.player.status, 'Поле сообщения не найдено');
   assert.equal(h.player.enabled, true);
 });
 test('starting game survives full page navigation with matching prompt and project', async () => {
@@ -136,24 +139,24 @@ test('project home and named conversation URL resolve to the same project scope'
   assert.equal(prototype.route.call(chat), 'chat:6aeb6280-a0b8-83eb-8428-8bf9ec30bbcd');
 });
 
-test('choice only prepares native draft and new reply advances scene', async () => {
+test('choice sends native action and new reply advances scene', async () => {
   const h = await harness();
   h.adapter.messages = [{id: 'old', events: [{type: 'say', text: 'Before'}]}];
   await h.toggle(true);
   await h.player.actions.onDraft('Осмотреть комнату');
   assert.equal(h.adapter.prepared, 'Осмотреть комнату');
-  assert.equal(h.player.busy, false); assert.equal(h.player.collapsed, false);
-  assert.match(h.player.status, /подготовлено/);
+  assert.equal(h.player.busy, true); assert.equal(h.player.collapsed, false);
+  assert.equal(h.adapter.sent.length, 1); assert.match(h.player.status, /Ход отправлен/);
   h.adapter.messages.push({id: 'new', events: [{type: 'say', text: 'After'}]});
   h.adapter.cb(h.adapter.read());
   assert.equal(h.player.state.dialogue.text, 'After');
 });
 
-test('native composer focus and layout are exposed without a send operation', async () => {
+test('native composer remains available beside one-click choices', async () => {
   const h = await harness(); await h.toggle(true);
   h.player.actions.onFocusComposer();
   assert.equal(h.adapter.focused, true); assert.equal(h.player.layout.gap, 180);
-  assert.equal(h.realAdapter.prototype.sendAction, undefined);
+  assert.equal(typeof h.realAdapter.prototype.sendAction, 'function');
 });
 
 test('streaming does not replace native draft with a choice', async () => {
@@ -177,4 +180,62 @@ test('new assistant response reopens a collapsed game even when its format is br
   h.player.setCollapsed(true);
   h.adapter.cb({messages: [], assistantCount: 1, latestHasCommands: false, latestInvalid: 1, invalid: 1, streaming: false});
   assert.equal(h.player.collapsed, false); assert.equal(h.player.formatIssue, true);
+});
+
+
+test('double clicks cannot send a duplicate action while transport is pending', async () => {
+  const h = await harness(); await h.toggle(true);
+  let finish; h.adapter.sendResult = () => new Promise(resolve => { finish = resolve; });
+  const task = h.player.actions.onDraft('Go'); await h.player.actions.onDraft('Go');
+  assert.equal(h.adapter.sent.length, 1); assert.equal(h.player.busy, true);
+  finish({ok: true}); await task;
+  await h.player.actions.onDraft('Go'); assert.equal(h.adapter.sent.length, 1);
+  h.adapter.cb({...h.adapter.read(), assistantCount: 1, streaming: false});
+  assert.equal(h.player.busy, false);
+});
+
+test('turning off cancels pending transport even after re-enabling', async () => {
+  const h = await harness(); await h.toggle(true);
+  let finish; h.adapter.sendResult = (text, current) => new Promise(resolve => { finish = () => { assert.equal(current(), false); resolve({cancelled: true}); }; });
+  const task = h.player.actions.onDraft('Go'); await h.toggle(false); await h.toggle(true);
+  h.player.input.value = 'New draft'; finish(); await task;
+  assert.equal(h.player.input.value, 'New draft'); assert.equal(h.player.busy, false);
+});
+
+test('navigation cancels pending action without changing another chat', async () => {
+  const h = await harness(); await h.toggle(true);
+  let finish; h.adapter.sendResult = (text, current) => new Promise(resolve => { finish = () => { assert.equal(current(), false); resolve({cancelled: true}); }; });
+  const task = h.player.actions.onDraft('Go'); h.adapter.current = 'chat:b'; await h.poll();
+  h.player.input.value = 'New draft'; finish(); await task;
+  assert.equal(h.player.enabled, false); assert.equal(h.player.input.value, 'New draft');
+});
+
+
+test('already rendered answer wins over late transport timeout', async () => {
+  const h = await harness(); await h.toggle(true);
+  let finish; h.adapter.sendResult = () => new Promise(resolve => { finish = resolve; });
+  const task = h.player.actions.onDraft('My action');
+  h.adapter.messages = [{id: 'reply', events: [{type: 'say', text: 'The answer'}]}];
+  h.adapter.cb(h.adapter.read());
+  finish({ok: false, clicked: true, reason: 'Unconfirmed'}); await task;
+  assert.equal(h.player.state.dialogue.text, 'The answer');
+  assert.ok(!h.player.status.includes('Unconfirmed')); assert.equal(h.player.busy, false);
+  assert.equal(h.player.input.value, '');
+});
+
+test('typing the next action while sending does not lose it on confirmation', async () => {
+  const h = await harness(); await h.toggle(true);
+  let finish; h.adapter.sendResult = () => new Promise(resolve => { finish = resolve; });
+  const task = h.player.actions.onDraft('First'); h.player.input.value = 'Next draft';
+  finish({ok: true}); await task;
+  assert.equal(h.player.input.value, 'Next draft');
+});
+
+
+test('recycled assistant node unlocks waiting even when message count stays constant', async () => {
+  const h = await harness(); h.adapter.messages = [{id: 'same-node', events: [{type: 'say', text: 'Before'}]}];
+  await h.toggle(true); await h.player.actions.onDraft('First'); assert.equal(h.player.busy, true);
+  h.adapter.messages = [{id: 'same-node', events: [{type: 'say', text: 'After'}]}];
+  h.adapter.cb(h.adapter.read()); assert.equal(h.player.busy, false);
+  await h.player.actions.onDraft('Second'); assert.equal(h.adapter.sent.length, 2);
 });

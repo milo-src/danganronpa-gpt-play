@@ -17,7 +17,7 @@
     form.addEventListener('submit', e => {
       e.preventDefault(); clicks++;
       if (acknowledge) {
-        node('div', {'data-message-author-role': 'user'}).textContent = editor.textContent;
+        node('div', {'data-message-author-role': 'user'}).textContent = editor.innerText || editor.textContent;
         editor.replaceChildren();
       }
     });
@@ -106,6 +106,92 @@
     const event = new KeyboardEvent('keydown', {key: 'Enter', bubbles: true, cancelable: true});
     form.editor.dispatchEvent(event);
     assert(!event.defaultPrevented); assert(form.clicks() === 0);
+  });
+  await test('multiline action survives contenteditable block and br rendering', async () => {
+    const form = composer(); const text = 'Осматриваю дверь.\nПроверяю замок.';
+    assert((await adapter.sendAction(text)).ok); assert(form.clicks() === 1);
+    assert(adapter.fingerprint(fixture.querySelector('[data-message-author-role=user]').textContent) === adapter.fingerprint(text));
+  });
+  await test('choice waits for delayed site state and sends once', async () => {
+    const form = composer({delayed: true});
+    const first = adapter.sendAction('Осмотреть дверь');
+    assert(!(await adapter.sendAction('Осмотреть дверь')).ok);
+    assert((await first).ok); assert(form.clicks() === 1); assert(form.editor.textContent === '');
+  });
+  await test('existing draft is never replaced or submitted by a choice', async () => {
+    const form = composer(); form.editor.textContent = 'Unfinished';
+    assert(!(await adapter.sendAction('Choice')).ok);
+    assert(form.clicks() === 0 && form.editor.textContent === 'Unfinished');
+  });
+  await test('game choice preserves unrelated draft then sends only the choice', async () => {
+    const form = composer(); form.editor.textContent = 'My unfinished text'; let saved;
+    assert((await adapter.sendAction('Choose DR1', () => true, text => { saved = text; })).ok);
+    assert(saved === 'My unfinished text'); assert(form.clicks() === 1);
+    assert(fixture.querySelector('[data-message-author-role=user]').textContent === 'Choose DR1');
+    assert(adapter.insertDraft(saved).ok); assert(form.editor.textContent === saved);
+  });
+  await test('matching old draft can be sent by one choice click', async () => {
+    const form = composer(); form.editor.textContent = 'Choose DR1';
+    assert((await adapter.sendAction('Choose DR1')).ok); assert(form.clicks() === 1);
+  });
+  await test('cancellation during delayed enable never clicks Send', async () => {
+    const form = composer({delayed: true}); let current = true;
+    const task = adapter.sendAction('Cancelled', () => current); current = false;
+    assert((await task).cancelled); assert(form.clicks() === 0);
+  });
+  await test('new answer confirms send when user markup and Stop button are absent', async () => {
+    const form = composer({acknowledge: false});
+    form.editor.closest('form').addEventListener('submit', () => {
+      form.editor.replaceChildren();
+      node('pre', {}, node('article')).textContent = command('Fast answer without author attributes');
+    });
+    assert((await adapter.sendAction('My action')).ok); assert(form.clicks() === 1);
+  });
+  await test('hiding Stop instead of removing it ends streaming and unlocks submission', async () => {
+    const form = composer(); const stop = node('button', {'data-testid': 'stop-button'}); stop.textContent = 'Stop';
+    let latest; adapter.start(data => {latest = data;}); assert(latest.streaming);
+    stop.style.display = 'none';
+    await new Promise(resolve => setTimeout(resolve, 220));
+    assert(!latest.streaming && !adapter.isStreaming());
+    adapter.stop(); assert((await adapter.sendAction('After hidden Stop')).ok); assert(form.clicks() === 1);
+  });
+  await test('three consecutive turns work with retained native draft and recycled answer node', async () => {
+    const form = composer({acknowledge: false}); const pre = node('pre', {}, node('article'));
+    pre.textContent = command('Before'); let turn = 0;
+    form.editor.closest('form').addEventListener('submit', () => { pre.textContent = command('Reply ' + (++turn)); });
+    for (const action of ['Продолжить', 'Продолжить', 'Продолжить']) {
+      const result = await adapter.sendAction(action, () => true, () => {});
+      assert(result.ok, 'turn must be acknowledged');
+      assert(adapter.unconfirmed === null, 'no stale delivery lock');
+      assert(adapter.composerText() === action, 'site intentionally retains draft');
+    }
+    assert(form.clicks() === 3);
+  });
+  await test('late response reconciles a timed-out attempt before the next action', async () => {
+    const form = composer({acknowledge: false}); form.editor.textContent = 'Old';
+    adapter.unconfirmed = {text: 'Old', hash: adapter.fingerprint('Old'), route: adapter.route(), userCount: 0,
+      response: adapter.responseKey(adapter.read()), accepted: false};
+    const pre = node('pre', {}, node('article')); pre.textContent = command('Late reply');
+    assert(adapter.observeDelivery(adapter.read())); assert(adapter.unconfirmed === null);
+    form.editor.closest('form').addEventListener('submit', () => { pre.textContent = command('Next reply'); });
+    assert((await adapter.sendAction('New', () => true, () => {})).ok); assert(form.clicks() === 1);
+  });
+  await test('an uncertain old action cannot block a different next action', async () => {
+    const form = composer({acknowledge: false}); form.editor.textContent = 'Old';
+    adapter.unconfirmed = {text: 'Old', hash: adapter.fingerprint('Old'), route: adapter.route(), userCount: 0,
+      response: adapter.responseKey(adapter.read()), accepted: false};
+    form.editor.closest('form').addEventListener('submit', () => { node('pre', {}, node('article')).textContent = command('Reply'); });
+    assert((await adapter.sendAction('Different', () => true, () => {})).ok); assert(form.clicks() === 1);
+  });
+  await test('unconfirmed submission is not clicked again', async () => {
+    const form = composer({acknowledge: false});
+    const first = await adapter.sendAction('Unconfirmed');
+    assert(!first.ok && first.clicked); assert(form.clicks() === 1);
+    const second = await adapter.sendAction('Unconfirmed');
+    assert(!second.ok && second.clicked); assert(form.clicks() === 1);
+    form.editor.closest('form').addEventListener('submit', () => { node('pre', {}, node('article')).textContent = command('Retry accepted'); });
+    assert((await adapter.sendAction('Unconfirmed', () => true, undefined, {retry: true})).ok);
+    assert(form.clicks() === 2, 'only explicit retry makes a second click');
   });
   adapter.destroy();
   fixture.replaceChildren(); output.textContent += `\n${passed} passed; ${failed} failed`;

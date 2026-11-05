@@ -84,3 +84,38 @@ button:disabled { opacity: .45; cursor: default; }
   .welcome { padding: 35px 15px 10px; } .welcome p { font-size: 12px; }
 }
 @media (max-height: 650px) { .player { inset: 8px 10px var(--composer-gap,180px); min-height: 0; } .speech { min-height: 1.6em; max-height: 18vh; } .toolbar { padding: 5px 12px; } .brand small { display: none; } }
+
+/* Text-only setup has no fictional room or character forced into the story. */
+.player.text-scene { grid-template-rows:auto auto minmax(0,1fr) auto auto; }
+.text-scene .stage { min-height:130px; height:clamp(130px,20vh,210px); }
+.text-scene .dialogue { overflow:auto; display:flex; flex-direction:column; justify-content:safe center; padding:24px clamp(20px,5vw,90px); }
+.text-scene .speech { max-height:none; overflow:visible; min-height:0; }
+.menu .stage { background:repeating-linear-gradient(125deg,#ffffff03 0 2px,transparent 2px 18px),linear-gradient(110deg,#211624,#371c33 65%,#12101a); }
+.menu .stage::before { content:''; position:absolute; width:280px; height:280px; border:28px solid #ff277d22; border-radius:50%; top:-85px; right:8%; box-shadow:0 0 0 2px #ff277d55,0 0 0 24px #ff277d09; }
+.menu .scene-info { top:24px; left:clamp(20px,5vw,90px); }
+.menu .location { font-size:clamp(26px,3vw,42px); }
+.menu .speaker, .menu .progress { display:none; }
+.menu .speech { margin:0 0 24px; font-size:clamp(17px,1.4vw,22px); line-height:1.65; }
+.menu .choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.menu .choices button { padding:18px 22px; font-size:16px; background:#ffffff08; border:1px solid #ffffff30; border-left:4px solid var(--pink); }
+.menu .choices button:hover { background:#ff277d20; border-color:var(--pink); }
+.menu .dialogue-actions { display:none; }
+@media(max-width:760px), (max-height:650px) {
+  .text-scene .stage { height:115px; min-height:115px; }
+  .text-scene .dialogue { padding:16px 20px; }
+  .menu .scene-info { top:12px; }
+  .menu .speech { font-size:15px; margin-bottom:14px; }
+  .menu .choices button { padding:12px; font-size:14px; }
+}
+@media(max-width:480px) { .menu .choices { grid-template-columns:1fr; } }
+
+.game-compose { padding:10px 18px 12px; background:#18121f; border-top:1px solid #ffffff18; }
+.input-label { display:block; color:var(--gold); font-weight:700; font-size:13px; margin-bottom:6px; }
+.input-row { display:flex; gap:10px; }
+.action-input { flex:1; min-width:0; min-height:62px; max-height:130px; resize:vertical; border:1px solid #a56b8c; border-radius:6px; padding:10px 12px; background:#272030; color:#fff; font:15px/1.4 "Segoe UI",system-ui,sans-serif; }
+.action-input::placeholder { color:#c3afc3; }
+.send-action { min-width:130px; border-color:var(--pink); background:#631b3d; font-weight:600; }
+.input-tools { display:flex; align-items:center; gap:12px; margin-top:6px; font-size:11px; color:#bcaec6; }
+.input-tools button { font-size:11px; padding:3px 7px; }
+.input-tools button:last-child { margin-left:auto; }
+@media(max-width:600px) { .game-compose { padding:8px 10px; } .send-action { min-width:90px; padding:7px; font-size:12px; } .action-input { font-size:14px; } }

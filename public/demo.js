@@ -2,7 +2,7 @@
   const base = new URL('../', location.href);
   const memory = {};
   globalThis.browser = {
-    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.0 · ДЕМО'}), onMessage: {addListener() {}}},
+    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.4 · ДЕМО'}), onMessage: {addListener() {}}},
     storage: {local: {
       async get(key) {
         if (key.startsWith('dgp-session:')) return {[key]: {enabled: true}};
@@ -38,7 +38,16 @@
       }, 80);
     }
   }
-  add(opening);
+  const setup = [
+    {type: 'scene', background: '', cast: [], evidence: [], location: 'Главное меню', chapter: 'Новая игра', mode: 'daily'},
+    {type: 'say', who: '', name: 'Рассказчик', text: 'Добро пожаловать в Danganronpa! Новая история ждёт своего героя.'},
+    {type: 'say', who: '', name: 'Рассказчик', text: 'Где начнётся твоя история? Выбери часть или предложи свой вариант.'},
+    {type: 'choices', items: [
+      {label: 'Danganronpa 1 · Академия', text: 'Выбираю Danganronpa 1.'},
+      {label: 'Danganronpa 2 · Остров', text: 'Выбираю Danganronpa 2.'},
+      {label: 'Danganronpa V3', text: 'Выбираю Danganronpa V3.'},
+      {label: 'Смешанная история', text: 'Выбираю смешанную историю.'}]}];
+  add(new URLSearchParams(location.search).has('menu') ? setup : opening);
   document.getElementById('stream-demo').addEventListener('click', () => add([
     {...scene, cast: [{id: 'dr1.kyoko-kirigiri', sprite: 'default'}], evidence: [{id: 'note', title: 'Записка на столе', description: 'Время встречи исправлено другим почерком.'}]},
     {type: 'say', who: 'dr1.kyoko-kirigiri', name: 'Кёко Киригири', text: 'Посмотри на цифры. Время встречи кто-то исправил. Теперь нужно узнать, кто видел оригинал.'},
@@ -62,9 +71,9 @@
   });
   document.getElementById('demo-form').addEventListener('submit', e => {
     e.preventDefault(); const input = document.getElementById('prompt-textarea');
-    if (!input.textContent.trim()) return;
+    if (!(input.innerText || input.textContent).trim()) return;
     document.getElementById('demo-status').textContent = 'Локальное действие принято. Это демо, запросы в ChatGPT не отправляются.';
-    const p = document.createElement('p'); p.dataset.messageAuthorRole = 'user'; p.textContent = input.textContent;
+    const p = document.createElement('p'); p.dataset.messageAuthorRole = 'user'; p.textContent = (input.innerText || input.textContent);
     document.getElementById('conversation').append(p); input.replaceChildren();
     document.getElementById('stream-demo').click();
   });

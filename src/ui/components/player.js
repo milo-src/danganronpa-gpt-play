@@ -9,9 +9,9 @@
   };
   const modes = {daily: 'ПОВСЕДНЕВНАЯ ЖИЗНЬ', investigation: 'РАССЛЕДОВАНИЕ', trial: 'КЛАССНЫЙ СУД'};
   class Player {
-    constructor({url, version = 'dev', onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer}) {
-      this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer};
-      this.version = version; this.busy = false;
+    constructor({url, version = 'dev', onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry}) {
+      this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry};
+      this.version = version; this.busy = false; this.savedDrafts = [];
       this.lastDialogue = ''; this.lastCast = ''; this.animation = null; this.autoTimer = null;
       this.settings = {speed: 22, auto: false, reduced: false}; this.enabled = false; this.collapsed = false;
       // Firefox can leave a previous content script's DOM behind on add-on reload.
@@ -64,10 +64,28 @@
       this.repairButton = this.button('Исправить формат ответа', () => onDraft('Переформатируй только свой последний ответ по инструкциям проекта: блок dgp, команды DGP| и строгий JSON. Сохрани сюжет, текущую сцену и варианты выбора; не начинай игру заново.'), 'repair');
       this.repairButton.hidden = true;
       const statusRow = el('div', 'status-row'); statusRow.append(this.status, this.repairButton);
-      this.input = el('textarea'); // Recovery buffer only; never a second message editor.
-      const compose = el('div', 'native-hint');
-      this.composerHint = el('span', '', 'Пиши действие в поле ChatGPT под сценой. Enter или стрелка ↑ — отправить.');
-      compose.append(this.composerHint, this.button('К полю сообщения ↓', () => this.actions.onFocusComposer?.()));
+      const compose = el('div', 'game-compose');
+      const inputLabel = el('label', 'input-label', 'Твоё действие или реплика');
+      this.input = el('textarea', 'action-input'); this.input.id = 'dgp-action';
+      this.input.rows = 2; this.input.maxLength = 3000;
+      this.input.placeholder = 'Например: осматриваю дверь или спрашиваю Кёко о записке…';
+      inputLabel.htmlFor = this.input.id;
+      this.sendButton = this.button('Отправить ▸', () => this.actions.onDraft(this.input.value), 'send-action');
+      this.input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+          e.preventDefault(); e.stopPropagation();
+          if (!this.busy) this.actions.onDraft(this.input.value);
+        }
+      });
+      const inputRow = el('div', 'input-row'); inputRow.append(this.input, this.sendButton);
+      const inputTools = el('div', 'input-tools');
+      this.composerHint = el('span', '', 'Enter — отправить · Shift+Enter — новая строка');
+      this.restoreDraftButton = this.button('Вернуть мой черновик', () => this.actions.onRestoreDraft?.());
+      this.restoreDraftButton.hidden = true;
+      this.retryButton = this.button('Повторить этот ход', () => this.actions.onRetry?.());
+      this.retryButton.hidden = true;
+      inputTools.append(this.retryButton, this.restoreDraftButton, this.composerHint, this.button('Поле сайта ↓', () => this.actions.onFocusComposer?.()));
+      compose.append(inputLabel, inputRow, inputTools);
       this.drawer = el('aside', 'drawer'); this.drawer.hidden = true;
       this.panel.append(toolbar, this.stage, this.dialogue, statusRow, compose, this.drawer);
       this.draftHelp = el('aside', 'draft-help'); this.draftHelp.hidden = true;
@@ -118,12 +136,21 @@
       if (layout && !layout.available && this.enabled && !this.collapsed) this.setCollapsed(true);
       const gap = layout?.available ? layout.gap : 180;
       this.host.style.setProperty('--composer-gap', `${gap}px`);
-      this.composerHint.textContent = layout ? 'Пиши действие в поле ChatGPT под сценой. Enter или стрелка ↑ — отправить.' :
+      this.composerHint.textContent = layout ? 'Enter — отправить · Shift+Enter — новая строка' :
         'Поле ChatGPT пока не найдено. Открой диалог внутри проекта через «Открыть чат».';
+    }
+    setRetry(value) { this.retryButton.hidden = !value; }
+    preserveDraft(text) {
+      if (this.savedDrafts.at(-1) !== text) this.savedDrafts.push(text);
+      this.restoreDraftButton.hidden = false;
     }
     setBusy(value) {
       this.busy = value;
       this.panel.setAttribute('aria-busy', String(value));
+      this.retryButton.disabled = value;
+      this.sendButton.disabled = value;
+      this.sendButton.textContent = value ? 'Ждём ответ…' : 'Отправить ▸';
+      this.restoreDraftButton.disabled = value;
       this.startButton.disabled = value;
       this.repairButton.disabled = value;
       for (const button of this.choices.querySelectorAll('button')) button.disabled = value;
@@ -170,7 +197,7 @@
       }
       this.settingsBody.append(this.button('Повторить последний ответ', this.actions.onReplay),
         this.button('Перечитать сообщения', this.actions.onExpand),
-        el('p', 'hint', 'Space / → — далее. Действие пиши в настоящем поле ChatGPT под сценой; его кнопка и клавиатура работают как обычно. Выбор подготавливает текст, который можно изменить перед отправкой. Esc — открыть чат.'));
+        el('p', 'hint', 'Space / → — далее. Действие пиши в поле игры. Enter отправляет, Shift+Enter добавляет строку. Нажатие варианта отправляет выбранное действие. Esc — открыть чат.'));
       const info = this.diagnostics;
       this.settingsBody.append(el('p', 'diagnostics', `Версия ${this.version}. ` + (info ?
         `Ответов на странице: ${info.assistantCount}. Команд: ${info.events}. Ошибок формата: ${info.invalid}. Поле ввода: ${info.composer ? 'найдено' : 'не найдено'}. Блоков без разметки автора: ${info.fallbackCount || 0}.` : 'Ожидание чтения страницы.')));
@@ -178,7 +205,9 @@
     }
     render(state, meta) {
       this.currentState = state; this.meta = meta;
-      this.chapter.textContent = state.chapter; this.mode.textContent = modes[state.mode]; this.panel.dataset.mode = state.mode;
+      this.panel.classList.toggle('menu', !!state.menu);
+      this.panel.classList.toggle('text-scene', !state.background && !state.cast.length && !!state.dialogue);
+      this.chapter.textContent = state.chapter; this.mode.textContent = state.menu ? 'НАСТРОЙКА ИСТОРИИ' : modes[state.mode]; this.panel.dataset.mode = state.mode;
       this.location.textContent = state.location;
       const bg = D.assets.backgrounds[state.background];
       if (bg && this.background.dataset.path !== bg.path) { this.background.dataset.path = bg.path; this.background.src = this.url(bg.path); this.background.hidden = false; }
@@ -205,10 +234,14 @@
         this.progress.textContent = meta.pending ? `Ещё реплик: ${meta.pending}` : 'Текущая реплика';
         const dialogueKey = JSON.stringify(d);
         if (dialogueKey !== this.lastDialogue) {
-          this.lastDialogue = dialogueKey; this.typeText(d.text); this.playEffect(d.effect);
+          this.lastDialogue = dialogueKey;
+          if (state.menu) { this.stopTyping(); this.fullText = d.text; this.text.textContent = d.text; }
+          else this.typeText(d.text);
+          this.playEffect(d.effect);
         }
       } else { this.lastDialogue = ''; this.stopTyping(); }
       this.choices.replaceChildren(...state.choices.map(c => this.button(c.label, () => this.actions.onDraft(c.text))));
+      this.nextButton.hidden = !!state.menu; this.backButton.hidden = !!state.menu;
       this.nextButton.disabled = !meta.pending && !this.animation;
       this.nextButton.textContent = meta.pending ? 'Далее ▸' : this.animation ? 'Показать текст ▸' : state.choices.length ? 'Выбери действие выше' : 'Твой ход';
       if (!this.drawer.hidden) this.renderDrawer();
@@ -277,7 +310,7 @@
     reset() {
       this.stopTyping(); clearTimeout(this.autoTimer); this.lastDialogue = ''; this.lastCast = '';
       this.input.value = ''; this.drawer.hidden = true; this.draftHelp.hidden = true; this.effect.textContent = ''; this.background.dataset.path = '';
-      this.repairButton.hidden = true; this.diagnostics = null; this.setBusy(false);
+      this.repairButton.hidden = true; this.retryButton.hidden = true; this.diagnostics = null; this.setBusy(false);
     }
   }
   D.Player = Player;

@@ -44,7 +44,7 @@
     markSubmit() {
       this.pendingSubmit = true;
       const composer = this.findComposer();
-      if (composer) this.onSend?.(composer.tagName === 'TEXTAREA' ? composer.value : composer.textContent);
+      if (composer) this.onSend?.(this.composerText(composer));
     }
     read() {
       const nodes = [...this.doc.querySelectorAll('[data-message-author-role="assistant"], article[data-turn="assistant"]')]
@@ -65,7 +65,7 @@
       nodes.push(...extra);
       nodes.sort((a, b) => a.compareDocumentPosition(b) & 2 ? 1 : -1);
       const messages = []; let invalid = 0, latestHasCommands = false, latestInvalid = 0;
-      const streaming = !!this.doc.querySelector('[data-testid="stop-button"], button[aria-label="Stop generating"], button[aria-label="Остановить генерацию"]');
+      const streaming = this.isStreaming();
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
         // Code blocks preserve line breaks, including while ChatGPT is streaming.
@@ -99,7 +99,9 @@
       return {messages, invalid, assistantCount: nodes.length, streaming, latestHasCommands, latestInvalid, fallbackCount: extra.length};
     }
     isStreaming() {
-      return !!this.doc.querySelector('[data-testid="stop-button"], button[aria-label="Stop generating"], button[aria-label="Остановить генерацию"]');
+      return [...this.doc.querySelectorAll('[data-testid="stop-button"], button[aria-label="Stop generating"], button[aria-label="Остановить генерацию"]')]
+        .some(button => !button.closest('[hidden], [inert], #dgp-extension-root') && button.getClientRects().length > 0 &&
+          this.win.getComputedStyle(button).visibility !== 'hidden');
     }
     composerLayout() {
       const editor = this.findComposer();
@@ -126,7 +128,8 @@
       this.observer = new this.win.MutationObserver(records => {
         if (records.some(r => !r.target.closest?.('#dgp-extension-root'))) schedule();
       });
-      this.observer.observe(this.doc.body, {childList: true, subtree: true, characterData: true});
+      this.observer.observe(this.doc.body, {childList: true, subtree: true, characterData: true,
+        attributes: true, attributeFilter: ['hidden', 'class', 'style', 'aria-busy']});
       callback(this.read());
     }
     stop() {
@@ -163,13 +166,94 @@
         }).filter(c => c.score > 0).sort((a, b) => b.score - a.score);
       return ranked.length && ranked[0].score !== ranked[1]?.score ? ranked[0].el : null;
     }
-    insertDraft(text, {reuseMatching = false} = {}) {
+    composerText(editor = this.findComposer()) {
+      return editor ? (editor.tagName === 'TEXTAREA' ? editor.value : (editor.innerText || editor.textContent)) : '';
+    }
+    findSendButton(editor) {
+      const form = editor?.closest('form');
+      const candidates = [...this.doc.querySelectorAll('button')].filter(button => {
+        if (button.closest('#dgp-extension-root, [hidden], [inert], [role="dialog"], nav, aside')) return false;
+        if (!button.getClientRects().length || this.win.getComputedStyle(button).visibility === 'hidden') return false;
+        const label = [button.getAttribute('aria-label'), button.getAttribute('title'), button.textContent].join(' ').trim();
+        const known = button.matches('[data-testid="send-button"], #composer-submit-button');
+        return known || (form?.contains(button) && button.type === 'submit' && !/voice|голос|дикт|microphone/i.test(label)) ||
+          /^(send|send message|send prompt|отправить|отправить сообщение|отправить запрос)\s*$/i.test(label);
+      });
+      const local = candidates.filter(button => form?.contains(button));
+      const matches = local.length ? local : candidates;
+      return matches.length === 1 ? matches[0] : null;
+    }
+    responseKey(data) {
+      return JSON.stringify([data.assistantCount, data.messages.at(-1)]);
+    }
+    userMessages() {
+      return [...this.doc.querySelectorAll('[data-message-author-role="user"], article[data-turn="user"]')]
+        .filter(node => !node.querySelector('[data-message-author-role="user"]'));
+    }
+    observeDelivery(data) {
+      const attempt = this.unconfirmed;
+      if (!attempt) return false;
+      if (attempt.route !== this.route()) { this.unconfirmed = null; return false; }
+      const userAppeared = this.userMessages().slice(attempt.userCount).some(node =>
+        this.fingerprint(node.innerText || node.textContent) === attempt.hash);
+      // The site can retain or restore its editor draft after a successful send.
+      // A new answer is independent evidence; editor clearing is not required.
+      const responseAppeared = this.responseKey(data) !== attempt.response;
+      if (userAppeared || responseAppeared || (data.streaming && !this.composerText().trim())) {
+        attempt.accepted = true; this.unconfirmed = null; return true;
+      }
+      return false;
+    }
+    async sendAction(text, isCurrent = () => true, onPreserveDraft, {retry = false} = {}) {
+      if (this.sending) return {ok: false, reason: 'Предыдущее действие ещё отправляется.'};
+      const initialData = this.read();
+      this.observeDelivery(initialData);
+      if (initialData.streaming) return {ok: false, reason: 'ChatGPT ещё отвечает на предыдущий ход.'};
+      const hash = this.fingerprint(text);
+      if (!retry && this.unconfirmed?.route === this.route() && this.unconfirmed.hash === hash) {
+        return {ok: false, clicked: true, uncertain: true, reason: 'Отправка этого хода пока не подтверждена. Можно явно повторить его кнопкой ниже; повтор может создать дубль.'};
+      }
+      this.sending = true;
+      const initialRoute = this.route();
+      const attempt = {text, hash, route: initialRoute, userCount: this.userMessages().length,
+        response: this.responseKey(initialData), accepted: false};
+      const sleep = () => new Promise(resolve => this.win.setTimeout(resolve, 80));
+      try {
+        if (!isCurrent()) return {ok: false, cancelled: true};
+        const inserted = this.insertDraft(text, {reuseMatching: true, onPreserveDraft});
+        if (!inserted.ok) return inserted;
+        // React/ProseMirror enables or replaces Send after processing the input.
+        let button;
+        for (let i = 0; i < 40; i++) {
+          if (!isCurrent() || this.route() !== initialRoute) return {ok: false, cancelled: true};
+          const editor = this.findComposer();
+          if (this.fingerprint(this.composerText(editor)) !== hash) return {ok: false, reason: 'Текст в поле изменился; действие не отправлено.'};
+          button = this.findSendButton(editor);
+          if (button && !button.disabled && button.getAttribute('aria-disabled') !== 'true') break;
+          button = null; await sleep();
+        }
+        if (!button) return {ok: false, reason: 'Кнопка отправки ChatGPT не стала доступна. Действие осталось в поле под сценой.'};
+        this.unconfirmed = attempt;
+        button.click(); // Exactly one click. Never retry an unconfirmed submission.
+        for (let i = 0; i < 75; i++) {
+          this.observeDelivery(this.read());
+          if (attempt.accepted) return {ok: true};
+          if (!isCurrent() || this.route() !== initialRoute) return {ok: false, cancelled: true};
+          await sleep();
+        }
+        return {ok: false, clicked: true, uncertain: true, reason: 'Сайт пока не подтвердил отправку. Текст сохранён. Можно повторить этот ход кнопкой ниже; повтор может создать дубль.'};
+      } finally { this.sending = false; }
+    }
+    insertDraft(text, {reuseMatching = false, onPreserveDraft} = {}) {
       const el = this.findComposer();
       if (!el) return {ok: false, reason: 'Поле сообщения не найдено. Сначала скопируй текст ниже, затем открой новый чат внутри этого проекта и вставь его в сообщение.'};
-      const existing = el.tagName === 'TEXTAREA' ? el.value : el.textContent;
+      const existing = this.composerText(el);
       const normalize = value => String(value).normalize('NFC').replace(/\s+/g, ' ').trim();
       if (reuseMatching && normalize(existing) === normalize(text)) return {ok: true, reused: true};
-      if (existing.trim()) return {ok: false, reason: 'В поле ChatGPT уже есть черновик. Он сохранён: очисти или отправь его перед переносом действия.'};
+      if (existing.trim()) {
+        if (!onPreserveDraft) return {ok: false, reason: 'В поле ChatGPT уже есть черновик. Он сохранён: очисти или отправь его перед переносом действия.'};
+        onPreserveDraft(existing); // Save before modifying the editor; never submit unrelated text.
+      }
       try {
         el.scrollIntoView({block: 'center', behavior: 'instant'}); el.focus();
         if (el.tagName === 'TEXTAREA') {
@@ -184,8 +268,8 @@
       } catch {
         return {ok: false, reason: 'Firefox не разрешил вставку в редактор. Скопируй текст ниже и вставь в сообщение ChatGPT вручную.'};
       }
-      const actual = el.tagName === 'TEXTAREA' ? el.value : el.textContent;
-      if (!actual.includes(text)) return {ok: false, reason: 'Поле не приняло текст. Скопируй его ниже и вставь в сообщение вручную.'};
+      const actual = this.composerText(el);
+      if (normalize(actual) !== normalize(text)) return {ok: false, reason: 'Поле не приняло текст. Скопируй его ниже и вставь в сообщение вручную.'};
       return {ok: true};
     }
   }
