@@ -1,7 +1,7 @@
 {
   "id": "drv3.miu-iruma",
   "name": "Miu Iruma",
-  "defaultSprite": "fullbody/miu-iruma/miu-iruma/debate-scrum/stand-014-402",
+  "defaultSprite": "archive/miu-001",
   "sprites": {
     "fullbody/miu-iruma/miu-iruma/debate-scrum/stand-014-402": "assets/characters/drv3/miu-iruma/sprites/fullbody/miu-iruma/miu-iruma/debate-scrum/stand-014-402.webp",
     "fullbody/miu-iruma/miu-iruma/debate-scrum/stand-014-403": "assets/characters/drv3/miu-iruma/sprites/fullbody/miu-iruma/miu-iruma/debate-scrum/stand-014-403.webp",

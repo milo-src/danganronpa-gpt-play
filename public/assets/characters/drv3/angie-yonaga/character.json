@@ -1,7 +1,7 @@
 {
   "id": "drv3.angie-yonaga",
   "name": "Angie Yonaga",
-  "defaultSprite": "fullbody/angie-yonaga/angie-yonaga/debate-scrum/stand-013-400",
+  "defaultSprite": "archive/angie-001",
   "sprites": {
     "fullbody/angie-yonaga/angie-yonaga/debate-scrum/stand-013-400": "assets/characters/drv3/angie-yonaga/sprites/fullbody/angie-yonaga/angie-yonaga/debate-scrum/stand-013-400.webp",
     "fullbody/angie-yonaga/angie-yonaga/debate-scrum/stand-013-401": "assets/characters/drv3/angie-yonaga/sprites/fullbody/angie-yonaga/angie-yonaga/debate-scrum/stand-013-401.webp",

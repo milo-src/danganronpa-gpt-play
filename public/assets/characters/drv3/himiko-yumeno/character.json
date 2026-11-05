@@ -1,7 +1,7 @@
 {
   "id": "drv3.himiko-yumeno",
   "name": "Himiko Yumeno",
-  "defaultSprite": "fullbody/himiko-yumeno/himiko-yumeno/debate-scrum/stand-009-400",
+  "defaultSprite": "archive/himiko-001",
   "sprites": {
     "fullbody/himiko-yumeno/himiko-yumeno/debate-scrum/stand-009-400": "assets/characters/drv3/himiko-yumeno/sprites/fullbody/himiko-yumeno/himiko-yumeno/debate-scrum/stand-009-400.webp",
     "fullbody/himiko-yumeno/himiko-yumeno/debate-scrum/stand-009-401": "assets/characters/drv3/himiko-yumeno/sprites/fullbody/himiko-yumeno/himiko-yumeno/debate-scrum/stand-009-401.webp",

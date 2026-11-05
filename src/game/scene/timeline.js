@@ -20,8 +20,8 @@
       state.dialogue = event; state.choices = [];
       if (event.who && Object.hasOwn(D.assets.characters, event.who)) {
         const found = state.cast.some(c => c.id === event.who);
-        state.cast = found ? state.cast.map(c => c.id === event.who ? {...c, sprite: event.sprite} : c)
-          : [{id: event.who, sprite: event.sprite}];
+        state.cast = found ? state.cast.map(c => c.id === event.who ? {...c, sprite: event.sprite || c.sprite} : c)
+          : [{id: event.who, sprite: event.sprite || 'default'}];
       }
     } else if (event.type === 'choices') state.choices = event.items;
     else if (event.type === 'evidence') {

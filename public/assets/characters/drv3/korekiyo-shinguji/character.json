@@ -1,7 +1,7 @@
 {
   "id": "drv3.korekiyo-shinguji",
   "name": "Korekiyo Shinguji",
-  "defaultSprite": "fullbody/korekiyo-shinguji/korekiyo/debate-scrum/stand-006-400",
+  "defaultSprite": "archive/korekiyo-001",
   "sprites": {
     "fullbody/korekiyo-shinguji/korekiyo/debate-scrum/stand-006-400": "assets/characters/drv3/korekiyo-shinguji/sprites/fullbody/korekiyo-shinguji/korekiyo/debate-scrum/stand-006-400.webp",
     "fullbody/korekiyo-shinguji/korekiyo/debate-scrum/stand-006-401": "assets/characters/drv3/korekiyo-shinguji/sprites/fullbody/korekiyo-shinguji/korekiyo/debate-scrum/stand-006-401.webp",

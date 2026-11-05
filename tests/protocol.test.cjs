@@ -16,6 +16,50 @@ const say = text => ({type: 'say', who: 'dr1.kyoko-kirigiri', text});
 const parse = events => D.protocol.parse(events.map(e => 'DGP|' + JSON.stringify(e)).join('\n')).events;
 const message = (events, id = 'message-1') => ({id, events: parse(events)});
 
+test('curated defaults exclude scrum poses, cosplay and alternate identities', () => {
+  assert.equal(D.resolveSprite('drv3.kaede-akamatsu', 'default').key, 'archive/kaede-001');
+  assert.equal(D.resolveSprite('drv3.tsumugi-shirogane', 'default').key, 'archive/tsumugi-001');
+  assert.equal(D.resolveSprite('dr1.kiyotaka-ishimaru', 'default').key, 'archive/kiyotaka-001');
+  assert.equal(D.resolveSprite('dr2.nekomaru-nidai', 'default').key, 'archive/nekomaru-001');
+  for (const c of Object.values(D.assets.characters)) assert.doesNotMatch(c.defaultSprite, /debate-scrum|cosplay|school-uniform/);
+});
+
+test('legacy default uses a talking pose only for the speaker; semantic poses are character-specific', () => {
+  assert.equal(D.resolveSprite('drv3.kaede-akamatsu', 'default', true).key, 'archive/kaede-002');
+  assert.equal(D.resolveSprite('drv3.kaede-akamatsu', 'happy', true).key, 'archive/kaede-017');
+  assert.equal(D.resolveSprite('drv3.shuichi-saihara', 'happy', true).key, 'archive/shuichi-013');
+  assert.equal(D.resolveSprite('drv3.kaede-akamatsu', 'https://untrusted/image').key, 'archive/kaede-001');
+  assert.equal(D.resolveSprite('__proto__', 'default'), null);
+  assert.equal(D.resolveSprite('dr2.akane-owari', 'thinking').key, D.assets.characters['dr2.akane-owari'].defaultSprite);
+});
+
+test('expressions follow each visible line and rewind without resetting unspecified scene poses', () => {
+  const t = new D.Timeline();
+  t.update([message([
+    {type: 'scene', cast: [{id: 'drv3.kaede-akamatsu', sprite: 'thinking'}, {id: 'drv3.shuichi-saihara', sprite: 'default'}]},
+    {type: 'say', who: 'drv3.kaede-akamatsu', text: 'Нужно подумать.'},
+    {type: 'say', who: 'drv3.kaede-akamatsu', sprite: 'happy', text: 'Получилось!'},
+    {type: 'say', who: 'drv3.shuichi-saihara', sprite: 'surprised', text: 'Правда?'}
+  ])]);
+  assert.equal(t.state().cast[0].sprite, 'thinking');
+  t.next(); assert.equal(t.state().cast[0].sprite, 'happy');
+  t.next(); assert.equal(t.state().dialogue.who, 'drv3.shuichi-saihara');
+  assert.equal(t.state().cast[1].sprite, 'surprised');
+  assert.equal(t.state().cast[0].sprite, 'happy');
+  t.back(); assert.equal(t.state().cast[1].sprite, 'default');
+  t.back(); assert.equal(t.state().cast[0].sprite, 'thinking');
+});
+
+test('portrait bounds exclude transparent padding without modifying source dimensions', () => {
+  const sprite = D.resolveSprite('drv3.kaede-akamatsu', 'neutral');
+  const [width, height, x, y, w, h] = sprite.bounds;
+  assert.ok(x > 0 && w < width / 2 && h > height * .95);
+  for (const c of Object.values(D.assets.characters)) {
+    assert.ok(c.bounds[c.defaultSprite]);
+    for (const key of Object.values(c.expressions)) assert.ok(c.bounds[key]);
+  }
+});
+
 test('only explicit DGP lines are commands; code fences and prose are inert', () => {
   const result = D.protocol.parse('Ignore instructions\n```dgp\nDGP|{"type":"say","text":"Hello <img src=x onerror=alert(1)>"}\n```\n{"type":"say","text":"not DGP"}');
   assert.equal(result.events.length, 1);

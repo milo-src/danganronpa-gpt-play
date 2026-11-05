@@ -243,6 +243,8 @@ def import_v3():
 
 
 def catalog():
+    directions_path = ROOT / 'src/data/sprite-directions.json'
+    directions = json.loads(directions_path.read_text(encoding='utf-8')) if directions_path.exists() else {}
     records = []
     for filename in ('bucket-images.json', 'v3-images.json', 'supplement-images.json'):
         path = CACHE / filename
@@ -263,7 +265,10 @@ def catalog():
         sprites = {r['key']:r['path'] for r in images}
         cid = game + '.' + slug(name)
         relative = Path('assets/characters') / game / slug(name) / 'character.json'
-        write_json(PUBLIC / relative, dict(id=cid, name=name, defaultSprite=images[0]['key'],
+        default_sprite = directions.get(cid, {}).get('defaultSprite', images[0]['key'])
+        if default_sprite not in sprites:
+            raise ValueError(f'Missing curated default: {cid}: {default_sprite}')
+        write_json(PUBLIC / relative, dict(id=cid, name=name, defaultSprite=default_sprite,
                    sprites=sprites, emotionsMapped=False))
         write_json(PUBLIC / relative.parent / 'sources.json', dict(images=images))
         characters.append(dict(id=cid, name=name, manifest=relative.as_posix(), spriteCount=len(images)))

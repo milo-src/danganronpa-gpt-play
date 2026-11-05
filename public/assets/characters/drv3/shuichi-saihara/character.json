@@ -1,7 +1,7 @@
 {
   "id": "drv3.shuichi-saihara",
   "name": "Shuichi Saihara",
-  "defaultSprite": "fullbody/shuichi-saihara/shuichi-saihara/school-uniform/stand-000-100",
+  "defaultSprite": "archive/shuichi-001",
   "sprites": {
     "fullbody/shuichi-saihara/shuichi-saihara/school-uniform/stand-000-100": "assets/characters/drv3/shuichi-saihara/sprites/fullbody/shuichi-saihara/shuichi-saihara/school-uniform/stand-000-100.webp",
     "fullbody/shuichi-saihara/shuichi-saihara/school-uniform/stand-000-102": "assets/characters/drv3/shuichi-saihara/sprites/fullbody/shuichi-saihara/shuichi-saihara/school-uniform/stand-000-102.webp",

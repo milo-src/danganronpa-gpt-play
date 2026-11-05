@@ -1,7 +1,7 @@
 {
   "id": "drv3.tenko-chabashira",
   "name": "Tenko Chabashira",
-  "defaultSprite": "fullbody/tenko-chabashira/tenko-chabashira/stand-011-000",
+  "defaultSprite": "archive/tenko-001",
   "sprites": {
     "fullbody/tenko-chabashira/tenko-chabashira/stand-011-000": "assets/characters/drv3/tenko-chabashira/sprites/fullbody/tenko-chabashira/tenko-chabashira/stand-011-000.webp",
     "fullbody/tenko-chabashira/tenko-chabashira/stand-011-001": "assets/characters/drv3/tenko-chabashira/sprites/fullbody/tenko-chabashira/tenko-chabashira/stand-011-001.webp",

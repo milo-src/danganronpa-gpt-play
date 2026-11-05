@@ -2,7 +2,7 @@
   const base = new URL('../', location.href);
   const memory = {};
   globalThis.browser = {
-    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.4 · ДЕМО'}), onMessage: {addListener() {}}},
+    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.5 · ДЕМО'}), onMessage: {addListener() {}}},
     storage: {local: {
       async get(key) {
         if (key.startsWith('dgp-session:')) return {[key]: {enabled: true}};
@@ -47,7 +47,18 @@
       {label: 'Danganronpa 2 · Остров', text: 'Выбираю Danganronpa 2.'},
       {label: 'Danganronpa V3', text: 'Выбираю Danganronpa V3.'},
       {label: 'Смешанная история', text: 'Выбираю смешанную историю.'}]}];
-  add(new URLSearchParams(location.search).has('menu') ? setup : opening);
+  const spriteDemo = [
+    {type: 'scene', background: 'drv3.classroom1a', location: 'Класс A', chapter: 'Проверка диалоговых спрайтов', mode: 'daily',
+      cast: [{id: 'drv3.kaede-akamatsu', sprite: 'default'}, {id: 'drv3.shuichi-saihara', sprite: 'default'}], evidence: []},
+    {type: 'say', who: 'drv3.kaede-akamatsu', name: 'Каэдэ Акамацу', sprite: 'default', text: 'Я Каэдэ Акамацу. Давай попробуем разобраться вместе.'},
+    {type: 'say', who: 'drv3.kaede-akamatsu', name: 'Каэдэ Акамацу', sprite: 'happy', text: 'Получилось! Теперь у нас есть зацепка.'},
+    {type: 'say', who: 'drv3.shuichi-saihara', name: 'Шуити Сайхара', sprite: 'thinking', text: 'Подожди. Нужно проверить, что означает эта запись.'},
+    {type: 'say', who: 'drv3.kaede-akamatsu', name: 'Каэдэ Акамацу', sprite: 'surprised', text: 'Что? Значит, дверь уже была открыта?'},
+    {type: 'say', who: 'drv3.kaede-akamatsu', name: 'Каэдэ Акамацу', sprite: 'sad', text: 'Жаль, что мы не заметили этого раньше.'}
+  ];
+  const params = new URLSearchParams(location.search);
+  add(params.has('sprites') ? spriteDemo : params.has('menu') ? setup : opening);
+  document.getElementById('sprites-demo').addEventListener('click', () => add(spriteDemo));
   document.getElementById('stream-demo').addEventListener('click', () => add([
     {...scene, cast: [{id: 'dr1.kyoko-kirigiri', sprite: 'default'}], evidence: [{id: 'note', title: 'Записка на столе', description: 'Время встречи исправлено другим почерком.'}]},
     {type: 'say', who: 'dr1.kyoko-kirigiri', name: 'Кёко Киригири', text: 'Посмотри на цифры. Время встречи кто-то исправил. Теперь нужно узнать, кто видел оригинал.'},

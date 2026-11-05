@@ -1,7 +1,7 @@
 {
   "id": "dr2.hajime-hinata",
   "name": "Hajime Hinata",
-  "defaultSprite": "archive/hajime-001",
+  "defaultSprite": "archive/hajime-018",
   "sprites": {
     "archive/hajime-001": "assets/characters/dr2/hajime-hinata/sprites/archive/hajime-001.webp",
     "archive/hajime-002": "assets/characters/dr2/hajime-hinata/sprites/archive/hajime-002.webp",

@@ -1,7 +1,7 @@
 {
   "id": "drv3.monokid",
   "name": "Monokid",
-  "defaultSprite": "fullbody/monokid/monokid/stand-025-000",
+  "defaultSprite": "archive/monokid-001",
   "sprites": {
     "fullbody/monokid/monokid/stand-025-000": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-000.webp",
     "fullbody/monokid/monokid/stand-025-001": "assets/characters/drv3/monokid/sprites/fullbody/monokid/monokid/stand-025-001.webp",

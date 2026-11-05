@@ -25,7 +25,7 @@
       }
       case 'say':
         if (!text(v.text)) return null;
-        return {type: 'say', who: id(v.who), name: text(v.name, 100), sprite: id(v.sprite) || 'default',
+        return {type: 'say', who: id(v.who), name: text(v.name, 100), sprite: id(v.sprite),
           text: text(v.text), effect: effects.includes(v.effect) ? v.effect : 'none'};
       case 'choices': {
         if (!Array.isArray(v.items)) return null;
@@ -82,4 +82,13 @@
     return {events, invalid};
   }
   D.protocol = {parse, normalize};
+  // Semantic expressions are curated per character. Never guess from file order.
+  D.resolveSprite = (characterId, requested, speaking = false) => {
+    const character = Object.hasOwn(D.assets.characters, characterId) ? D.assets.characters[characterId] : null;
+    if (!character) return null;
+    const expression = !requested || requested === 'default' ? (speaking ? 'talking' : 'neutral') : requested;
+    const key = Object.hasOwn(character.sprites, expression) ? expression
+      : (Object.hasOwn(character.expressions || {}, expression) ? character.expressions[expression] : character.defaultSprite);
+    return {key, path: character.sprites[key], bounds: character.bounds?.[key]};
+  };
 })();

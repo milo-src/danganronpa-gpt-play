@@ -1,7 +1,7 @@
 {
   "id": "dr1.junko-enoshima",
   "name": "Junko Enoshima",
-  "defaultSprite": "archive/junko-001",
+  "defaultSprite": "archive/junko-008",
   "sprites": {
     "archive/junko-001": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-001.webp",
     "archive/junko-002": "assets/characters/dr1/junko-enoshima/sprites/archive/junko-002.webp",

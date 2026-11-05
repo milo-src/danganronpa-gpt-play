@@ -1,7 +1,7 @@
 {
   "id": "drv3.monophanie",
   "name": "Monophanie",
-  "defaultSprite": "fullbody/monophanie/monophanie/stand-023-000",
+  "defaultSprite": "archive/monophanie-001",
   "sprites": {
     "fullbody/monophanie/monophanie/stand-023-000": "assets/characters/drv3/monophanie/sprites/fullbody/monophanie/monophanie/stand-023-000.webp",
     "fullbody/monophanie/monophanie/stand-023-001": "assets/characters/drv3/monophanie/sprites/fullbody/monophanie/monophanie/stand-023-001.webp",

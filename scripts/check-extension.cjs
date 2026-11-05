@@ -17,6 +17,12 @@ const assets = context.DGP.assets;
 let images = 0;
 for (const character of Object.values(assets.characters)) {
   assert.ok(character.sprites[character.defaultSprite]);
+  for (const key of Object.values(character.expressions || {})) assert.ok(character.sprites[key], `Missing expression: ${key}`);
+  for (const [key, values] of Object.entries(character.bounds || {})) {
+    assert.ok(character.sprites[key]);
+    const [width, height, x, y, w, h] = values;
+    assert.ok(values.length === 6 && values.every(Number.isFinite) && w > 0 && h > 0 && x >= 0 && y >= 0 && x + w <= width && y + h <= height, `Invalid bounds: ${key}`);
+  }
   for (const p of Object.values(character.sprites)) { assert.ok(p.startsWith('public/assets/')); exists(p); images++; }
 }
 for (const bg of Object.values(assets.backgrounds)) { assert.ok(bg.path.startsWith('public/assets/backgrounds/')); exists(bg.path); images++; }

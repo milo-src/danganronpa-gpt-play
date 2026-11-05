@@ -1,7 +1,7 @@
 {
   "id": "drv3.monodam",
   "name": "Monodam",
-  "defaultSprite": "fullbody/monodam/monodam/stand-024-000",
+  "defaultSprite": "archive/monodam-001",
   "sprites": {
     "fullbody/monodam/monodam/stand-024-000": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-000.webp",
     "fullbody/monodam/monodam/stand-024-001": "assets/characters/drv3/monodam/sprites/fullbody/monodam/monodam/stand-024-001.webp",

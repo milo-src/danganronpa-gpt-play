@@ -1,7 +1,7 @@
 {
   "id": "drv3.kaede-akamatsu",
   "name": "Kaede Akamatsu",
-  "defaultSprite": "fullbody/kaede-akamatsu/kaede-akamatsu/debate-scrum/stand-015-400",
+  "defaultSprite": "archive/kaede-001",
   "sprites": {
     "fullbody/kaede-akamatsu/kaede-akamatsu/debate-scrum/stand-015-400": "assets/characters/drv3/kaede-akamatsu/sprites/fullbody/kaede-akamatsu/kaede-akamatsu/debate-scrum/stand-015-400.webp",
     "fullbody/kaede-akamatsu/kaede-akamatsu/debate-scrum/stand-015-401": "assets/characters/drv3/kaede-akamatsu/sprites/fullbody/kaede-akamatsu/kaede-akamatsu/debate-scrum/stand-015-401.webp",

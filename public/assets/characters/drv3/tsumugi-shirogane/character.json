@@ -1,7 +1,7 @@
 {
   "id": "drv3.tsumugi-shirogane",
   "name": "Tsumugi Shirogane",
-  "defaultSprite": "fullbody/tsumugi-cosplay-sprites/tsumugi-cosplay-sprites/dr1/danganronpa-v3-tsumugi-shirogane-fullbody-sprite-aoi-asahina-1",
+  "defaultSprite": "archive/tsumugi-001",
   "sprites": {
     "fullbody/tsumugi-cosplay-sprites/tsumugi-cosplay-sprites/dr1/danganronpa-v3-tsumugi-shirogane-fullbody-sprite-aoi-asahina-1": "assets/characters/drv3/tsumugi-shirogane/sprites/fullbody/tsumugi-cosplay-sprites/tsumugi-cosplay-sprites/dr1/danganronpa-v3-tsumugi-shirogane-fullbody-sprite-aoi-asahina-1.webp",
     "fullbody/tsumugi-cosplay-sprites/tsumugi-cosplay-sprites/dr1/danganronpa-v3-tsumugi-shirogane-fullbody-sprite-aoi-asahina-2": "assets/characters/drv3/tsumugi-shirogane/sprites/fullbody/tsumugi-cosplay-sprites/tsumugi-cosplay-sprites/dr1/danganronpa-v3-tsumugi-shirogane-fullbody-sprite-aoi-asahina-2.webp",

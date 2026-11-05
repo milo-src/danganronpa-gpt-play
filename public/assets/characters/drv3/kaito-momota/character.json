@@ -1,7 +1,7 @@
 {
   "id": "drv3.kaito-momota",
   "name": "Kaito Momota",
-  "defaultSprite": "fullbody/kaito-momota/kaito-momota/stand-001-000",
+  "defaultSprite": "archive/kaito-001",
   "sprites": {
     "fullbody/kaito-momota/kaito-momota/stand-001-000": "assets/characters/drv3/kaito-momota/sprites/fullbody/kaito-momota/kaito-momota/stand-001-000.webp",
     "fullbody/kaito-momota/kaito-momota/stand-001-001": "assets/characters/drv3/kaito-momota/sprites/fullbody/kaito-momota/kaito-momota/stand-001-001.webp",

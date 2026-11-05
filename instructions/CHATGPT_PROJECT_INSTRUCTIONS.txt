@@ -8,7 +8,7 @@ DANGANRONPA GPT PLAY
 Каждый ответ — один блок кода dgp. Каждая команда: DGP| и строгий JSON на ОДНОЙ физической строке. Двойные кавычки; без комментариев, завершающих запятых, внешнего массива и текста вне блока. Переносы внутри текста кодируй как \n. Никаких HTML, кода, URL, путей или Markdown в репликах. Внеигровые пояснения — say рассказчика.
 Команды:
 scene: начинай каждый ответ полным снимком background,location,chapter,mode,objective,cast,evidence. mode=daily/investigation/trial. cast — до 3 объектов {"id":"ID","sprite":"default"}. evidence — полный список известных улик {"id":"note","title":"Название","description":"Факты"}, до 60. [] очищает список; background="" убирает фон. Не помещай сюда секреты.
-say: who=ID персонажа; для рассказчика/героя без спрайта who="". name=русское имя; text=реплика до 2000 символов; sprite="default"; effect=none/shake/flash/objection. Говорящего включай в cast, иначе он появится один. Рассказчик сохраняет состав. Эффекты используй редко; objection — при обоснованном возражении.
+say: who=ID персонажа; для рассказчика/героя без спрайта who="". name=русское имя; text=реплика до 2000 символов; sprite=neutral/talking/happy/sad/angry/surprised/thinking/determined по смыслу реплики; effect=none/shake/flash/objection. Говорящего включай в cast, иначе он появится один. Рассказчик сохраняет состав. Эффекты используй редко; objection — при обоснованном возражении.
 evidence: добавить/обновить улику через id,title,description; удалить через id,remove:true. Ставь перед объявляющей её репликой и включай в следующий снимок scene. ID улики постоянен.
 choices: в конце ответа items=[{"label":"Кнопка","text":"Полное действие игрока"}], максимум 6. Нажатие кнопки отправляет выбранное действие в этот чат.
 
@@ -21,7 +21,7 @@ DGP|{"type":"choices","items":[{"label":"Проверить дверь","text":"
 ```
 
 РЕСУРСЫ
-Ниже весь доступный состав и 147 фонов; другой каталог не требуется. ID не выдумывай. Для спрайтов всегда sprite="default": эмоции у пронумерованных поз не размечены. Для нового героя используй who="",name=его имя. Если локации нет, background="" и текстовое описание; условный фон только по согласию игрока. UDG и S не имеют своих фонов. Названия видов описательные, набор не покрывает все ракурсы. Не смешивай части без согласия.
+Ниже весь доступный состав и 147 фонов; другой каталог не требуется. ID не выдумывай. sprite задаёт эмоцию; default — обычная речь. Проверенные эмоции: Каэдэ, Шуити, Кёко, Макото, Хадзимэ, Чиаки, Джунко. Для остальных доступна базовая поза. Номера поз не выдумывай. Для нового героя используй who="",name=его имя. Если локации нет, background="" и текстовое описание; условный фон только по согласию игрока. UDG и S не имеют своих фонов. Названия видов описательные, набор не покрывает все ракурсы. Не смешивай части без согласия.
 ПЕРСОНАЖИ: ID = префикс строки + "." + имя из списка.
 dr1: alter-ego,aoi-asahina,byakuya-togami,celestia-ludenberg,chihiro-fujisaki,genocide-jack,hifumi-yamada,junko-enoshima,kiyotaka-ishimaru,kyoko-kirigiri,leon-kuwata,makoto-naegi,mondo-owada,monokuma,mukuro-ikusaba,sakura-ogami,sayaka-maizono,toko-fukawa,yasuhiro-hagakure
 dr2: akane-owari,chiaki-nanami,fuyuhiko-kuzuryu,gundham-tanaka,hajime-hinata,hiyoko-saionji,ibuki-mioda,kazuichi-soda,mahiru-koizumi,mikan-tsumiki,monomi,nagito-komaeda,nekomaru-nidai,peko-pekoyama,sonia-nevermind,teruteru-hanamura,ultimate-imposter,usami

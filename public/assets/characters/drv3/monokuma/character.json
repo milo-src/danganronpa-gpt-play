@@ -1,7 +1,7 @@
 {
   "id": "drv3.monokuma",
   "name": "Monokuma",
-  "defaultSprite": "fullbody/monokuma/monokuma/class-trial/stand-020-030",
+  "defaultSprite": "fullbody/monokuma/monokuma/stand-020-000",
   "sprites": {
     "fullbody/monokuma/monokuma/class-trial/stand-020-030": "assets/characters/drv3/monokuma/sprites/fullbody/monokuma/monokuma/class-trial/stand-020-030.webp",
     "fullbody/monokuma/monokuma/class-trial/stand-020-031": "assets/characters/drv3/monokuma/sprites/fullbody/monokuma/monokuma/class-trial/stand-020-031.webp",

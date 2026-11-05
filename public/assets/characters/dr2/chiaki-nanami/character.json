@@ -1,7 +1,7 @@
 {
   "id": "dr2.chiaki-nanami",
   "name": "Chiaki Nanami",
-  "defaultSprite": "archive/chiaki-001",
+  "defaultSprite": "archive/chiaki-020",
   "sprites": {
     "archive/chiaki-001": "assets/characters/dr2/chiaki-nanami/sprites/archive/chiaki-001.webp",
     "archive/chiaki-002": "assets/characters/dr2/chiaki-nanami/sprites/archive/chiaki-002.webp",

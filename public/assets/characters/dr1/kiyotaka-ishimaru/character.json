@@ -1,7 +1,7 @@
 {
   "id": "dr1.kiyotaka-ishimaru",
   "name": "Kiyotaka Ishimaru",
-  "defaultSprite": "archive/ishida-001",
+  "defaultSprite": "archive/kiyotaka-001",
   "sprites": {
     "archive/ishida-001": "assets/characters/dr1/kiyotaka-ishimaru/sprites/archive/ishida-001.webp",
     "archive/ishida-002": "assets/characters/dr1/kiyotaka-ishimaru/sprites/archive/ishida-002.webp",

@@ -1,7 +1,7 @@
 {
   "id": "dr2.nekomaru-nidai",
   "name": "Nekomaru Nidai",
-  "defaultSprite": "archive/mechamaru-001",
+  "defaultSprite": "archive/nekomaru-001",
   "sprites": {
     "archive/mechamaru-001": "assets/characters/dr2/nekomaru-nidai/sprites/archive/mechamaru-001.webp",
     "archive/mechamaru-002": "assets/characters/dr2/nekomaru-nidai/sprites/archive/mechamaru-002.webp",

@@ -1,7 +1,7 @@
 {
   "id": "drv3.kokichi-oma",
   "name": "Kokichi Oma",
-  "defaultSprite": "fullbody/kokichi-oma/kokichi-oma/stand-005-000",
+  "defaultSprite": "archive/kokichi-001",
   "sprites": {
     "fullbody/kokichi-oma/kokichi-oma/stand-005-000": "assets/characters/drv3/kokichi-oma/sprites/fullbody/kokichi-oma/kokichi-oma/stand-005-000.webp",
     "fullbody/kokichi-oma/kokichi-oma/stand-005-001": "assets/characters/drv3/kokichi-oma/sprites/fullbody/kokichi-oma/kokichi-oma/stand-005-001.webp",

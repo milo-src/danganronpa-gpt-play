@@ -1,7 +1,7 @@
 {
   "id": "drv3.kirumi-tojo",
   "name": "Kirumi Tojo",
-  "defaultSprite": "fullbody/kirumi-toujo/stand-008-000",
+  "defaultSprite": "archive/kirumi-001",
   "sprites": {
     "fullbody/kirumi-toujo/stand-008-000": "assets/characters/drv3/kirumi-tojo/sprites/fullbody/kirumi-toujo/stand-008-000.webp",
     "fullbody/kirumi-toujo/stand-008-001": "assets/characters/drv3/kirumi-tojo/sprites/fullbody/kirumi-toujo/stand-008-001.webp",

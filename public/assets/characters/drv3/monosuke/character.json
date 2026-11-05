@@ -1,7 +1,7 @@
 {
   "id": "drv3.monosuke",
   "name": "Monosuke",
-  "defaultSprite": "fullbody/monosuke/monosuke/stand-022-000",
+  "defaultSprite": "archive/monosuke-001",
   "sprites": {
     "fullbody/monosuke/monosuke/stand-022-000": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-000.webp",
     "fullbody/monosuke/monosuke/stand-022-001": "assets/characters/drv3/monosuke/sprites/fullbody/monosuke/monosuke/stand-022-001.webp",

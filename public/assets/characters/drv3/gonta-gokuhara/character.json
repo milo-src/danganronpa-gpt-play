@@ -1,7 +1,7 @@
 {
   "id": "drv3.gonta-gokuhara",
   "name": "Gonta Gokuhara",
-  "defaultSprite": "fullbody/gonta-gokuhara/gonta-gokuhara/debate-scrum/stand-004-400",
+  "defaultSprite": "archive/gonta-001",
   "sprites": {
     "fullbody/gonta-gokuhara/gonta-gokuhara/debate-scrum/stand-004-400": "assets/characters/drv3/gonta-gokuhara/sprites/fullbody/gonta-gokuhara/gonta-gokuhara/debate-scrum/stand-004-400.webp",
     "fullbody/gonta-gokuhara/gonta-gokuhara/debate-scrum/stand-004-401": "assets/characters/drv3/gonta-gokuhara/sprites/fullbody/gonta-gokuhara/gonta-gokuhara/debate-scrum/stand-004-401.webp",

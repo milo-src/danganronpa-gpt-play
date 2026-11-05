@@ -1,7 +1,7 @@
 {
   "id": "drv3.monotaro",
   "name": "Monotaro",
-  "defaultSprite": "fullbody/monotaro/monotaro/stand-021-000",
+  "defaultSprite": "archive/monotaro-001",
   "sprites": {
     "fullbody/monotaro/monotaro/stand-021-000": "assets/characters/drv3/monotaro/sprites/fullbody/monotaro/monotaro/stand-021-000.webp",
     "fullbody/monotaro/monotaro/stand-021-monotaro": "assets/characters/drv3/monotaro/sprites/fullbody/monotaro/monotaro/stand-021-monotaro.webp",

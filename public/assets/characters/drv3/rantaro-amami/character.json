@@ -1,7 +1,7 @@
 {
   "id": "drv3.rantaro-amami",
   "name": "Rantaro Amami",
-  "defaultSprite": "fullbody/rantaro-amami/rantaro-amami/school-uniform/stand-003-100",
+  "defaultSprite": "archive/rantaro-001",
   "sprites": {
     "fullbody/rantaro-amami/rantaro-amami/school-uniform/stand-003-100": "assets/characters/drv3/rantaro-amami/sprites/fullbody/rantaro-amami/rantaro-amami/school-uniform/stand-003-100.webp",
     "fullbody/rantaro-amami/rantaro-amami/school-uniform/stand-003-101": "assets/characters/drv3/rantaro-amami/sprites/fullbody/rantaro-amami/rantaro-amami/school-uniform/stand-003-101.webp",

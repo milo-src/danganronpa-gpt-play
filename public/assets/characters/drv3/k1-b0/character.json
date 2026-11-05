@@ -1,7 +1,7 @@
 {
   "id": "drv3.k1-b0",
   "name": "K1-B0",
-  "defaultSprite": "fullbody/keebo/keebo/stand-007-000",
+  "defaultSprite": "archive/keebo-001",
   "sprites": {
     "fullbody/keebo/keebo/stand-007-000": "assets/characters/drv3/k1-b0/sprites/fullbody/keebo/keebo/stand-007-000.webp",
     "fullbody/keebo/keebo/stand-007-001": "assets/characters/drv3/k1-b0/sprites/fullbody/keebo/keebo/stand-007-001.webp",

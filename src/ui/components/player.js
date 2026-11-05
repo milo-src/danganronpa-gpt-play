@@ -218,11 +218,27 @@
         for (const c of state.cast) {
           const asset = Object.hasOwn(D.assets.characters, c.id) ? D.assets.characters[c.id] : null;
           if (!asset) continue;
-          const path = Object.hasOwn(asset.sprites, c.sprite) ? asset.sprites[c.sprite] : asset.sprites[asset.defaultSprite];
+          const sprite = D.resolveSprite(c.id, c.sprite, state.dialogue?.who === c.id);
           const figure = el('figure', 'actor' + (state.dialogue?.who === c.id ? ' speaking' : ''));
-          const image = el('img'); image.alt = asset.name; image.src = this.url(path);
+          figure.dataset.sprite = sprite.key;
+          let image;
+          if (sprite.bounds) {
+            const [width, height, x, y, croppedWidth, croppedHeight] = sprite.bounds;
+            const ns = 'http://www.w3.org/2000/svg';
+            const portrait = document.createElementNS(ns, 'svg');
+            portrait.setAttribute('viewBox', `${x} ${y} ${croppedWidth} ${croppedHeight}`);
+            portrait.setAttribute('preserveAspectRatio', 'xMidYMax meet');
+            portrait.setAttribute('role', 'img'); portrait.setAttribute('aria-label', asset.name);
+            image = document.createElementNS(ns, 'image');
+            image.setAttribute('width', width); image.setAttribute('height', height);
+            image.setAttribute('href', this.url(sprite.path));
+            portrait.append(image); figure.append(portrait);
+          } else {
+            image = el('img'); image.alt = asset.name; image.src = this.url(sprite.path);
+            figure.append(image);
+          }
           image.addEventListener('error', () => { figure.hidden = true; this.notice(`Не загрузился спрайт: ${asset.name}.`); });
-          figure.append(image); this.cast.append(figure);
+          this.cast.append(figure);
         }
       }
       this.welcome.hidden = !!state.dialogue || state.choices.length > 0;

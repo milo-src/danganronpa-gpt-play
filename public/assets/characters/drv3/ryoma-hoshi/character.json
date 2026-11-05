@@ -1,7 +1,7 @@
 {
   "id": "drv3.ryoma-hoshi",
   "name": "Ryoma Hoshi",
-  "defaultSprite": "fullbody/ryoma-hoshi/ryoma-hoshi/debate-scrum/scrum-stand",
+  "defaultSprite": "archive/ryoma-001",
   "sprites": {
     "fullbody/ryoma-hoshi/ryoma-hoshi/debate-scrum/scrum-stand": "assets/characters/drv3/ryoma-hoshi/sprites/fullbody/ryoma-hoshi/ryoma-hoshi/debate-scrum/scrum-stand.webp",
     "fullbody/ryoma-hoshi/ryoma-hoshi/debate-scrum/stand-002-402": "assets/characters/drv3/ryoma-hoshi/sprites/fullbody/ryoma-hoshi/ryoma-hoshi/debate-scrum/stand-002-402.webp",
