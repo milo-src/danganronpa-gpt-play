@@ -99,9 +99,15 @@
       return {messages, invalid, assistantCount: nodes.length, streaming, latestHasCommands, latestInvalid, fallbackCount: extra.length};
     }
     isStreaming() {
-      return [...this.doc.querySelectorAll('[data-testid="stop-button"], button[aria-label="Stop generating"], button[aria-label="Остановить генерацию"]')]
-        .some(button => !button.closest('[hidden], [inert], #dgp-extension-root') && button.getClientRects().length > 0 &&
-          this.win.getComputedStyle(button).visibility !== 'hidden');
+      const visible = node => !node.closest('[hidden], [inert], #dgp-extension-root') && node.getClientRects().length > 0 &&
+        this.win.getComputedStyle(node).visibility !== 'hidden';
+      const markers = this.doc.querySelectorAll('[data-testid="stop-button"], [data-testid="stop-streaming-button"], main [data-is-streaming="true"], article[data-is-streaming="true"], [data-message-author-role="assistant"] .result-streaming');
+      if ([...markers].some(visible)) return true;
+      // The composer may keep its submit ID while changing into a Stop control.
+      return [...this.doc.querySelectorAll('button[aria-label], button[title]')].some(button => {
+        const label = [button.getAttribute('aria-label'), button.getAttribute('title')].filter(Boolean).join(' ');
+        return /stop (generating|streaming|response|thinking)|остановить (генерацию|ответ|размышление)|прекратить (генерацию|ответ)/i.test(label) && visible(button);
+      });
     }
     composerLayout() {
       const editor = this.findComposer();
@@ -129,7 +135,7 @@
         if (records.some(r => !r.target.closest?.('#dgp-extension-root'))) schedule();
       });
       this.observer.observe(this.doc.body, {childList: true, subtree: true, characterData: true,
-        attributes: true, attributeFilter: ['hidden', 'class', 'style', 'aria-busy']});
+        attributes: true, attributeFilter: ['hidden', 'class', 'style', 'aria-busy', 'aria-label', 'data-testid', 'data-is-streaming']});
       callback(this.read());
     }
     stop() {
@@ -175,6 +181,7 @@
         if (button.closest('#dgp-extension-root, [hidden], [inert], [role="dialog"], nav, aside')) return false;
         if (!button.getClientRects().length || this.win.getComputedStyle(button).visibility === 'hidden') return false;
         const label = [button.getAttribute('aria-label'), button.getAttribute('title'), button.textContent].join(' ').trim();
+        if (/stop|остановить|прекратить/i.test(label)) return false;
         const known = button.matches('[data-testid="send-button"], #composer-submit-button');
         return known || (form?.contains(button) && button.type === 'submit' && !/voice|голос|дикт|microphone/i.test(label)) ||
           /^(send|send message|send prompt|отправить|отправить сообщение|отправить запрос)\s*$/i.test(label);
@@ -226,6 +233,7 @@
         let button;
         for (let i = 0; i < 40; i++) {
           if (!isCurrent() || this.route() !== initialRoute) return {ok: false, cancelled: true};
+          if (this.isStreaming()) return {ok: false, reason: 'ChatGPT ещё отвечает. Черновик сохранён; дождись завершения ответа.'};
           const editor = this.findComposer();
           if (this.fingerprint(this.composerText(editor)) !== hash) return {ok: false, reason: 'Текст в поле изменился; действие не отправлено.'};
           button = this.findSendButton(editor);

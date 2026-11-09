@@ -25,13 +25,18 @@
     const key = keyFor(route), value = {enabled, manual: manualChoice, cursor: timeline.key, updated: Date.now()};
     saveTimer = setTimeout(() => storageSet(key, value), 250);
   }
+  const unreadReply = () => timeline.pending > 0 && lastRead.latestHasCommands !== false && !lastRead.latestInvalid;
+  function updateTurnControls() {
+    const waiting = sending || !!awaitingReply || lastRead.streaming;
+    player.setComposerLayout(adapter.composerLayout());
+    player.setBusy(waiting || unreadReply(), waiting ? 'waiting' : unreadReply() ? 'reading' : '');
+  }
   function render() {
     const state = timeline.state();
     player.render(state, {key: timeline.entries.slice(0, timeline.cursor + 1).findLast(e => e.event.type === 'say')?.key || timeline.key, pending: timeline.pending, total: timeline.entries.length,
       history: timeline.entries.slice(0, timeline.cursor + 1).filter(e => e.event.type === 'say').slice(-60).map(e => e.event)});
     const errors = lastRead.latestInvalid ? ` В последнем ответе пропущено строк с ошибкой: ${lastRead.latestInvalid}.` : '';
-    player.setBusy(sending || !!awaitingReply || lastRead.streaming);
-    player.setComposerLayout(adapter.composerLayout());
+    updateTurnControls();
     player.notice((sending ? 'Отправляю выбранное действие…' : awaitingReply && !lastRead.streaming ? 'Ход отправлен. Ожидаю ответ ChatGPT…' : lastRead.streaming ? 'ChatGPT пишет — готовые реплики появляются в сцене.' :
       !timeline.entries.length ? 'Ожидание ответа DGP. Инструкции: instructions/CHATGPT_PROJECT_INSTRUCTIONS.txt.' :
       state.menu ? (state.choices.length ? 'Нажми вариант — он отправится в ChatGPT. Или напиши свой ответ в поле игры.' : 'Ответь на вопрос в поле «Твоё действие или реплика».') :
@@ -57,12 +62,16 @@
     onNotes: text => storageSet('dgp-notes:' + route, String(text).slice(0, 8000)),
     onRetry: () => player.actions.onDraft(player.input.value, {retry: true}),
     onDraft: async (text, {retry = false} = {}) => {
-      if (disposed) return;
+      if (disposed || !enabled) return;
       if (adapter.route() !== route) { await switchRoute(); return; }
       const value = String(text || '').trim();
       if (value.length > 60000) { player.notice('Сообщение превышает 60 000 символов. Сохрани контекст в файл и прикрепи его к чату.'); return; }
       if (!value) { player.notice('Сначала напиши действие или выбери вариант.'); return; }
-      if (sending || awaitingReply || lastRead.streaming) { player.notice('Дождись ответа ChatGPT на предыдущее действие.'); return; }
+      if (sending) { player.notice('Действие уже отправляется. Черновик сохранён.'); return; }
+      // Read synchronously: a click can beat the debounced DOM observer.
+      receive(adapter.read());
+      if (awaitingReply || lastRead.streaming) { player.notice('ChatGPT ещё думает или пишет. Черновик сохранён; отправь его после ответа.'); return; }
+      if (unreadReply()) { player.notice('Сначала дочитай ответ кнопкой «Далее». Твой черновик сохранён.'); return; }
       const generation = ++sendGeneration, targetRoute = route;
       const current = () => !disposed && enabled && generation === sendGeneration && route === targetRoute;
       sending = true; player.setBusy(true); player.setRetry(false);
@@ -86,7 +95,7 @@
       } catch {
         if (current()) player.notice('Не удалось отправить действие. Текст сохранён; поле ChatGPT доступно под сценой.');
       } finally {
-        if (current()) { sending = false; player.setBusy(!!awaitingReply || lastRead.streaming); }
+        if (current()) { sending = false; updateTurnControls(); }
       }
     }
   });
@@ -115,9 +124,12 @@
         data.streaming ? 'ChatGPT пишет — готовые реплики появляются в сцене.' :
         data.assistantCount && data.latestHasCommands === false ? 'Последний ответ ChatGPT не содержит игровых команд. Нажми «Исправить формат ответа» или открой чат.' : '';
       if (status) player.notice(status);
+      else if (!sending && !awaitingReply) player.notice(unreadReply()
+        ? `Продолжай читать: ещё ${timeline.pending} реплик. Черновик сохранён.`
+        : timeline.entries.length ? 'Твой ход. Выбери вариант или отправь свой черновик.'
+          : 'Ожидание ответа DGP. Начни игру, когда будешь готов.');
     }
-    player.setBusy(sending || !!awaitingReply || data.streaming);
-    player.setComposerLayout(adapter.composerLayout());
+    updateTurnControls();
     player.setFormatIssue(!data.streaming && !!data.assistantCount && (data.latestHasCommands === false || data.latestInvalid > 0));
     player.setDiagnostics({route, ...data, composer: !!adapter.findComposer(), events: timeline.entries.length});
     // Also reopen for a newly rendered answer whose format needs repairing.
@@ -164,8 +176,14 @@
   async function switchRoute() {
     if (disposed) return;
     const next = adapter.route(); if (next === route) {
-      if (enabled) player.setComposerLayout(adapter.composerLayout());
-      if (awaitingReply && Date.now() > awaitingReply.until) { awaitingReply = null; player.setBusy(lastRead.streaming); player.notice('Ответ пока не появился. Проверь сообщение или ограничение ChatGPT под сценой.'); }
+      if (enabled) {
+        if (adapter.isStreaming() !== lastRead.streaming) receive(adapter.read());
+        else updateTurnControls();
+      }
+      if (awaitingReply && Date.now() > awaitingReply.until && !lastRead.streaming) {
+        awaitingReply = null; updateTurnControls();
+        player.notice('Ответ пока не появился. Проверь сообщение или ограничение ChatGPT под сценой.');
+      }
       await resumeHandoff(); return;
     }
     const version = ++routeVersion;

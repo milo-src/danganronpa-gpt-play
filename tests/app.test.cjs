@@ -7,13 +7,15 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
 
 async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope = 'root', initialPrompts = []) {
   const store = structuredClone(initialStore); const tasks = new Map(); let serial = 0; let poll;
+  const clock = {now: Date.now()};
   class Adapter {
     constructor() { this.current = initialRoute; this.currentScope = initialScope; this.prompts = initialPrompts; this.pendingSubmit = false; this.started = false; this.reads = 0; this.messages = []; }
     route() { return this.current; }
     scope() { return this.currentScope; }
     fingerprint(text) { return context.DGP.realAdapter.prototype.fingerprint(text); }
     hasUserPrompt(hash) { return this.prompts.some(text => this.fingerprint(text) === hash); }
-    read() { this.reads++; return {messages: this.messages, invalid: 0, streaming: false, assistantCount: this.messages.length}; }
+    isStreaming() { return !!this.streaming; }
+    read() { this.reads++; return {messages: this.messages, invalid: 0, streaming: !!this.streaming, assistantCount: this.messages.length}; }
     start(cb) { this.started = true; this.cb = cb; cb(this.read()); }
     stop() { this.started = false; this.cb = null; }
     insertDraft(text) { this.prepared = text; return this.draftResult || {ok: true}; }
@@ -40,6 +42,7 @@ async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope 
     setNotes(value) { this.notes = typeof value === 'string' ? value : ''; }
   }
   const context = vm.createContext({
+    Date: class extends Date { static now() { return clock.now; } },
     setTimeout: callback => { const id = ++serial; tasks.set(id, callback); return id; },
     clearTimeout: id => tasks.delete(id), setInterval: callback => { poll = callback; },
     matchMedia: () => ({matches: false}),
@@ -55,7 +58,7 @@ async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope 
   context.DGP.ChatGPTAdapter = Adapter; context.DGP.Player = Player;
   vm.runInContext(fs.readFileSync(path.join(__dirname, '../src/extension/content/main.js'), 'utf8'), context);
   await tick();
-  return {...context.DGP.app, realAdapter: context.DGP.realAdapter, store, poll: () => poll(), flush: async () => {
+  return {...context.DGP.app, realAdapter: context.DGP.realAdapter, store, advance: ms => { clock.now += ms; }, poll: () => poll(), flush: async () => {
     const current = [...tasks.values()]; tasks.clear(); current.forEach(cb => cb()); await tick();
   }};
 }
@@ -184,9 +187,95 @@ test('native composer remains available beside one-click choices', async () => {
 
 test('streaming does not replace native draft with a choice', async () => {
   const h = await harness(); await h.toggle(true);
+  h.adapter.streaming = true;
   h.adapter.cb({...h.adapter.read(), streaming: true});
   await h.player.actions.onDraft('Action');
   assert.equal(h.adapter.prepared, undefined); assert.equal(h.player.busy, true);
+});
+
+test('a click before the observer notices thinking cannot send a new action', async () => {
+  const h = await harness(); await h.toggle(true);
+  h.player.input.value = 'Мой следующий ход';
+  h.adapter.streaming = true; // No observer callback yet.
+  await h.player.actions.onDraft(h.player.input.value);
+  assert.equal(h.adapter.sent, undefined); assert.equal(h.player.busy,true);
+  assert.equal(h.player.input.value,'Мой следующий ход');
+  h.adapter.streaming = false;
+  await h.poll(); assert.equal(h.player.busy,false);
+  assert.equal(h.adapter.sent,undefined); // Never auto-submit a saved draft.
+});
+
+test('streaming multi-line answers require completion and reading before the next turn', async () => {
+  const h = await harness();
+  h.adapter.messages = [{id:'old',events:[{type:'say',text:'Начало'}]}];
+  await h.toggle(true); await h.player.actions.onDraft('Первый ход');
+  h.player.input.value = 'Второй ход';
+  h.adapter.streaming = true;
+  h.adapter.messages.push({id:'new',events:[{type:'say',text:'Первая реплика'}]});
+  h.adapter.cb(h.adapter.read());
+  await h.player.actions.onDraft('Второй ход');
+  assert.equal(h.adapter.sent.length,1); assert.equal(h.player.state.dialogue.text,'Первая реплика');
+  h.adapter.messages[1].events.push({type:'say',text:'Вторая реплика'}, {type:'choices',items:[]});
+  h.adapter.streaming = false; h.adapter.cb(h.adapter.read());
+  assert.equal(h.player.busy,true);
+  await h.player.actions.onDraft('Второй ход'); assert.equal(h.adapter.sent.length,1);
+  assert.equal(h.player.input.value,'Второй ход');
+  h.player.actions.onNext(); assert.equal(h.player.state.dialogue.text,'Вторая реплика');
+  assert.equal(h.player.busy,false);
+  await h.player.actions.onDraft('Второй ход');
+  await h.player.actions.onDraft('Второй ход');
+  assert.deepEqual(h.adapter.sent,['Первый ход','Второй ход']);
+  h.adapter.messages.push({id:'third',events:[{type:'say',text:'Результат второго хода'}]});
+  h.adapter.cb(h.adapter.read());
+  assert.equal(h.player.state.dialogue.text,'Результат второго хода');
+});
+
+test('backtracking cannot submit a new turn from an old unread scene', async () => {
+  const h = await harness();
+  h.adapter.messages = [{id:'answer',events:[{type:'say',text:'Один'},{type:'say',text:'Два'}]}];
+  await h.toggle(true); h.player.actions.onNext(); assert.equal(h.player.busy,false);
+  h.player.actions.onBack(); assert.equal(h.player.busy,true);
+  await h.player.actions.onDraft('Новый ход'); assert.equal(h.adapter.sent,undefined);
+});
+
+test('adapter recognizes stop-thinking and stream markers but ignores hidden controls', async () => {
+  const h = await harness();
+  const node = (label, hidden = false) => ({
+    closest: () => hidden ? {} : null, getClientRects: () => [1],
+    getAttribute: key => key === 'aria-label' ? label : null
+  });
+  let markers = [], buttons = [node('Stop thinking')];
+  const adapter = {doc:{querySelectorAll: selector => selector.startsWith('button[') ? buttons : markers},
+    win:{getComputedStyle: () => ({visibility:'visible'})}};
+  const streaming = () => h.realAdapter.prototype.isStreaming.call(adapter);
+  assert.equal(streaming(),true);
+  buttons = [node('Остановить ответ')]; assert.equal(streaming(),true);
+  buttons = [node('Stop generating',true)]; assert.equal(streaming(),false);
+  buttons = []; markers = [node('')]; assert.equal(streaming(),true);
+  markers = []; assert.equal(streaming(),false);
+});
+
+test('long thinking cannot unlock submission at the old thirty-second timeout', async () => {
+  const h = await harness(); await h.toggle(true);
+  await h.player.actions.onDraft('Первый');
+  h.adapter.streaming = true; await h.poll(); h.advance(120000); await h.poll();
+  assert.equal(h.player.busy,true);
+  h.player.input.value = 'Следующий';
+  await h.player.actions.onDraft('Следующий'); assert.equal(h.adapter.sent.length,1);
+  h.adapter.messages.push({id:'answer',events:[{type:'say',text:'Готово'}]});
+  h.adapter.cb(h.adapter.read()); assert.equal(h.player.busy,true);
+  h.adapter.streaming = false; await h.poll(); assert.equal(h.player.busy,false);
+  assert.match(h.player.status,/Твой ход/); assert.equal(h.player.input.value,'Следующий');
+});
+
+test('a composer submit button repurposed as Stop is never clicked as Send', async () => {
+  const h = await harness();
+  const button = {closest:()=>null,getClientRects:()=>[1],matches:()=>true,
+    getAttribute:key=>key === 'aria-label' ? 'Stop generating' : null,textContent:''};
+  const adapter = {doc:{querySelectorAll:()=>[button]},win:{getComputedStyle:()=>({visibility:'visible'})}};
+  assert.equal(h.realAdapter.prototype.findSendButton.call(adapter,null),null);
+  button.getAttribute = key => key === 'aria-label' ? 'Send message' : null;
+  assert.equal(h.realAdapter.prototype.findSendButton.call(adapter,null),button);
 });
 
 test('plain text reply after a game scene offers format recovery and unlocks input', async () => {

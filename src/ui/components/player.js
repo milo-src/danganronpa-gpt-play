@@ -161,12 +161,16 @@
       if (this.savedDrafts.at(-1) !== text) this.savedDrafts.push(text);
       this.restoreDraftButton.hidden = false;
     }
-    setBusy(value) {
+    setBusy(value, reason = 'waiting') {
       this.busy = value;
       this.panel.setAttribute('aria-busy', String(value));
       this.retryButton.disabled = value;
       this.sendButton.disabled = value;
-      this.sendButton.textContent = value ? 'Ждём ответ…' : 'Отправить ▸';
+      this.busyReason = value ? reason : '';
+      this.sendButton.textContent = value ? reason === 'reading' ? 'Дочитай ответ ▸' : 'GPT отвечает…' : 'Отправить ▸';
+      if (value) this.composerHint.textContent = reason === 'reading'
+        ? 'Черновик можно писать. Дочитай реплики кнопкой «Далее», затем отправь ход.'
+        : 'Черновик можно писать. Отправка доступна после завершения ответа GPT.';
       this.restoreDraftButton.disabled = value;
       this.startButton.disabled = value;
       this.repairButton.disabled = value;
@@ -277,7 +281,7 @@
       this.extras?.update();
       if (!this.drawer.hidden && !this.drawer.contains(this.shadow.activeElement)) this.renderDrawer();
       this.scheduleAuto();
-      this.setBusy(this.busy);
+      this.setBusy(this.busy, this.busyReason);
     }
     typeText(text) {
       this.stopTyping(); this.fullText = text;
@@ -360,7 +364,7 @@
       const name = this.drawerName;
       this.drawer.replaceChildren(this.button('Закрыть ×', () => { this.drawer.hidden = true; this.scheduleAuto(); }, 'close-drawer'),
         el('h2', '', {evidence: 'Улики / Truth Bullets', history: 'Журнал', settings: 'Настройки', inspect: 'Осмотр сцены', handbook: 'Электронный справочник', save: 'Сохранение и продолжение', trial: 'Предъявить противоречие'}[name]));
-      if (this.extras?.render(name)) { this.setBusy(this.busy); return; }
+      if (this.extras?.render(name)) { this.setBusy(this.busy, this.busyReason); return; }
       if (name === 'settings') this.drawer.append(this.settingsBody);
       if (name === 'evidence') {
         if (this.extras) this.drawer.append(this.button('Связать улику с утверждением', () => this.toggleDrawer('trial')));
