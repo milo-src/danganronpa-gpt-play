@@ -1,30 +1,109 @@
 {
   "custom.ryoko-otonashi": {
-    "defaultSprite": "archive/ryouko-001"
+    "defaultSprite": "archive/ryouko-001",
+    "expressions": {
+      "neutral": "archive/ryouko-001",
+      "talking": "archive/ryouko-003",
+      "happy": "archive/ryouko-004",
+      "sad": "archive/ryouko-013",
+      "angry": "archive/ryouko-010",
+      "surprised": "archive/ryouko-008",
+      "thinking": "archive/ryouko-005",
+      "determined": "archive/ryouko-009"
+    }
   },
   "custom.yasuke-matsuda": {
-    "defaultSprite": "archive/yasuke-001"
+    "defaultSprite": "archive/yasuke-001",
+    "expressions": {
+      "neutral": "archive/yasuke-001",
+      "talking": "archive/yasuke-001"
+    }
   },
   "dr1.alter-ego": {
-    "defaultSprite": "app/alteregoface00"
+    "defaultSprite": "app/alteregoface00",
+    "expressions": {
+      "neutral": "app/alteregoface00",
+      "talking": "app/alteregoface01",
+      "happy": "app/alteregoface02",
+      "sad": "app/alteregoface06",
+      "surprised": "app/alteregoface08",
+      "thinking": "app/alteregoface14"
+    }
   },
   "dr1.aoi-asahina": {
-    "defaultSprite": "archive/aoi-001"
+    "defaultSprite": "archive/aoi-001",
+    "expressions": {
+      "neutral": "archive/aoi-001",
+      "talking": "archive/aoi-002",
+      "happy": "archive/aoi-005",
+      "sad": "archive/aoi-014",
+      "angry": "archive/aoi-017",
+      "surprised": "archive/aoi-013",
+      "thinking": "archive/aoi-009",
+      "determined": "archive/aoi-015"
+    }
   },
   "dr1.byakuya-togami": {
-    "defaultSprite": "archive/byakuya-001"
+    "defaultSprite": "archive/byakuya-001",
+    "expressions": {
+      "neutral": "archive/byakuya-001",
+      "talking": "archive/byakuya-012",
+      "happy": "archive/byakuya-003",
+      "angry": "archive/byakuya-006",
+      "surprised": "archive/byakuya-013",
+      "thinking": "archive/byakuya-009",
+      "determined": "archive/byakuya-008"
+    }
   },
   "dr1.celestia-ludenberg": {
-    "defaultSprite": "archive/celes-001"
+    "defaultSprite": "archive/celes-001",
+    "expressions": {
+      "neutral": "archive/celes-001",
+      "talking": "archive/celes-016",
+      "happy": "archive/celes-004",
+      "angry": "archive/celes-011",
+      "surprised": "archive/celes-006",
+      "thinking": "archive/celes-008",
+      "determined": "archive/celes-012"
+    }
   },
   "dr1.chihiro-fujisaki": {
-    "defaultSprite": "archive/chihiro-001"
+    "defaultSprite": "archive/chihiro-001",
+    "expressions": {
+      "neutral": "archive/chihiro-001",
+      "talking": "archive/chihiro-002",
+      "happy": "archive/chihiro-012",
+      "sad": "archive/chihiro-008",
+      "angry": "archive/chihiro-015",
+      "surprised": "archive/chihiro-007",
+      "thinking": "archive/chihiro-013",
+      "determined": "archive/chihiro-011"
+    }
   },
   "dr1.genocide-jack": {
-    "defaultSprite": "archive/touko-023"
+    "defaultSprite": "archive/touko-023",
+    "expressions": {
+      "neutral": "archive/touko-023",
+      "talking": "archive/touko-024",
+      "happy": "archive/touko-025",
+      "angry": "archive/touko-027",
+      "surprised": "archive/touko-028",
+      "thinking": "archive/touko-031",
+      "determined": "archive/touko-030"
+    }
   },
   "dr1.hifumi-yamada": {
-    "defaultSprite": "archive/hifumi-001"
+    "defaultSprite": "archive/hifumi-001",
+    "expressions": {
+      "neutral": "archive/hifumi-002",
+      "talking": "archive/hifumi-001",
+      "happy": "archive/hifumi-009",
+      "sad": "archive/hifumi-019",
+      "angry": "archive/hifumi-014",
+      "surprised": "archive/hifumi-008",
+      "thinking": "archive/hifumi-020",
+      "determined": "archive/hifumi-005"
+    }
   },
   "dr1.junko-enoshima": {
     "defaultSprite": "archive/junko-008",
@@ -40,7 +119,17 @@
     }
   },
   "dr1.kiyotaka-ishimaru": {
-    "defaultSprite": "archive/kiyotaka-001"
+    "defaultSprite": "archive/kiyotaka-001",
+    "expressions": {
+      "neutral": "archive/kiyotaka-001",
+      "talking": "archive/kiyotaka-002",
+      "happy": "archive/kiyotaka-003",
+      "sad": "archive/kiyotaka-010",
+      "angry": "archive/kiyotaka-004",
+      "surprised": "archive/kiyotaka-014",
+      "thinking": "archive/kiyotaka-015",
+      "determined": "archive/kiyotaka-009"
+    }
   },
   "dr1.kyoko-kirigiri": {
     "defaultSprite": "archive/kyouko-001",
@@ -56,7 +145,17 @@
     }
   },
   "dr1.leon-kuwata": {
-    "defaultSprite": "archive/leon-001"
+    "defaultSprite": "archive/leon-001",
+    "expressions": {
+      "neutral": "archive/leon-001",
+      "talking": "archive/leon-002",
+      "happy": "archive/leon-003",
+      "sad": "archive/leon-013",
+      "angry": "archive/leon-005",
+      "surprised": "archive/leon-008",
+      "thinking": "archive/leon-011",
+      "determined": "archive/leon-006"
+    }
   },
   "dr1.makoto-naegi": {
     "defaultSprite": "archive/makoto-001",
@@ -72,28 +171,106 @@
     }
   },
   "dr1.mondo-owada": {
-    "defaultSprite": "archive/mondo-001"
+    "defaultSprite": "archive/mondo-001",
+    "expressions": {
+      "neutral": "archive/mondo-001",
+      "talking": "archive/mondo-002",
+      "happy": "archive/mondo-004",
+      "sad": "archive/mondo-015",
+      "angry": "archive/mondo-006",
+      "surprised": "archive/mondo-011",
+      "thinking": "archive/mondo-022",
+      "determined": "archive/mondo-005"
+    }
   },
   "dr1.monokuma": {
-    "defaultSprite": "archive/monokuma-001"
+    "defaultSprite": "archive/monokuma-001",
+    "expressions": {
+      "neutral": "archive/monokuma-001",
+      "talking": "archive/monokuma-014",
+      "happy": "archive/monokuma-005",
+      "sad": "archive/monokuma-008",
+      "angry": "archive/monokuma-003",
+      "surprised": "archive/monokuma-007",
+      "thinking": "archive/monokuma-011",
+      "determined": "archive/monokuma-006"
+    }
   },
   "dr1.mukuro-ikusaba": {
-    "defaultSprite": "archive/junkosaba-001"
+    "defaultSprite": "archive/junkosaba-001",
+    "expressions": {
+      "neutral": "archive/junkosaba-001",
+      "talking": "archive/junkosaba-003",
+      "happy": "archive/junkosaba-006",
+      "angry": "archive/junkosaba-008",
+      "surprised": "archive/junkosaba-004",
+      "thinking": "archive/junkosaba-007",
+      "determined": "archive/junkosaba-009"
+    }
   },
   "dr1.sakura-ogami": {
-    "defaultSprite": "archive/sakura-001"
+    "defaultSprite": "archive/sakura-001",
+    "expressions": {
+      "neutral": "archive/sakura-001",
+      "talking": "archive/sakura-003",
+      "happy": "archive/sakura-013",
+      "sad": "archive/sakura-008",
+      "angry": "archive/sakura-009",
+      "surprised": "archive/sakura-002",
+      "thinking": "archive/sakura-004",
+      "determined": "archive/sakura-005"
+    }
   },
   "dr1.sayaka-maizono": {
-    "defaultSprite": "archive/sayaka-001"
+    "defaultSprite": "archive/sayaka-001",
+    "expressions": {
+      "neutral": "archive/sayaka-004",
+      "talking": "archive/sayaka-001",
+      "happy": "archive/sayaka-006",
+      "sad": "archive/sayaka-013",
+      "surprised": "archive/sayaka-012",
+      "thinking": "archive/sayaka-002",
+      "determined": "archive/sayaka-005"
+    }
   },
   "dr1.toko-fukawa": {
-    "defaultSprite": "archive/touko-001"
+    "defaultSprite": "archive/touko-001",
+    "expressions": {
+      "neutral": "archive/touko-001",
+      "talking": "archive/touko-002",
+      "happy": "archive/touko-011",
+      "sad": "archive/touko-014",
+      "angry": "archive/touko-013",
+      "surprised": "archive/touko-007",
+      "thinking": "archive/touko-005",
+      "determined": "archive/touko-012"
+    }
   },
   "dr1.yasuhiro-hagakure": {
-    "defaultSprite": "archive/yasuhiro-001"
+    "defaultSprite": "archive/yasuhiro-001",
+    "expressions": {
+      "neutral": "archive/yasuhiro-001",
+      "talking": "archive/yasuhiro-002",
+      "happy": "archive/yasuhiro-003",
+      "sad": "archive/yasuhiro-013",
+      "angry": "archive/yasuhiro-016",
+      "surprised": "archive/yasuhiro-006",
+      "thinking": "archive/yasuhiro-012",
+      "determined": "archive/yasuhiro-015"
+    }
   },
   "dr2.akane-owari": {
-    "defaultSprite": "archive/akane-001"
+    "defaultSprite": "archive/akane-001",
+    "expressions": {
+      "neutral": "archive/akane-001",
+      "talking": "archive/akane-002",
+      "happy": "archive/akane-003",
+      "sad": "archive/akane-016",
+      "angry": "archive/akane-011",
+      "surprised": "archive/akane-009",
+      "thinking": "archive/akane-007",
+      "determined": "archive/akane-005"
+    }
   },
   "dr2.chiaki-nanami": {
     "defaultSprite": "archive/chiaki-020",
@@ -109,10 +286,30 @@
     }
   },
   "dr2.fuyuhiko-kuzuryu": {
-    "defaultSprite": "archive/fuyuhiko-001"
+    "defaultSprite": "archive/fuyuhiko-nopatch-001",
+    "expressions": {
+      "neutral": "archive/fuyuhiko-nopatch-001",
+      "talking": "archive/fuyuhiko-nopatch-002",
+      "happy": "archive/fuyuhiko-nopatch-017",
+      "sad": "archive/fuyuhiko-nopatch-014",
+      "angry": "archive/fuyuhiko-nopatch-004",
+      "surprised": "archive/fuyuhiko-nopatch-010",
+      "thinking": "archive/fuyuhiko-nopatch-005",
+      "determined": "archive/fuyuhiko-nopatch-012"
+    }
   },
   "dr2.gundham-tanaka": {
-    "defaultSprite": "archive/gundham-001"
+    "defaultSprite": "archive/gundham-001",
+    "expressions": {
+      "neutral": "archive/gundham-001",
+      "talking": "archive/gundham-003",
+      "happy": "archive/gundham-007",
+      "sad": "archive/gundham-004",
+      "angry": "archive/gundham-009",
+      "surprised": "archive/gundham-008",
+      "thinking": "archive/gundham-005",
+      "determined": "archive/gundham-011"
+    }
   },
   "dr2.hajime-hinata": {
     "defaultSprite": "archive/hajime-018",
@@ -128,55 +325,222 @@
     }
   },
   "dr2.hiyoko-saionji": {
-    "defaultSprite": "archive/hiyoko-001"
+    "defaultSprite": "archive/hiyoko-001",
+    "expressions": {
+      "neutral": "archive/hiyoko-001",
+      "talking": "archive/hiyoko-009",
+      "happy": "archive/hiyoko-002",
+      "sad": "archive/hiyoko-016",
+      "angry": "archive/hiyoko-021",
+      "surprised": "archive/hiyoko-013",
+      "thinking": "archive/hiyoko-006",
+      "determined": "archive/hiyoko-018"
+    }
   },
   "dr2.ibuki-mioda": {
-    "defaultSprite": "archive/ibuki-001"
+    "defaultSprite": "archive/ibuki-001",
+    "expressions": {
+      "neutral": "archive/ibuki-001",
+      "talking": "archive/ibuki-012",
+      "happy": "archive/ibuki-005",
+      "sad": "archive/ibuki-014",
+      "angry": "archive/ibuki-010",
+      "surprised": "archive/ibuki-002",
+      "thinking": "archive/ibuki-018",
+      "determined": "archive/ibuki-004"
+    }
   },
   "dr2.kazuichi-soda": {
-    "defaultSprite": "archive/kazuichi-001"
+    "defaultSprite": "archive/kazuichi-001",
+    "expressions": {
+      "neutral": "archive/kazuichi-001",
+      "talking": "archive/kazuichi-008",
+      "happy": "archive/kazuichi-002",
+      "sad": "archive/kazuichi-013",
+      "angry": "archive/kazuichi-009",
+      "surprised": "archive/kazuichi-007",
+      "thinking": "archive/kazuichi-006",
+      "determined": "archive/kazuichi-014"
+    }
   },
   "dr2.mahiru-koizumi": {
-    "defaultSprite": "archive/mahiru-001"
+    "defaultSprite": "archive/mahiru-001",
+    "expressions": {
+      "neutral": "archive/mahiru-015",
+      "talking": "archive/mahiru-001",
+      "happy": "archive/mahiru-014",
+      "sad": "archive/mahiru-018",
+      "angry": "archive/mahiru-009",
+      "surprised": "archive/mahiru-006",
+      "thinking": "archive/mahiru-011",
+      "determined": "archive/mahiru-002"
+    }
   },
   "dr2.mikan-tsumiki": {
-    "defaultSprite": "archive/mikan-001"
+    "defaultSprite": "archive/mikan-001",
+    "expressions": {
+      "neutral": "archive/mikan-001",
+      "talking": "archive/mikan-004",
+      "happy": "archive/mikan-006",
+      "sad": "archive/mikan-007",
+      "angry": "archive/mikan-020",
+      "surprised": "archive/mikan-015",
+      "thinking": "archive/mikan-002",
+      "determined": "archive/mikan-017"
+    }
   },
   "dr2.monomi": {
-    "defaultSprite": "archive/monomi-001"
+    "defaultSprite": "archive/monomi-001",
+    "expressions": {
+      "neutral": "archive/monomi-001",
+      "talking": "archive/monomi-017",
+      "happy": "archive/monomi-002",
+      "sad": "archive/monomi-020",
+      "angry": "archive/monomi-007",
+      "surprised": "archive/monomi-026",
+      "thinking": "archive/monomi-004",
+      "determined": "archive/monomi-009"
+    }
   },
   "dr2.nagito-komaeda": {
-    "defaultSprite": "archive/nagito-001"
+    "defaultSprite": "archive/nagito-001",
+    "expressions": {
+      "neutral": "archive/nagito-001",
+      "talking": "archive/nagito-004",
+      "happy": "archive/nagito-002",
+      "sad": "archive/nagito-005",
+      "angry": "archive/nagito-009",
+      "surprised": "archive/nagito-018",
+      "thinking": "archive/nagito-003",
+      "determined": "archive/nagito-020"
+    }
   },
   "dr2.nekomaru-nidai": {
-    "defaultSprite": "archive/nekomaru-001"
+    "defaultSprite": "archive/nekomaru-001",
+    "expressions": {
+      "neutral": "archive/nekomaru-001",
+      "talking": "archive/nekomaru-003",
+      "happy": "archive/nekomaru-005",
+      "sad": "archive/nekomaru-017",
+      "angry": "archive/nekomaru-006",
+      "surprised": "archive/nekomaru-009",
+      "thinking": "archive/nekomaru-008",
+      "determined": "archive/nekomaru-010"
+    }
   },
   "dr2.peko-pekoyama": {
-    "defaultSprite": "archive/peko-001"
+    "defaultSprite": "archive/peko-001",
+    "expressions": {
+      "neutral": "archive/peko-004",
+      "talking": "archive/peko-001",
+      "happy": "archive/peko-018",
+      "sad": "archive/peko-015",
+      "angry": "archive/peko-008",
+      "surprised": "archive/peko-012",
+      "thinking": "archive/peko-007",
+      "determined": "archive/peko-005"
+    }
   },
   "dr2.sonia-nevermind": {
-    "defaultSprite": "archive/sonia-001"
+    "defaultSprite": "archive/sonia-001",
+    "expressions": {
+      "neutral": "archive/sonia-001",
+      "talking": "archive/sonia-005",
+      "happy": "archive/sonia-003",
+      "sad": "archive/sonia-011",
+      "angry": "archive/sonia-012",
+      "surprised": "archive/sonia-008",
+      "thinking": "archive/sonia-015",
+      "determined": "archive/sonia-007"
+    }
   },
   "dr2.teruteru-hanamura": {
-    "defaultSprite": "archive/teruteru-001"
+    "defaultSprite": "archive/teruteru-001",
+    "expressions": {
+      "neutral": "archive/teruteru-001",
+      "talking": "archive/teruteru-002",
+      "happy": "archive/teruteru-008",
+      "sad": "archive/teruteru-015",
+      "angry": "archive/teruteru-010",
+      "surprised": "archive/teruteru-007",
+      "thinking": "archive/teruteru-016",
+      "determined": "archive/teruteru-013"
+    }
   },
   "dr2.ultimate-imposter": {
-    "defaultSprite": "archive/imposter-001"
+    "defaultSprite": "archive/imposter-001",
+    "expressions": {
+      "neutral": "archive/imposter-001",
+      "talking": "archive/imposter-010",
+      "happy": "archive/imposter-017",
+      "sad": "archive/imposter-015",
+      "angry": "archive/imposter-008",
+      "surprised": "archive/imposter-019",
+      "thinking": "archive/imposter-009",
+      "determined": "archive/imposter-006"
+    }
   },
   "dr2.usami": {
-    "defaultSprite": "archive/usami-001"
+    "defaultSprite": "archive/usami-001",
+    "expressions": {
+      "neutral": "archive/usami-012",
+      "talking": "archive/usami-003",
+      "happy": "archive/usami-005",
+      "sad": "archive/usami-011",
+      "surprised": "archive/usami-001",
+      "thinking": "archive/usami-002",
+      "determined": "archive/usami-007"
+    }
   },
   "drv3.angie-yonaga": {
-    "defaultSprite": "archive/angie-001"
+    "defaultSprite": "archive/angie-001",
+    "expressions": {
+      "neutral": "archive/angie-001",
+      "talking": "archive/angie-003",
+      "happy": "archive/angie-004",
+      "surprised": "archive/angie-010",
+      "thinking": "archive/angie-023",
+      "determined": "archive/angie-022"
+    }
   },
   "drv3.gonta-gokuhara": {
-    "defaultSprite": "archive/gonta-001"
+    "defaultSprite": "archive/gonta-001",
+    "expressions": {
+      "neutral": "archive/gonta-001",
+      "talking": "archive/gonta-002",
+      "happy": "archive/gonta-003",
+      "sad": "archive/gonta-018",
+      "angry": "archive/gonta-017",
+      "surprised": "archive/gonta-012",
+      "thinking": "archive/gonta-011",
+      "determined": "archive/gonta-015"
+    }
   },
   "drv3.himiko-yumeno": {
-    "defaultSprite": "archive/himiko-001"
+    "defaultSprite": "archive/himiko-001",
+    "expressions": {
+      "neutral": "archive/himiko-001",
+      "talking": "archive/himiko-011",
+      "happy": "archive/himiko-007",
+      "sad": "archive/himiko-017",
+      "angry": "archive/himiko-015",
+      "surprised": "archive/himiko-009",
+      "thinking": "archive/himiko-002",
+      "determined": "archive/himiko-004"
+    }
   },
   "drv3.k1-b0": {
-    "defaultSprite": "archive/keebo-001"
+    "defaultSprite": "archive/keebo-001",
+    "expressions": {
+      "neutral": "archive/keebo-001",
+      "talking": "archive/keebo-008",
+      "happy": "archive/keebo-020",
+      "sad": "archive/keebo-006",
+      "angry": "archive/keebo-014",
+      "surprised": "archive/keebo-012",
+      "thinking": "archive/keebo-013",
+      "determined": "archive/keebo-010"
+    }
   },
   "drv3.kaede-akamatsu": {
     "defaultSprite": "archive/kaede-001",
@@ -192,46 +556,179 @@
     }
   },
   "drv3.kaito-momota": {
-    "defaultSprite": "archive/kaito-001"
+    "defaultSprite": "archive/kaito-001",
+    "expressions": {
+      "neutral": "archive/kaito-001",
+      "talking": "archive/kaito-004",
+      "happy": "archive/kaito-006",
+      "sad": "archive/kaito-007",
+      "angry": "archive/kaito-005",
+      "surprised": "archive/kaito-015",
+      "thinking": "archive/kaito-008",
+      "determined": "archive/kaito-003"
+    }
   },
   "drv3.kirumi-tojo": {
-    "defaultSprite": "archive/kirumi-001"
+    "defaultSprite": "archive/kirumi-001",
+    "expressions": {
+      "neutral": "archive/kirumi-001",
+      "talking": "archive/kirumi-005",
+      "happy": "archive/kirumi-002",
+      "sad": "archive/kirumi-012",
+      "angry": "archive/kirumi-016",
+      "surprised": "archive/kirumi-011",
+      "thinking": "archive/kirumi-004",
+      "determined": "archive/kirumi-009"
+    }
   },
   "drv3.kokichi-oma": {
-    "defaultSprite": "archive/kokichi-001"
+    "defaultSprite": "archive/kokichi-001",
+    "expressions": {
+      "neutral": "archive/kokichi-001",
+      "talking": "archive/kokichi-002",
+      "happy": "archive/kokichi-003",
+      "sad": "archive/kokichi-013",
+      "angry": "archive/kokichi-016",
+      "surprised": "archive/kokichi-021",
+      "thinking": "archive/kokichi-008",
+      "determined": "archive/kokichi-015"
+    }
   },
   "drv3.korekiyo-shinguji": {
-    "defaultSprite": "archive/korekiyo-001"
+    "defaultSprite": "archive/korekiyo-001",
+    "expressions": {
+      "neutral": "archive/korekiyo-001",
+      "talking": "archive/korekiyo-002",
+      "happy": "archive/korekiyo-011",
+      "sad": "archive/korekiyo-018",
+      "angry": "archive/korekiyo-013",
+      "surprised": "archive/korekiyo-010",
+      "thinking": "archive/korekiyo-005",
+      "determined": "archive/korekiyo-006"
+    }
   },
   "drv3.maki-harukawa": {
-    "defaultSprite": "archive/maki-001"
+    "defaultSprite": "archive/maki-001",
+    "expressions": {
+      "neutral": "archive/maki-001",
+      "talking": "archive/maki-005",
+      "happy": "archive/maki-015",
+      "sad": "archive/maki-012",
+      "angry": "archive/maki-008",
+      "surprised": "archive/maki-024",
+      "thinking": "archive/maki-010",
+      "determined": "archive/maki-018"
+    }
   },
   "drv3.miu-iruma": {
-    "defaultSprite": "archive/miu-001"
+    "defaultSprite": "archive/miu-001",
+    "expressions": {
+      "neutral": "archive/miu-001",
+      "talking": "archive/miu-003",
+      "happy": "archive/miu-006",
+      "sad": "archive/miu-013",
+      "angry": "archive/miu-010",
+      "surprised": "archive/miu-008",
+      "thinking": "archive/miu-014",
+      "determined": "archive/miu-017"
+    }
   },
   "drv3.monodam": {
-    "defaultSprite": "archive/monodam-001"
+    "defaultSprite": "archive/monodam-001",
+    "expressions": {
+      "neutral": "archive/monodam-003",
+      "talking": "archive/monodam-001",
+      "angry": "archive/monodam-008",
+      "surprised": "archive/monodam-007",
+      "thinking": "archive/monodam-005",
+      "determined": "archive/monodam-010"
+    }
   },
   "drv3.monokid": {
-    "defaultSprite": "archive/monokid-001"
+    "defaultSprite": "archive/monokid-001",
+    "expressions": {
+      "neutral": "archive/monokid-002",
+      "talking": "archive/monokid-005",
+      "happy": "archive/monokid-003",
+      "angry": "archive/monokid-008",
+      "surprised": "archive/monokid-006",
+      "thinking": "archive/monokid-010",
+      "determined": "archive/monokid-001"
+    }
   },
   "drv3.monokuma": {
-    "defaultSprite": "fullbody/monokuma/monokuma/stand-020-000"
+    "defaultSprite": "fullbody/monokuma/monokuma/stand-020-000",
+    "expressions": {
+      "neutral": "fullbody/monokuma/monokuma/stand-020-000",
+      "talking": "fullbody/monokuma/monokuma/stand-020-013",
+      "happy": "fullbody/monokuma/monokuma/stand-020-004",
+      "sad": "fullbody/monokuma/monokuma/stand-020-007",
+      "angry": "fullbody/monokuma/monokuma/stand-020-002",
+      "surprised": "fullbody/monokuma/monokuma/stand-020-006",
+      "thinking": "fullbody/monokuma/monokuma/stand-020-010",
+      "determined": "fullbody/monokuma/monokuma/stand-020-005"
+    }
   },
   "drv3.monophanie": {
-    "defaultSprite": "archive/monophanie-001"
+    "defaultSprite": "archive/monophanie-001",
+    "expressions": {
+      "neutral": "archive/monophanie-001",
+      "talking": "archive/monophanie-002",
+      "happy": "archive/monophanie-006",
+      "sad": "archive/monophanie-010",
+      "surprised": "archive/monophanie-011",
+      "thinking": "archive/monophanie-004"
+    }
   },
   "drv3.monosuke": {
-    "defaultSprite": "archive/monosuke-001"
+    "defaultSprite": "archive/monosuke-001",
+    "expressions": {
+      "neutral": "archive/monosuke-002",
+      "talking": "archive/monosuke-001",
+      "happy": "archive/monosuke-007",
+      "angry": "archive/monosuke-006",
+      "surprised": "archive/monosuke-005",
+      "thinking": "archive/monosuke-003",
+      "determined": "archive/monosuke-004"
+    }
   },
   "drv3.monotaro": {
-    "defaultSprite": "archive/monotaro-001"
+    "defaultSprite": "archive/monotaro-001",
+    "expressions": {
+      "neutral": "archive/monotaro-002",
+      "talking": "archive/monotaro-005",
+      "happy": "archive/monotaro-008",
+      "sad": "archive/monotaro-012",
+      "surprised": "archive/monotaro-010",
+      "thinking": "archive/monotaro-004",
+      "determined": "archive/monotaro-007"
+    }
   },
   "drv3.rantaro-amami": {
-    "defaultSprite": "archive/rantaro-001"
+    "defaultSprite": "archive/rantaro-001",
+    "expressions": {
+      "neutral": "archive/rantaro-001",
+      "talking": "archive/rantaro-002",
+      "happy": "archive/rantaro-003",
+      "sad": "archive/rantaro-011",
+      "angry": "archive/rantaro-007",
+      "surprised": "archive/rantaro-014",
+      "thinking": "archive/rantaro-012",
+      "determined": "archive/rantaro-016"
+    }
   },
   "drv3.ryoma-hoshi": {
-    "defaultSprite": "archive/ryoma-001"
+    "defaultSprite": "archive/ryoma-001",
+    "expressions": {
+      "neutral": "archive/ryoma-001",
+      "talking": "archive/ryoma-010",
+      "happy": "archive/ryoma-003",
+      "sad": "archive/ryoma-014",
+      "angry": "archive/ryoma-013",
+      "surprised": "archive/ryoma-012",
+      "thinking": "archive/ryoma-005",
+      "determined": "archive/ryoma-011"
+    }
   },
   "drv3.shuichi-saihara": {
     "defaultSprite": "archive/shuichi-001",
@@ -247,21 +744,73 @@
     }
   },
   "drv3.tenko-chabashira": {
-    "defaultSprite": "archive/tenko-001"
+    "defaultSprite": "archive/tenko-001",
+    "expressions": {
+      "neutral": "archive/tenko-001",
+      "talking": "archive/tenko-005",
+      "happy": "archive/tenko-012",
+      "sad": "archive/tenko-008",
+      "angry": "archive/tenko-014",
+      "surprised": "archive/tenko-013",
+      "thinking": "archive/tenko-003",
+      "determined": "archive/tenko-004"
+    }
   },
   "drv3.tsumugi-shirogane": {
-    "defaultSprite": "archive/tsumugi-001"
+    "defaultSprite": "archive/tsumugi-001",
+    "expressions": {
+      "neutral": "archive/tsumugi-001",
+      "talking": "archive/tsumugi-003",
+      "happy": "archive/tsumugi-015",
+      "sad": "archive/tsumugi-009",
+      "angry": "archive/tsumugi-012",
+      "surprised": "archive/tsumugi-019",
+      "thinking": "archive/tsumugi-004",
+      "determined": "archive/tsumugi-006"
+    }
   },
   "udg.jataro-kemuri": {
-    "defaultSprite": "archive/jatarou-011"
+    "defaultSprite": "archive/jatarou-011",
+    "expressions": {
+      "neutral": "archive/jatarou-011",
+      "talking": "archive/jatarou-011"
+    }
   },
   "udg.komaru-naegi": {
-    "defaultSprite": "archive/komaru-001"
+    "defaultSprite": "archive/komaru-001",
+    "expressions": {
+      "neutral": "archive/komaru-001",
+      "talking": "archive/komaru-002",
+      "happy": "archive/komaru-022",
+      "sad": "archive/komaru-010",
+      "angry": "archive/komaru-024",
+      "surprised": "archive/komaru-007",
+      "thinking": "archive/komaru-020",
+      "determined": "archive/komaru-021"
+    }
   },
   "udg.nagisa-shingetsu": {
-    "defaultSprite": "archive/nagisa-001"
+    "defaultSprite": "archive/nagisa-001",
+    "expressions": {
+      "neutral": "archive/nagisa-001",
+      "talking": "archive/nagisa-002",
+      "happy": "archive/nagisa-008",
+      "sad": "archive/nagisa-013",
+      "angry": "archive/nagisa-014",
+      "surprised": "archive/nagisa-005",
+      "thinking": "archive/nagisa-007",
+      "determined": "archive/nagisa-004"
+    }
   },
   "udg.yuta-asahina": {
-    "defaultSprite": "archive/yuuta-001"
+    "defaultSprite": "archive/yuuta-001",
+    "expressions": {
+      "neutral": "archive/yuuta-001",
+      "talking": "archive/yuuta-004",
+      "happy": "archive/yuuta-002",
+      "sad": "archive/yuuta-003",
+      "angry": "archive/yuuta-005",
+      "determined": "archive/yuuta-005"
+    }
   }
 }

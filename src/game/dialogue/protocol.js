@@ -25,6 +25,13 @@
         if (Array.isArray(v.cast)) out.cast = v.cast.slice(0, 3).filter(c => c && typeof c === 'object')
           .map(c => ({id: id(c.id), sprite: id(c.sprite) || 'default'})).filter(c => c.id);
         if (Array.isArray(v.evidence)) out.evidence = v.evidence.slice(0, 60).map(evidence).filter(Boolean);
+        if (typeof v.summary === 'string') out.summary = text(v.summary, 2400);
+        if (Array.isArray(v.hotspots)) out.hotspots = v.hotspots.slice(0, 12).filter(h => h && typeof h === 'object')
+          .map(h => ({id: id(h.id), label: text(h.label, 80), action: text(h.action, 500),
+            kind: ['inspect', 'talk', 'go'].includes(h.kind) ? h.kind : 'inspect',
+            x: Number.isFinite(h.x) ? Math.max(4, Math.min(96, h.x)) : null,
+            y: Number.isFinite(h.y) ? Math.max(8, Math.min(92, h.y)) : null}))
+          .filter(h => h.id && h.label && h.action);
         return out;
       }
       case 'say':
@@ -42,6 +49,10 @@
         const item = evidence(v);
         return item ? {type: 'evidence', ...item} : null;
       }
+      case 'profile':
+        if (!id(v.id) || !Object.hasOwn(D.assets.characters, id(v.id))) return null;
+        return {type: 'profile', id: id(v.id), name: text(v.name, 100), talent: text(v.talent, 120),
+          facts: text(v.facts, 1200), relationship: text(v.relationship, 300)};
       default: return null;
     }
   }

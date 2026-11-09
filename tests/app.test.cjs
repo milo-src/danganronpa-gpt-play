@@ -37,6 +37,7 @@ async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope 
     setBusy(value) { this.busy = value; }
     setDiagnostics(value) { this.diagnostics = value; }
     setFormatIssue(value) { this.formatIssue = value; }
+    setNotes(value) { this.notes = typeof value === 'string' ? value : ''; }
   }
   const context = vm.createContext({
     setTimeout: callback => { const id = ++serial; tasks.set(id, callback); return id; },
@@ -58,6 +59,51 @@ async function harness(initialRoute = 'chat:a', initialStore = {}, initialScope 
     const current = [...tasks.values()]; tasks.clear(); current.forEach(cb => cb()); await tick();
   }};
 }
+test('personal notes are loaded and written only for the active chat', async () => {
+  const h = await harness('chat:a', {'dgp-notes:chat:a':'Первая версия','dgp-notes:chat:b':'Другая история'});
+  assert.equal(h.player.notes,'Первая версия');
+  await h.player.actions.onNotes('Исправленная версия');
+  assert.equal(h.store['dgp-notes:chat:a'],'Исправленная версия');
+  h.adapter.current='chat:b'; h.poll(); await tick(); await tick();
+  assert.equal(h.player.notes,'Другая история');
+  await h.player.actions.onNotes('Вторая заметка');
+  assert.equal(h.store['dgp-notes:chat:a'],'Исправленная версия');
+  assert.equal(h.store['dgp-notes:chat:b'],'Вторая заметка');
+});
+
+test('save continuation passes through transport intact and excessive input is rejected', async () => {
+  const h = await harness(); await h.toggle(true);
+  const text = 'Продолжить: ' + 'данные'.repeat(1000);
+  await h.player.actions.onDraft(text);
+  assert.equal(h.adapter.sent[0], text);
+  const h2 = await harness(); await h2.toggle(true);
+  await h2.player.actions.onDraft('x'.repeat(60001));
+  assert.equal(h2.adapter.sent, undefined);
+});
+
+test('sound stays opt-in, changes mode without overlapping timers, and stops on hide/dispose', async () => {
+  const timers = new Map(); let serial=0;
+  const param = () => ({value:0,setTargetAtTime(v){this.value=v},setValueAtTime(){},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}});
+  class Audio {
+    constructor(){this.state='suspended';this.currentTime=1;this.destination={};}
+    createGain(){return {gain:param(),connect(){},disconnect(){}};}
+    createOscillator(){return {frequency:param(),connect(){},disconnect(){},start(){},stop(){this.onended?.()}};}
+    async resume(){this.state='running';}
+    async close(){this.state='closed';}
+  }
+  const ctx=vm.createContext({DGP:{},AudioContext:Audio,setTimeout:cb=>{const id=++serial;timers.set(id,cb);return id;},clearTimeout:id=>timers.delete(id)});
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'../src/game/audio.js'),'utf8'),ctx);
+  const sound=new ctx.DGP.Sound(); sound.configure({sound:false},true,'daily');
+  assert.equal(sound.context,undefined); assert.equal(await sound.unlock(),true); assert.equal(timers.size,0);
+  sound.configure({sound:true},true,'daily'); assert.equal(timers.size,1);
+  sound.configure({},true,'daily'); assert.equal(timers.size,1);
+  sound.configure({},true,'trial'); assert.equal(sound.mode,'trial'); assert.equal(timers.size,1);
+  sound.configure({},false); assert.equal(timers.size,0); assert.equal(sound.music.gain.value,0);
+  sound.configure({},true,'investigation'); assert.equal(timers.size,1);
+  sound.dispose(); assert.equal(timers.size,0); assert.equal(sound.context.state,'closed');
+  assert.equal(await sound.unlock(),false); assert.equal(timers.size,0);
+});
+
 test('new chats default off; toggling disconnects message observation', async () => {
   const h = await harness(); assert.equal(h.player.enabled, false); assert.equal(h.adapter.started, false);
   assert.equal(h.adapter.reads, 0); await h.toggle(true); assert.equal(h.adapter.started, true);

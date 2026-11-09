@@ -9,11 +9,11 @@
   };
   const modes = {daily: 'ПОВСЕДНЕВНАЯ ЖИЗНЬ', investigation: 'РАССЛЕДОВАНИЕ', trial: 'КЛАССНЫЙ СУД'};
   class Player {
-    constructor({url, version = 'dev', onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry}) {
-      this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry};
+    constructor({url, version = 'dev', onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry, onNotes}) {
+      this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry, onNotes};
       this.version = version; this.busy = false; this.savedDrafts = [];
       this.lastDialogue = ''; this.lastCast = ''; this.animation = null; this.autoTimer = null;
-      this.settings = {speed: 22, auto: false, reduced: false}; this.enabled = false; this.collapsed = false;
+      this.settings = {speed: 22, auto: false, reduced: false, sound: false, musicVolume: .18, effectsVolume: .3}; this.enabled = false; this.collapsed = false;
       // Firefox can leave a previous content script's DOM behind on add-on reload.
       for (const previous of document.querySelectorAll('#dgp-extension-root')) {
         previous.dispatchEvent(new Event('dgp-dispose'));
@@ -67,7 +67,7 @@
       const compose = el('div', 'game-compose');
       const inputLabel = this.inputLabel = el('label', 'input-label', 'Твоё действие или реплика');
       this.input = el('textarea', 'action-input'); this.input.id = 'dgp-action';
-      this.input.rows = 2; this.input.maxLength = 3000;
+      this.input.rows = 2; this.input.maxLength = 60000;
       this.input.placeholder = 'Опиши своё действие или напиши реплику от лица своего героя…';
       inputLabel.htmlFor = this.input.id;
       this.sendButton = this.button('Отправить ▸', () => this.actions.onDraft(this.input.value), 'send-action');
@@ -101,10 +101,12 @@
       });
       this.panel.tabIndex = -1;
       this.panel.addEventListener('focusout', () => this.scheduleAuto());
-      this.onVisibility = () => this.scheduleAuto();
+      D.installExtras?.(this, controls);
+      this.onVisibility = () => { this.scheduleAuto(); this.extras?.syncSound(); };
       document.addEventListener('visibilitychange', this.onVisibility);
       this.host.addEventListener('dgp-dispose', () => {
         this.stopTyping(); clearTimeout(this.autoTimer);
+        this.extras?.dispose();
         document.removeEventListener('visibilitychange', this.onVisibility);
       }, {once: true});
       this.drawSettings();
@@ -119,6 +121,7 @@
       this.launch.setAttribute('aria-pressed', String(value));
       this.host.classList.toggle('enabled', value);
       this.backdrop.hidden = !value;
+      this.extras?.syncSound();
       if (!value) { this.stopTyping(); clearTimeout(this.autoTimer); }
       else this.panel.focus({preventScroll: true});
     }
@@ -126,6 +129,7 @@
       if (!value) this.draftHelp.hidden = true;
       this.collapsed = value; this.panel.hidden = value || !this.enabled;
       this.backdrop.hidden = value || !this.enabled;
+      this.extras?.syncSound();
       this.launch.textContent = value ? 'RONPA · ОТКРЫТЬ' : (this.enabled ? 'RONPA · ВКЛ' : 'RONPA · ВЫКЛ');
       this.scheduleAuto();
       if (!value) { this.actions.onExpand?.(); if (!this.collapsed) this.panel.focus({preventScroll: true}); }
@@ -155,10 +159,11 @@
       this.repairButton.disabled = value;
       for (const button of this.choices.querySelectorAll('button')) button.disabled = value;
       for (const button of this.drawer.querySelectorAll('.evidence-card button')) button.disabled = value;
+      for (const button of this.drawer.querySelectorAll('.game-action')) button.disabled = value;
     }
     setDiagnostics(data) {
       this.diagnostics = data;
-      if (this.drawerName === 'settings' && !this.drawer.hidden) this.drawSettings();
+      if (this.drawerName === 'settings' && !this.drawer.hidden && !this.drawer.contains(this.shadow.activeElement)) this.drawSettings();
     }
     setFormatIssue(value) { this.repairButton.hidden = !value; }
     showDraftHelp(text, reason) {
@@ -181,8 +186,10 @@
     }
     setSettings(settings) {
       this.settings = {...this.settings, ...settings}; this.panel.classList.toggle('reduced', this.settings.reduced);
+      this.extras?.syncSound();
       this.drawSettings(); this.scheduleAuto();
     }
+    setNotes(notes) { this.notes = typeof notes === 'string' ? notes.slice(0, 8000) : ''; }
     drawSettings() {
       this.settingsBody = el('div');
       const speedLabel = el('label', 'setting', 'Скорость текста'); const speed = el('select');
@@ -198,6 +205,7 @@
       this.settingsBody.append(this.button('Повторить последний ответ', this.actions.onReplay),
         this.button('Перечитать сообщения', this.actions.onExpand),
         el('p', 'hint', 'Space / → — далее. Действие пиши в поле игры. Enter отправляет, Shift+Enter добавляет строку. Нажатие варианта отправляет выбранное действие. Esc — открыть чат.'));
+      if (this.extras) this.settingsBody.append(this.extras.settings());
       const info = this.diagnostics;
       this.settingsBody.append(el('p', 'diagnostics', `Версия ${this.version}. ` + (info ?
         `Ответов на странице: ${info.assistantCount}. Команд: ${info.events}. Ошибок формата: ${info.invalid}. Поле ввода: ${info.composer ? 'найдено' : 'не найдено'}. Блоков без разметки автора: ${info.fallbackCount || 0}.` : 'Ожидание чтения страницы.')));
@@ -215,12 +223,20 @@
       else if (!bg) { this.background.removeAttribute('src'); this.background.hidden = true; this.background.dataset.path = ''; }
       const castKey = JSON.stringify([state.cast, state.dialogue?.who]);
       if (castKey !== this.lastCast) {
+        const previousActors = new Set(Array.from(this.cast.children).map(n => n.dataset.character));
+        const departures = Array.from(this.cast.children).filter(n => !n.classList.contains('leaving') && !state.cast.some(c => c.id === n.dataset.character));
+        for (const old of departures) {
+          old.style.left = old.offsetLeft + 'px'; old.style.width = old.offsetWidth + 'px';
+          old.style.position = 'absolute'; old.style.margin = '0'; old.classList.add('leaving'); old.setAttribute('aria-hidden', 'true');
+        }
         this.lastCast = castKey; this.cast.replaceChildren();
         for (const c of state.cast) {
           const asset = Object.hasOwn(D.assets.characters, c.id) ? D.assets.characters[c.id] : null;
           if (!asset) continue;
           const sprite = D.resolveSprite(c.id, c.sprite, state.dialogue?.who === c.id);
           const figure = el('figure', 'actor' + (state.dialogue?.who === c.id ? ' speaking' : ''));
+          figure.dataset.character = c.id;
+          if (!previousActors.has(c.id)) figure.classList.add('entering');
           figure.dataset.sprite = sprite.key;
           let image;
           if (sprite.bounds) {
@@ -241,6 +257,7 @@
           image.addEventListener('error', () => { figure.hidden = true; this.notice(`Не загрузился спрайт: ${asset.name}.`); });
           this.cast.append(figure);
         }
+        for (const old of departures) { this.cast.append(old); setTimeout(() => old.remove(), 220); }
       }
       this.welcome.hidden = !!state.dialogue || state.choices.length > 0;
       this.dialogue.hidden = !state.dialogue && !state.choices.length;
@@ -261,7 +278,8 @@
       this.nextButton.hidden = !!state.menu; this.backButton.hidden = !!state.menu;
       this.nextButton.disabled = !meta.pending && !this.animation;
       this.nextButton.textContent = meta.pending ? 'Далее ▸' : this.animation ? 'Показать текст ▸' : state.choices.length ? 'Выбери действие выше' : 'Твой ход';
-      if (!this.drawer.hidden) this.renderDrawer();
+      this.extras?.update();
+      if (!this.drawer.hidden && !this.drawer.contains(this.shadow.activeElement)) this.renderDrawer();
       this.scheduleAuto();
       this.setBusy(this.busy);
     }
@@ -272,6 +290,7 @@
       this.animation = setInterval(() => {
         pos = Math.min(chars.length, pos + Math.max(1, Math.ceil(chars.length / 450)));
         this.text.textContent = chars.slice(0, pos).join('');
+        this.extras?.sound.effect('type');
         if (pos === chars.length) { this.stopTyping(); this.nextButton.disabled = !this.meta?.pending; this.scheduleAuto(); }
       }, this.settings.speed);
     }
@@ -291,6 +310,7 @@
     playEffect(effect) {
       this.stage.classList.remove('shake', 'flash'); this.effect.textContent = '';
       if (effect === 'objection') this.effect.textContent = 'ВОЗРАЖЕНИЕ!';
+      if (effect === 'objection') this.extras?.sound.effect('objection');
       if (this.settings.reduced || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (effect === 'shake' || effect === 'flash') {
         void this.stage.offsetWidth; this.stage.classList.add(effect);
@@ -304,9 +324,11 @@
     renderDrawer() {
       const name = this.drawerName;
       this.drawer.replaceChildren(this.button('Закрыть ×', () => { this.drawer.hidden = true; this.scheduleAuto(); }, 'close-drawer'),
-        el('h2', '', {evidence: 'Улики / Truth Bullets', history: 'Журнал', settings: 'Настройки'}[name]));
+        el('h2', '', {evidence: 'Улики / Truth Bullets', history: 'Журнал', settings: 'Настройки', inspect: 'Осмотр сцены', handbook: 'Электронный справочник', save: 'Сохранение и продолжение', trial: 'Предъявить противоречие'}[name]));
+      if (this.extras?.render(name)) { this.setBusy(this.busy); return; }
       if (name === 'settings') this.drawer.append(this.settingsBody);
       if (name === 'evidence') {
+        if (this.extras) this.drawer.append(this.button('Связать улику с утверждением', () => this.toggleDrawer('trial')));
         const items = this.currentState?.evidence || [];
         if (!items.length) this.drawer.append(el('p', '', 'Улики появятся по мере расследования.'));
         for (const item of items) {
@@ -328,6 +350,7 @@
       this.stopTyping(); clearTimeout(this.autoTimer); this.lastDialogue = ''; this.lastCast = '';
       this.input.value = ''; this.drawer.hidden = true; this.draftHelp.hidden = true; this.effect.textContent = ''; this.background.dataset.path = '';
       this.repairButton.hidden = true; this.retryButton.hidden = true; this.diagnostics = null; this.setBusy(false);
+      this.extras?.reset();
     }
   }
   D.Player = Player;

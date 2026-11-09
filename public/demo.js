@@ -2,7 +2,7 @@
   const base = new URL('../', location.href);
   const memory = {};
   globalThis.browser = {
-    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.3.6 · ДЕМО'}), onMessage: {addListener() {}}},
+    runtime: {getURL: path => new URL(path, base).href, getManifest: () => ({version: '0.4.0 · ДЕМО'}), onMessage: {addListener() {}}},
     storage: {local: {
       async get(key) {
         if (key.startsWith('dgp-session:')) return {[key]: {enabled: true}};
@@ -65,7 +65,17 @@
     {type: 'say', who: '', name: 'Рассказчик', text: 'Ты выходишь из класса. В холле никого нет; Каэдэ осталась за дверью.'},
     {type: 'choices', items: [{label: 'Осмотреть холл', text: 'Осматриваю холл.'}]}
   ];
-  add(params.has('empty-room') ? emptyRoomDemo : params.has('sprites') ? spriteDemo : params.has('menu') ? setup : opening);
+  const featureScene = {...scene, player: {id: 'dr1.makoto-naegi', name: 'Макото Наэги'}, cast: [{id: 'dr1.kyoko-kirigiri', sprite:'thinking'}],
+    summary: 'Макото и Кёко осматривают класс. Игрок нашёл записку с исправленным временем. Канонические спойлеры запрещены.',
+    hotspots: [{id:'desk',label:'Стол с запиской',action:'Осматриваю стол и сравниваю чернила на записке.',kind:'inspect',x:25,y:70},
+      {id:'door',label:'Дверь класса',action:'Проверяю дверь класса.',kind:'go',x:85,y:45}],
+    evidence: [{id:'note',title:'Записка со временем',description:'18:00 исправлено на 19:00 другими чернилами.'}]};
+  const featureDemo = [featureScene,
+    {type:'profile',id:'dr1.kyoko-kirigiri',name:'Кёко Киригири',talent:'',facts:'Осматривает класс вместе с тобой. Заметила разные чернила.',relationship:'Вы договорились сравнить наблюдения.'},
+    {type:'say',who:'dr1.kyoko-kirigiri',name:'Кёко Киригири',sprite:'thinking',text:'На первый взгляд здесь указано 18:00. Но прежде чем сделать вывод, сравни чернила на столе.'},
+    {type:'choices',items:[{label:'Проверить записку',text:'Сравниваю цифры на записке.'}]}];
+  add(params.has('features') ? featureDemo : params.has('empty-room') ? emptyRoomDemo : params.has('sprites') ? spriteDemo : params.has('menu') ? setup : opening);
+  document.getElementById('features-demo').addEventListener('click', () => add(featureDemo));
   document.getElementById('sprites-demo').addEventListener('click', () => add(spriteDemo));
   document.getElementById('stream-demo').addEventListener('click', () => add([
     {...scene, cast: [{id: 'dr1.kyoko-kirigiri', sprite: 'default'}], evidence: [{id: 'note', title: 'Записка на столе', description: 'Время встречи исправлено другим почерком.'}]},
@@ -94,6 +104,9 @@
     document.getElementById('demo-status').textContent = 'Локальное действие принято. Это демо, запросы в ChatGPT не отправляются.';
     const p = document.createElement('p'); p.dataset.messageAuthorRole = 'user'; p.textContent = (input.innerText || input.textContent);
     document.getElementById('conversation').append(p); input.replaceChildren();
-    document.getElementById('stream-demo').click();
+    if (params.has('features')) add([featureScene,
+      {type:'say',who:'dr1.kyoko-kirigiri',name:'Кёко Киригири',sprite:'determined',text:'Да, исходная запись была исправлена на 19:00. Это наблюдение следует сохранить. (Локальная демонстрация.)'},
+      {type:'choices',items:[{label:'Проверить дверь',text:'Проверяю дверь класса.'}]}]);
+    else document.getElementById('stream-demo').click();
   });
 })();

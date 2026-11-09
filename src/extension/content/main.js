@@ -9,7 +9,7 @@
   let manualChoice = false, handoff = null, checkingHandoff = false;
   let scope = adapter.scope();
   const handoffKey = 'dgp-start-handoff';
-  let settings = {speed: 22, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches};
+  let settings = {speed: 22, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches, sound: false, musicVolume: .18, effectsVolume: .3};
   let lastRead = {messages: [], streaming: false, invalid: 0, assistantCount: 0};
   let disposed = false, routePoll, sending = false, sendGeneration = 0, awaitingReply = null;
   const url = path => api.runtime.getURL(path);
@@ -54,11 +54,13 @@
       player.notice('Твой черновик восстановлен в поле игры.');
     },
     onSettings: patch => { settings = {...settings, ...patch}; player.setSettings(settings); storageSet('dgp-settings', settings); },
+    onNotes: text => storageSet('dgp-notes:' + route, String(text).slice(0, 8000)),
     onRetry: () => player.actions.onDraft(player.input.value, {retry: true}),
     onDraft: async (text, {retry = false} = {}) => {
       if (disposed) return;
       if (adapter.route() !== route) { await switchRoute(); return; }
-      const value = String(text || '').trim().slice(0, 3000);
+      const value = String(text || '').trim();
+      if (value.length > 60000) { player.notice('Сообщение превышает 60 000 символов. Сохрани контекст в файл и прикрепи его к чату.'); return; }
       if (!value) { player.notice('Сначала напиши действие или выбери вариант.'); return; }
       if (sending || awaitingReply || lastRead.streaming) { player.notice('Дождись ответа ChatGPT на предыдущее действие.'); return; }
       const generation = ++sendGeneration, targetRoute = route;
@@ -177,8 +179,10 @@
     player.reset(); enabled = false;
     lastRead = {messages: [], streaming: false, invalid: 0, assistantCount: 0}; player.setEnabled(false);
     const saved = await storageGet(keyFor(route));
+    const notes = await storageGet('dgp-notes:' + route);
     handoff = await storageGet(handoffKey);
     if (version !== routeVersion) return;
+    player.setNotes?.(notes);
     resume = saved?.cursor || '';
     manualChoice = saved?.manual === true;
     if (transfer) await storageSet(keyFor(previousRoute), {enabled: false, cursor: '', updated: Date.now()});
@@ -205,12 +209,16 @@
     const savedSettings = await storageGet('dgp-settings');
     if (savedSettings) {
       settings = {...settings, speed: [0, 12, 22, 40].includes(savedSettings.speed) ? savedSettings.speed : 22,
-        auto: savedSettings.auto === true, reduced: savedSettings.reduced === true};
+        auto: savedSettings.auto === true, reduced: savedSettings.reduced === true, sound: savedSettings.sound === true,
+        musicVolume: Number.isFinite(savedSettings.musicVolume) ? Math.max(0, Math.min(1, savedSettings.musicVolume)) : .18,
+        effectsVolume: Number.isFinite(savedSettings.effectsVolume) ? Math.max(0, Math.min(1, savedSettings.effectsVolume)) : .3};
     }
     player.setSettings(settings);
     const session = await storageGet(keyFor(route));
+    const notes = await storageGet('dgp-notes:' + route);
     handoff = await storageGet(handoffKey);
     if (version !== routeVersion) return;
+    player.setNotes?.(notes);
     resume = session?.cursor || '';
     manualChoice = session?.manual === true;
     await toggle(session?.enabled === true, false);

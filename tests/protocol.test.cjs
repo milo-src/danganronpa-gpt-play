@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 function load() {
   const context = vm.createContext({});
-  for (const file of ['src/data/runtime-assets.js', 'src/game/dialogue/protocol.js', 'src/game/scene/timeline.js']) {
+  for (const file of ['src/data/runtime-assets.js', 'src/game/dialogue/protocol.js', 'src/game/scene/timeline.js', 'src/game/features.js']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '..', file), 'utf8'), context);
   }
   return context.DGP;
@@ -15,6 +15,82 @@ const plain = v => JSON.parse(JSON.stringify(v));
 const say = text => ({type: 'say', who: 'dr1.kyoko-kirigiri', text});
 const parse = events => D.protocol.parse(events.map(e => 'DGP|' + JSON.stringify(e)).join('\n')).events;
 const message = (events, id = 'message-1') => ({id, events: parse(events)});
+
+test('all character packs have verified neutral and speech poses without missing files', () => {
+  assert.equal(Object.keys(D.assets.characters).length, 65);
+  for (const [id, c] of Object.entries(D.assets.characters)) {
+    assert.ok(c.expressions.neutral && c.expressions.talking, id);
+    for (const key of Object.values(c.expressions)) assert.ok(c.sprites[key], id + ':' + key);
+  }
+  assert.match(D.resolveSprite('dr2.fuyuhiko-kuzuryu', 'angry').key, /nopatch/);
+  assert.equal(D.resolveSprite('dr1.alter-ego', 'happy').key, 'app/alteregoface02');
+});
+
+test('hotspots reject unusable actions, constrain coordinates, and disappear on moving rooms', () => {
+  const scene = D.protocol.normalize({type:'scene',location:'Класс',hotspots:[null,{},
+    {id:'door',label:'Дверь',action:'Осматриваю дверь',kind:'bad',x:900,y:-2},
+    {id:'desk',label:'Стол',action:'Осматриваю стол',x:'50',y:null}]});
+  assert.equal(scene.hotspots.length, 2);
+  assert.deepEqual(plain(scene.hotspots[0]), {id:'door',label:'Дверь',action:'Осматриваю дверь',kind:'inspect',x:96,y:8});
+  assert.equal(scene.hotspots[1].x, null);
+  const t = new D.Timeline(); t.update([message([scene,say('Оглянись.'),{type:'scene',location:'Холл'},say('Новая комната.')])]);
+  assert.equal(t.state().hotspots.length, 2); t.next(); assert.equal(t.state().hotspots.length, 0);
+  t.back(); assert.equal(t.state().hotspots.length, 2);
+});
+
+test('handbook, evidence and save contain only read facts, including when rewinding', () => {
+  const t = new D.Timeline(); t.update([message([
+    {type:'scene',location:'Класс',player:{id:'dr1.makoto-naegi',name:'Макото'},cast:[{id:'dr1.kyoko-kirigiri'}],summary:'Мы в классе.'},
+    {type:'profile',id:'dr1.kyoko-kirigiri',name:'Кёко',facts:'Знакомство'},say('Привет.'),
+    {type:'profile',id:'dr1.kyoko-kirigiri',name:'Кёко',facts:'Новый факт'},
+    {type:'evidence',id:'secret',title:'Новая улика',description:'Пока не прочитано'},say('Новый факт')
+  ])]);
+  const save = () => D.features.snapshot(t.state(), t.entries.slice(0,t.cursor+1).filter(x=>x.event.type==='say').map(x=>x.event),'Моя версия');
+  const initial = save(); assert.equal(initial.profiles[0].facts, 'Знакомство');
+  assert.equal(initial.scene.evidence.length, 0); assert.doesNotMatch(JSON.stringify(initial), /Новый факт|Пока не прочитано/);
+  assert.equal(initial.scene.profiles, undefined); assert.equal(initial.scene.dialogue, undefined);
+  t.next(); assert.equal(save().profiles[0].facts, 'Новый факт'); assert.equal(save().scene.evidence.length,1);
+  t.back(); assert.equal(save().scene.evidence.length,0);
+  const copy = D.features.readSave(JSON.stringify(initial)); assert.deepEqual(plain(copy),plain(initial));
+  const prompt = D.features.continuation(copy); assert.match(prompt,/Моя версия/); assert.match(prompt,/Не начинай заново/);
+});
+
+test('profile validation rejects unknown identities and limits revealed text', () => {
+  assert.equal(D.protocol.normalize({type:'profile',id:'__proto__'}),null);
+  assert.equal(D.protocol.normalize({type:'profile',id:'unknown'}),null);
+  const p = D.protocol.normalize({type:'profile',id:'dr1.kyoko-kirigiri',facts:'a'.repeat(3000),relationship:'b'.repeat(500)});
+  assert.equal(p.facts.length,1200); assert.equal(p.relationship.length,300);
+});
+
+test('save import validates schema, asset IDs and size; does not execute arbitrary data', () => {
+  const good = D.features.snapshot({...new D.Timeline().state(),location:'Класс'},[], 'notes');
+  for (const value of ['', '{}', 'null', '{bad}', JSON.stringify({...good,version:9}),JSON.stringify({...good,scene:{type:'scene'}}),'x'.repeat(1000001)]) {
+    assert.throws(()=>D.features.readSave(value));
+  }
+  assert.throws(()=>D.features.readSave(JSON.stringify({...good,scene:{...good.scene,background:'https://outside/'}})));
+  const cleaned = D.features.readSave(JSON.stringify({...good,profiles:[null,{}, {id:'__proto__'}],history:[null,{}],scene:{...good.scene,cast:[{id:'__proto__'}]}}));
+  assert.equal(cleaned.profiles.length,0); assert.equal(cleaned.history.length,0); assert.equal(cleaned.scene.cast.length,0);
+  assert.throws(()=>D.features.continuation({...good,notes:'x'.repeat(60001)}),/60 000/);
+});
+
+test('a fully populated maximum-size exported save can be imported again', () => {
+  const state = {...new D.Timeline().state(),location:'Класс',
+    evidence:Array.from({length:60},(_,i)=>({id:String(i),title:'"'.repeat(100),description:'"'.repeat(1200)})),
+    profiles:Object.keys(D.assets.characters).map(id=>({id,name:'"'.repeat(100),talent:'"'.repeat(120),facts:'"'.repeat(1200),relationship:'"'.repeat(300)}))};
+  const history=Array.from({length:60},()=>({who:'dr1.kyoko-kirigiri',name:'"'.repeat(100),text:'"'.repeat(2000)}));
+  const exported=D.features.snapshot(state,history,'"'.repeat(8000));
+  const raw=JSON.stringify(exported,null,2);
+  assert.ok(raw.length>250000); assert.ok(Buffer.byteLength(raw)<2000000);
+  const imported=D.features.readSave(raw);
+  assert.equal(imported.history.length,60); assert.equal(imported.profiles.length,65); assert.equal(imported.scene.evidence.length,60);
+});
+
+test('objection ties the actual statement and evidence to the player explanation', () => {
+  const line = {name:'Кёко',text:'Встреча в 18:00.'}, evidence={id:'note',title:'Записка',description:'Исправлено на 19:00.'};
+  assert.throws(()=>D.features.objection(line,evidence,' '));
+  const result = D.features.objection(line,evidence,'Чернила отличаются.');
+  for (const text of ['Встреча в 18:00.','Записка','note','Исправлено на 19:00.','Чернила отличаются.','не засчитывай']) assert.ok(result.includes(text));
+});
 
 test('moving to a room without a cast clears previous inhabitants and rewinds correctly', () => {
   const t = new D.Timeline();
@@ -85,7 +161,8 @@ test('legacy default uses a talking pose only for the speaker; semantic poses ar
   assert.equal(D.resolveSprite('drv3.shuichi-saihara', 'happy', true).key, 'archive/shuichi-013');
   assert.equal(D.resolveSprite('drv3.kaede-akamatsu', 'https://untrusted/image').key, 'archive/kaede-001');
   assert.equal(D.resolveSprite('__proto__', 'default'), null);
-  assert.equal(D.resolveSprite('dr2.akane-owari', 'thinking').key, D.assets.characters['dr2.akane-owari'].defaultSprite);
+  assert.equal(D.resolveSprite('dr2.akane-owari', 'thinking').key, 'archive/akane-007');
+  assert.equal(D.resolveSprite('custom.yasuke-matsuda', 'angry').key, D.assets.characters['custom.yasuke-matsuda'].defaultSprite);
 });
 
 test('expressions follow each visible line and rewind without resetting unspecified scene poses', () => {
@@ -216,7 +293,8 @@ test('full scene snapshot clears stale cast and evidence; narrator keeps current
 test('instructions example parses and all referenced assets exist', () => {
   const prompt = fs.readFileSync(path.join(__dirname, '../instructions/CHATGPT_PROJECT_INSTRUCTIONS.txt'), 'utf8');
   const example = prompt.split('```dgp\n').at(-1).split('```')[0];
-  const parsed = D.protocol.parse(example); assert.equal(parsed.invalid, 0); assert.equal(parsed.events.length, 4);
+  const parsed = D.protocol.parse(example); assert.equal(parsed.invalid, 0); assert.equal(parsed.events.length, 1);
+  assert.ok(prompt.replaceAll('\n','\r\n').length < 8000);
   for (const e of parsed.events) {
     if (e.background) assert.ok(Object.hasOwn(D.assets.backgrounds, e.background));
     if (e.who) assert.ok(Object.hasOwn(D.assets.characters, e.who));

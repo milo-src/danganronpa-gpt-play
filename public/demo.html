@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Danganronpa GPT Play — демо</title><link rel="stylesheet" href="demo.css"></head>
 <body>
-<header><strong>GPT PLAY · ДЕМО</strong><button id="stream-demo">Потоковый ответ</button><button id="trial-demo">Сцена суда</button><button id="sprites-demo">Эмоции персонажей</button><button id="broken-demo">Неверный формат</button><button id="reset-demo">Сброс</button></header>
+<header><strong>GPT PLAY · ДЕМО</strong><button id="features-demo">Осмотр и справочник</button><button id="stream-demo">Потоковый ответ</button><button id="trial-demo">Сцена суда</button><button id="sprites-demo">Эмоции персонажей</button><button id="broken-demo">Неверный формат</button><button id="reset-demo">Сброс</button></header>
 <main id="conversation"><h1>Проверка без ChatGPT</h1><p>Тот же интерфейс расширения, локальный тестовый диалог. Модель не подключена.</p></main>
 <form id="demo-form"><label id="composer-label">Обычное поле чата (демонстрация)</label><div id="prompt-textarea" contenteditable="true" role="textbox" aria-labelledby="composer-label" aria-multiline="true"></div><button type="submit" data-testid="send-button">Отправить</button><span id="demo-status" role="status"></span></form>
 <script src="../src/data/runtime-assets.js"></script>
 <script src="../src/game/dialogue/protocol.js"></script>
 <script src="../src/game/scene/timeline.js"></script>
 <script src="../src/adapters/chatgpt/adapter.js"></script>
-<script src="../src/ui/components/player.js"></script>
+<script src="../src/game/features.js"></script><script src="../src/game/audio.js"></script><script src="../src/ui/components/extras.js"></script><script src="../src/ui/components/player.js"></script>
 <script src="demo.js"></script>
 <script src="../src/extension/content/main.js"></script>
 </body></html>

@@ -7,7 +7,14 @@
     return (value >>> 0).toString(16);
   };
   const empty = () => ({background: '', location: 'Начало истории', chapter: 'DANGANRONPA', mode: 'daily',
-    objective: '', cast: [], castExplicit: false, player: null, evidence: [], dialogue: null, choices: []});
+    objective: '', cast: [], castExplicit: false, player: null, evidence: [], dialogue: null, choices: [],
+    hotspots: [], profiles: [], summary: ''});
+  function meet(state, id, name = '') {
+    if (!id || id === state.player?.id || !Object.hasOwn(D.assets.characters, id)) return;
+    const existing = state.profiles.find(p => p.id === id);
+    if (!existing) state.profiles.push({id, name: name || D.assets.characters[id].name, talent: '', facts: '', relationship: ''});
+    else if (name) existing.name = name;
+  }
   function apply(state, event) {
     if (event.type === 'scene') {
       const moved = ('location' in event && event.location !== state.location) ||
@@ -15,23 +22,28 @@
           (!event.background || Object.hasOwn(D.assets.backgrounds, event.background)));
       // A different room does not inherit the previous room's inhabitants.
       // Explicit cast (including []) is authoritative until the next scene update.
-      if (moved) { state.cast = []; state.castExplicit = false; state.dialogue = null; }
+      if (moved) { state.cast = []; state.castExplicit = false; state.dialogue = null; state.hotspots = []; }
       if ('cast' in event) state.castExplicit = true;
       if ('player' in event) state.player = event.player;
-      for (const key of ['background', 'location', 'chapter', 'mode', 'objective', 'cast', 'evidence']) {
+      for (const key of ['background', 'location', 'chapter', 'mode', 'objective', 'cast', 'evidence', 'hotspots', 'summary']) {
         if (!(key in event)) continue;
         if (key === 'background' && event[key] && !Object.hasOwn(D.assets.backgrounds, event[key])) continue;
         state[key] = event[key];
       }
       if (state.player?.id) state.cast = state.cast.filter(c => c.id !== state.player.id);
+      for (const c of state.cast) meet(state, c.id);
       state.choices = [];
     } else if (event.type === 'say') {
       state.dialogue = event; state.choices = [];
+      meet(state, event.who, event.name);
       if (event.who && event.who !== state.player?.id && Object.hasOwn(D.assets.characters, event.who)) {
         const found = state.cast.some(c => c.id === event.who);
         state.cast = found ? state.cast.map(c => c.id === event.who ? {...c, sprite: event.sprite || c.sprite} : c)
           : state.castExplicit ? state.cast : [{id: event.who, sprite: event.sprite || 'default'}];
       }
+    } else if (event.type === 'profile') {
+      meet(state, event.id, event.name);
+      state.profiles = state.profiles.map(p => p.id === event.id ? {...p, ...event, name: event.name || p.name} : p);
     } else if (event.type === 'choices') state.choices = event.items;
     else if (event.type === 'evidence') {
       state.evidence = state.evidence.filter(e => e.id !== event.id);
