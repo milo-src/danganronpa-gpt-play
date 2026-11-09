@@ -4,6 +4,17 @@
   const text = (value, max) => typeof value === 'string' ? value.slice(0, max) : '';
   function snapshot(state, history = [], notes = '') {
     const scene = D.protocol.normalize({type: 'scene', ...state});
+    const freezePose = (c, speaking) => ({...c, sprite: D.resolveSprite(c.id, c.sprite, speaking, c.spriteSeed)?.key || c.sprite});
+    if (scene.cast) scene.cast = scene.cast.map(c => freezePose({...c,
+      spriteSeed: state.cast.find(source => source.id === c.id)?.spriteSeed}, state.dialogue?.who === c.id));
+    if (scene.player) {
+      const speaking = state.dialogue?.who === state.player.id;
+      const hero = {...scene.player, spriteSeed: state.player.spriteSeed};
+      if (speaking) { hero.sprite = state.dialogue.sprite || hero.sprite; hero.spriteSeed = state.dialogue.spriteSeed; }
+      scene.player = freezePose(hero, speaking);
+    }
+    // Only concrete keys go into the portable scene; internal seeds stay local.
+    for (const c of [...(scene.cast || []), scene.player].filter(Boolean)) delete c.spriteSeed;
     return {format: 'dgp-save', version: 1, created: new Date().toISOString(), scene,
       profiles: (state.profiles || []).map(p => D.protocol.normalize({...p, type: 'profile'})).filter(Boolean),
       history: history.slice(-60).map(p => D.protocol.normalize({...p, type: 'say'})).filter(Boolean),

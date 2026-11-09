@@ -1,6 +1,7 @@
 // Regenerate the committed runtime catalog and the model's asset reference.
 const fs = require('node:fs');
 const path = require('node:path');
+const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '..');
 const read = p => JSON.parse(fs.readFileSync(path.join(root, p), 'utf8'));
 const characters = {};
@@ -9,9 +10,16 @@ const bounds = read('src/data/sprite-bounds.json');
 for (const entry of read('src/data/characters.json').characters) {
   const manifest = read('public/' + entry.manifest);
   const direction = directions[entry.id] || {};
+  const expressionPools = Object.fromEntries(Object.entries(direction.expressions || {}).map(([emotion, key]) =>
+    [emotion, direction.expressionPools?.[emotion] || [key]]));
+  for (const [emotion, keys] of Object.entries(expressionPools)) {
+    assert.ok(Array.isArray(keys) && keys.length && new Set(keys).size === keys.length, `${entry.id}: ${emotion}`);
+    assert.equal(keys[0], direction.expressions[emotion], `${entry.id}: preserve fallback pose`);
+    for (const key of keys) assert.ok(manifest.sprites[key] && bounds[entry.id]?.[key], `${entry.id}: missing ${key}`);
+  }
   characters[entry.id] = {
     name: entry.name, defaultSprite: direction.defaultSprite || manifest.defaultSprite,
-    expressions: direction.expressions || {}, bounds: bounds[entry.id] || {},
+    expressions: direction.expressions || {}, expressionPools, bounds: bounds[entry.id] || {},
     sprites: Object.fromEntries(Object.entries(manifest.sprites).map(([key, file]) => [key, 'public/' + file]))
   };
 }
@@ -24,13 +32,13 @@ fs.writeFileSync(path.join(root, 'src/data/runtime-assets.js'),
 const lines = [
   'DANGANRONPA GPT PLAY — ДОСТУПНЫЕ РЕСУРСЫ',
   'Используй только точные ID из этого файла. Пути и URL в ответы не вставляй.',
-  'sprite: default, neutral, talking, happy, sad, angry, surprised, thinking, determined либо точный ключ. Доступные эмоции указаны у персонажа; остальные дают базовую позу.',
+  'sprite: neutral/talking/happy/sad/angry/surprised/thinking/determined. Пиши только эмоцию: плагин сам выберет случайную подходящую позу персонажа.',
   'У неизвестного персонажа будет только имя и текст. У неизвестного фона сохранится предыдущий фон.',
   'UDG и Danganronpa S: проверенных фонов нет. Не выдавай другой фон за оригинальную локацию этих игр.',
   '', 'ПЕРСОНАЖИ'
 ];
 for (const [id, c] of Object.entries(characters)) {
-  lines.push(`${id} | ${c.name} | default=${c.defaultSprite} | emotions=${Object.keys(c.expressions).join(',')}`, `sprite: ${Object.keys(c.sprites).join(', ')}`);
+  lines.push(`${id} | ${c.name}`);
 }
 lines.push('', 'ФОНЫ — частичная коллекция DR1, DR2 и V3');
 for (const [id, bg] of Object.entries(backgrounds)) lines.push(`${id} | ${bg.name}`);

@@ -15,7 +15,7 @@
     if (!existing) state.profiles.push({id, name: name || D.assets.characters[id].name, talent: '', facts: '', relationship: ''});
     else if (name) existing.name = name;
   }
-  function apply(state, event) {
+  function apply(state, event, seed) {
     if (event.type === 'scene') {
       const moved = ('location' in event && event.location !== state.location) ||
         ('background' in event && event.background !== state.background &&
@@ -25,22 +25,23 @@
       if (moved) { state.cast = []; state.castExplicit = false; state.dialogue = null; state.hotspots = []; state.audio = {}; }
       if (event.mode && event.mode !== state.mode && !('audio' in event)) { state.audio = {...state.audio}; delete state.audio.music; }
       if ('cast' in event) state.castExplicit = true;
-      if ('player' in event) state.player = event.player;
+      if ('player' in event) state.player = event.player ? {...event.player, spriteSeed: seed} : null;
       for (const key of ['background', 'location', 'chapter', 'mode', 'objective', 'cast', 'evidence', 'hotspots', 'summary', 'audio']) {
         if (!(key in event)) continue;
         if (key === 'background' && event[key] && !Object.hasOwn(D.assets.backgrounds, event[key])) continue;
         state[key] = event[key];
       }
+      if ('cast' in event) state.cast = state.cast.map(c => ({...c, spriteSeed: seed}));
       if (state.player?.id) state.cast = state.cast.filter(c => c.id !== state.player.id);
       for (const c of state.cast) meet(state, c.id);
       state.choices = [];
     } else if (event.type === 'say') {
-      state.dialogue = event; state.choices = [];
+      state.dialogue = {...event, spriteSeed: seed}; state.choices = [];
       meet(state, event.who, event.name);
       if (event.who && event.who !== state.player?.id && Object.hasOwn(D.assets.characters, event.who)) {
         const found = state.cast.some(c => c.id === event.who);
-        state.cast = found ? state.cast.map(c => c.id === event.who ? {...c, sprite: event.sprite || c.sprite} : c)
-          : state.castExplicit ? state.cast : [{id: event.who, sprite: event.sprite || 'default'}];
+        state.cast = found ? state.cast.map(c => c.id === event.who ? {...c, sprite: event.sprite || c.sprite, spriteSeed: event.sprite ? seed : c.spriteSeed} : c)
+          : state.castExplicit ? state.cast : [{id: event.who, sprite: event.sprite || 'default', spriteSeed: seed}];
       }
     } else if (event.type === 'profile') {
       meet(state, event.id, event.name);
@@ -103,7 +104,7 @@
     }
     state() {
       const state = empty();
-      for (let i = 0; i <= this.cursor; i++) apply(state, this.entries[i].event);
+      for (let i = 0; i <= this.cursor; i++) apply(state, this.entries[i].event, this.entries[i].key);
       // Setup is a form, not a sequence of dialogue clicks. Present its question
       // and options together, while keeping ordinary story scenes sequential.
       const message = this.entries[this.cursor]?.message;

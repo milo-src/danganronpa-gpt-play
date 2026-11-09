@@ -242,11 +242,12 @@
       const player = state.player && Object.hasOwn(D.assets.characters, state.player.id) ? state.player : null;
       const heroLine = player && state.dialogue?.who === player.id;
       const heroSprite = this.input.value.trim() ? 'talking' : heroLine ? state.dialogue.sprite : player?.sprite;
-      const castKey = JSON.stringify([state.cast, state.dialogue?.who, player, heroSprite]);
+      const heroSeed = heroLine ? state.dialogue.spriteSeed : player?.spriteSeed;
+      const castKey = JSON.stringify([state.cast, state.dialogue?.who, player, heroSprite, heroSeed]);
       if (castKey !== this.lastCast) {
         this.lastCast = castKey; this.cast.replaceChildren();
         if (player) {
-          const hero = this.makeFigure(player.id, heroSprite || 'neutral', !!(this.input.value.trim() || heroLine), 'protagonist');
+          const hero = this.makeFigure(player.id, heroSprite || 'neutral', !!(this.input.value.trim() || heroLine), 'protagonist', heroSeed);
           hero.dataset.label = `ТЫ · ${player.name || D.assets.characters[player.id].name}`;
           if (this.input.value.trim()) hero.classList.add('composing');
           this.cast.append(hero);
@@ -255,7 +256,7 @@
           if (player && c.id === player.id) continue;
           const asset = Object.hasOwn(D.assets.characters, c.id) ? D.assets.characters[c.id] : null;
           if (!asset) continue;
-          const figure = this.makeFigure(c.id, c.sprite, state.dialogue?.who === c.id);
+          const figure = this.makeFigure(c.id, c.sprite, state.dialogue?.who === c.id, '', c.spriteSeed);
           this.cast.append(figure);
         }
       }
@@ -324,10 +325,10 @@
         void this.stage.offsetWidth; this.stage.classList.add(effect);
       }
     }
-    makeFigure(id, requested, speaking, extraClass = '') {
+    makeFigure(id, requested, speaking, extraClass = '', seed = '') {
       const asset = D.assets.characters[id];
       const figure = el('figure', `actor${speaking ? ' speaking' : ''}${extraClass ? ` ${extraClass}` : ''}`);
-      figure.dataset.character = id; this.updateFigure(figure, id, requested, speaking);
+      figure.dataset.character = id; figure.dataset.spriteSeed = seed; this.updateFigure(figure, id, requested, speaking);
       if (extraClass !== 'protagonist') {
         const talk = this.button(`Поговорить: ${asset.name}`, () => this.actions.onDraft(`Обращаюсь к ${asset.name} (${id}). Начинаю разговор.`), 'actor-talk');
         figure.append(talk);
@@ -336,7 +337,7 @@
     }
     updateFigure(figure, id, requested, speaking) {
       const asset = D.assets.characters[id]; if (!asset) return;
-      const sprite = D.resolveSprite(id, requested, speaking); if (!sprite) return;
+      const sprite = D.resolveSprite(id, requested, speaking, figure.dataset.spriteSeed); if (!sprite) return;
       figure.classList.toggle('speaking', !!speaking);
       if (figure.dataset.sprite === sprite.key) return;
       figure.dataset.sprite = sprite.key;

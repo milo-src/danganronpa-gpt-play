@@ -53,6 +53,35 @@
       "surprised": "archive/byakuya-013",
       "thinking": "archive/byakuya-009",
       "determined": "archive/byakuya-008"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/byakuya-001",
+        "archive/byakuya-002"
+      ],
+      "talking": [
+        "archive/byakuya-012",
+        "archive/byakuya-010"
+      ],
+      "happy": [
+        "archive/byakuya-003",
+        "archive/byakuya-007"
+      ],
+      "angry": [
+        "archive/byakuya-006",
+        "archive/byakuya-005"
+      ],
+      "surprised": [
+        "archive/byakuya-013"
+      ],
+      "thinking": [
+        "archive/byakuya-009",
+        "archive/byakuya-011"
+      ],
+      "determined": [
+        "archive/byakuya-008",
+        "archive/byakuya-019"
+      ]
     }
   },
   "dr1.celestia-ludenberg": {
@@ -129,6 +158,45 @@
       "surprised": "archive/kiyotaka-014",
       "thinking": "archive/kiyotaka-015",
       "determined": "archive/kiyotaka-009"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/kiyotaka-001"
+      ],
+      "talking": [
+        "archive/kiyotaka-002",
+        "archive/kiyotaka-013"
+      ],
+      "happy": [
+        "archive/kiyotaka-003",
+        "archive/kiyotaka-018",
+        "archive/kiyotaka-022"
+      ],
+      "sad": [
+        "archive/kiyotaka-010",
+        "archive/kiyotaka-017",
+        "archive/kiyotaka-023",
+        "archive/kiyotaka-025"
+      ],
+      "angry": [
+        "archive/kiyotaka-004",
+        "archive/kiyotaka-005",
+        "archive/kiyotaka-006",
+        "archive/kiyotaka-007"
+      ],
+      "surprised": [
+        "archive/kiyotaka-014",
+        "archive/kiyotaka-012",
+        "archive/kiyotaka-026"
+      ],
+      "thinking": [
+        "archive/kiyotaka-015",
+        "archive/kiyotaka-016"
+      ],
+      "determined": [
+        "archive/kiyotaka-009",
+        "archive/kiyotaka-008"
+      ]
     }
   },
   "dr1.kyoko-kirigiri": {
@@ -142,6 +210,43 @@
       "surprised": "archive/kyouko-009",
       "thinking": "archive/kyouko-011",
       "determined": "archive/kyouko-016"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/kyouko-001",
+        "archive/kyouko-007",
+        "archive/kyouko-013"
+      ],
+      "talking": [
+        "archive/kyouko-012",
+        "archive/kyouko-009"
+      ],
+      "happy": [
+        "archive/kyouko-015",
+        "archive/kyouko-003",
+        "archive/kyouko-004"
+      ],
+      "sad": [
+        "archive/kyouko-005",
+        "archive/kyouko-008",
+        "archive/kyouko-017"
+      ],
+      "angry": [
+        "archive/kyouko-014"
+      ],
+      "surprised": [
+        "archive/kyouko-009",
+        "archive/kyouko-010"
+      ],
+      "thinking": [
+        "archive/kyouko-011",
+        "archive/kyouko-005",
+        "archive/kyouko-006"
+      ],
+      "determined": [
+        "archive/kyouko-016",
+        "archive/kyouko-015"
+      ]
     }
   },
   "dr1.leon-kuwata": {
@@ -155,6 +260,41 @@
       "surprised": "archive/leon-008",
       "thinking": "archive/leon-011",
       "determined": "archive/leon-006"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/leon-001"
+      ],
+      "talking": [
+        "archive/leon-002",
+        "archive/leon-013"
+      ],
+      "happy": [
+        "archive/leon-003",
+        "archive/leon-004"
+      ],
+      "sad": [
+        "archive/leon-013",
+        "archive/leon-006",
+        "archive/leon-007"
+      ],
+      "angry": [
+        "archive/leon-005",
+        "archive/leon-012"
+      ],
+      "surprised": [
+        "archive/leon-008",
+        "archive/leon-009",
+        "archive/leon-010"
+      ],
+      "thinking": [
+        "archive/leon-011",
+        "archive/leon-014"
+      ],
+      "determined": [
+        "archive/leon-006",
+        "archive/leon-011"
+      ]
     }
   },
   "dr1.makoto-naegi": {
@@ -168,6 +308,42 @@
       "surprised": "archive/makoto-011",
       "thinking": "archive/makoto-009",
       "determined": "archive/makoto-017"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/makoto-001"
+      ],
+      "talking": [
+        "archive/makoto-002",
+        "archive/makoto-020"
+      ],
+      "happy": [
+        "archive/makoto-003",
+        "archive/makoto-008"
+      ],
+      "sad": [
+        "archive/makoto-004",
+        "archive/makoto-018",
+        "archive/makoto-023"
+      ],
+      "angry": [
+        "archive/makoto-014",
+        "archive/makoto-015"
+      ],
+      "surprised": [
+        "archive/makoto-011",
+        "archive/makoto-005",
+        "archive/makoto-006",
+        "archive/makoto-021"
+      ],
+      "thinking": [
+        "archive/makoto-009",
+        "archive/makoto-010"
+      ],
+      "determined": [
+        "archive/makoto-017",
+        "archive/makoto-013"
+      ]
     }
   },
   "dr1.mondo-owada": {
@@ -283,6 +459,47 @@
       "surprised": "archive/chiaki-009",
       "thinking": "archive/chiaki-019",
       "determined": "archive/chiaki-010"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/chiaki-020"
+      ],
+      "talking": [
+        "archive/chiaki-001",
+        "archive/chiaki-007"
+      ],
+      "happy": [
+        "archive/chiaki-023",
+        "archive/chiaki-013",
+        "archive/chiaki-021",
+        "archive/chiaki-022"
+      ],
+      "sad": [
+        "archive/chiaki-018",
+        "archive/chiaki-016",
+        "archive/chiaki-024",
+        "archive/chiaki-027"
+      ],
+      "angry": [
+        "archive/chiaki-016",
+        "archive/chiaki-004",
+        "archive/chiaki-025"
+      ],
+      "surprised": [
+        "archive/chiaki-009",
+        "archive/chiaki-011",
+        "archive/chiaki-017"
+      ],
+      "thinking": [
+        "archive/chiaki-019",
+        "archive/chiaki-003",
+        "archive/chiaki-008",
+        "archive/chiaki-009"
+      ],
+      "determined": [
+        "archive/chiaki-010",
+        "archive/chiaki-026"
+      ]
     }
   },
   "dr2.fuyuhiko-kuzuryu": {
@@ -322,6 +539,48 @@
       "surprised": "archive/hajime-003",
       "thinking": "archive/hajime-002",
       "determined": "archive/hajime-010"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/hajime-018"
+      ],
+      "talking": [
+        "archive/hajime-019",
+        "archive/hajime-001"
+      ],
+      "happy": [
+        "archive/hajime-015",
+        "archive/hajime-024",
+        "archive/hajime-040"
+      ],
+      "sad": [
+        "archive/hajime-012",
+        "archive/hajime-004",
+        "archive/hajime-006"
+      ],
+      "angry": [
+        "archive/hajime-005",
+        "archive/hajime-009",
+        "archive/hajime-010",
+        "archive/hajime-035",
+        "archive/hajime-036"
+      ],
+      "surprised": [
+        "archive/hajime-003",
+        "archive/hajime-008",
+        "archive/hajime-023"
+      ],
+      "thinking": [
+        "archive/hajime-002",
+        "archive/hajime-020",
+        "archive/hajime-021",
+        "archive/hajime-039"
+      ],
+      "determined": [
+        "archive/hajime-010",
+        "archive/hajime-017",
+        "archive/hajime-022"
+      ]
     }
   },
   "dr2.hiyoko-saionji": {
@@ -387,6 +646,40 @@
       "surprised": "archive/mikan-015",
       "thinking": "archive/mikan-002",
       "determined": "archive/mikan-017"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/mikan-001",
+        "archive/mikan-003"
+      ],
+      "talking": [
+        "archive/mikan-004",
+        "archive/mikan-002",
+        "archive/mikan-008"
+      ],
+      "happy": [
+        "archive/mikan-006",
+        "archive/mikan-012",
+        "archive/mikan-014"
+      ],
+      "sad": [
+        "archive/mikan-007",
+        "archive/mikan-005",
+        "archive/mikan-009",
+        "archive/mikan-011"
+      ],
+      "surprised": [
+        "archive/mikan-015",
+        "archive/mikan-004",
+        "archive/mikan-010",
+        "archive/mikan-019",
+        "archive/mikan-020"
+      ],
+      "thinking": [
+        "archive/mikan-002",
+        "archive/mikan-016",
+        "archive/mikan-017"
+      ]
     }
   },
   "dr2.monomi": {
@@ -413,6 +706,49 @@
       "surprised": "archive/nagito-018",
       "thinking": "archive/nagito-003",
       "determined": "archive/nagito-020"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/nagito-001",
+        "archive/nagito-021"
+      ],
+      "talking": [
+        "archive/nagito-004",
+        "archive/nagito-037"
+      ],
+      "happy": [
+        "archive/nagito-002",
+        "archive/nagito-006",
+        "archive/nagito-010",
+        "archive/nagito-011",
+        "archive/nagito-027",
+        "archive/nagito-028",
+        "archive/nagito-030",
+        "archive/nagito-031",
+        "archive/nagito-034"
+      ],
+      "sad": [
+        "archive/nagito-005",
+        "archive/nagito-015",
+        "archive/nagito-029"
+      ],
+      "angry": [
+        "archive/nagito-009",
+        "archive/nagito-024"
+      ],
+      "surprised": [
+        "archive/nagito-018",
+        "archive/nagito-014",
+        "archive/nagito-023",
+        "archive/nagito-026"
+      ],
+      "thinking": [
+        "archive/nagito-003",
+        "archive/nagito-017"
+      ],
+      "determined": [
+        "archive/nagito-020"
+      ]
     }
   },
   "dr2.nekomaru-nidai": {
@@ -553,6 +889,55 @@
       "surprised": "archive/kaede-008",
       "thinking": "archive/kaede-013",
       "determined": "archive/kaede-020"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/kaede-001",
+        "archive/kaede-042"
+      ],
+      "talking": [
+        "archive/kaede-002",
+        "archive/kaede-004",
+        "archive/kaede-018",
+        "archive/kaede-027"
+      ],
+      "happy": [
+        "archive/kaede-017",
+        "archive/kaede-015",
+        "archive/kaede-016",
+        "archive/kaede-032",
+        "archive/kaede-033"
+      ],
+      "sad": [
+        "archive/kaede-036",
+        "archive/kaede-024",
+        "archive/kaede-031"
+      ],
+      "angry": [
+        "archive/kaede-015",
+        "archive/kaede-021",
+        "archive/kaede-036",
+        "archive/kaede-037"
+      ],
+      "surprised": [
+        "archive/kaede-008",
+        "archive/kaede-009",
+        "archive/kaede-010",
+        "archive/kaede-011",
+        "archive/kaede-012"
+      ],
+      "thinking": [
+        "archive/kaede-013",
+        "archive/kaede-014",
+        "archive/kaede-022",
+        "archive/kaede-023"
+      ],
+      "determined": [
+        "archive/kaede-020",
+        "archive/kaede-007",
+        "archive/kaede-019",
+        "archive/kaede-025"
+      ]
     }
   },
   "drv3.kaito-momota": {
@@ -592,6 +977,50 @@
       "surprised": "archive/kokichi-021",
       "thinking": "archive/kokichi-008",
       "determined": "archive/kokichi-015"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/kokichi-001",
+        "archive/kokichi-038"
+      ],
+      "talking": [
+        "archive/kokichi-002",
+        "archive/kokichi-010",
+        "archive/kokichi-039",
+        "archive/kokichi-040"
+      ],
+      "happy": [
+        "archive/kokichi-003",
+        "archive/kokichi-004",
+        "archive/kokichi-011"
+      ],
+      "sad": [
+        "archive/kokichi-013",
+        "archive/kokichi-012",
+        "archive/kokichi-014",
+        "archive/kokichi-030"
+      ],
+      "angry": [
+        "archive/kokichi-016",
+        "archive/kokichi-027",
+        "archive/kokichi-028"
+      ],
+      "surprised": [
+        "archive/kokichi-021",
+        "archive/kokichi-018",
+        "archive/kokichi-034",
+        "archive/kokichi-041",
+        "archive/kokichi-042"
+      ],
+      "thinking": [
+        "archive/kokichi-008",
+        "archive/kokichi-009",
+        "archive/kokichi-025"
+      ],
+      "determined": [
+        "archive/kokichi-015",
+        "archive/kokichi-016"
+      ]
     }
   },
   "drv3.korekiyo-shinguji": {
@@ -741,6 +1170,50 @@
       "surprised": "archive/shuichi-005",
       "thinking": "archive/shuichi-006",
       "determined": "archive/shuichi-020"
+    },
+    "expressionPools": {
+      "neutral": [
+        "archive/shuichi-001",
+        "archive/shuichi-007",
+        "archive/shuichi-010"
+      ],
+      "talking": [
+        "archive/shuichi-007",
+        "archive/shuichi-008",
+        "archive/shuichi-024"
+      ],
+      "happy": [
+        "archive/shuichi-013",
+        "archive/shuichi-027",
+        "archive/shuichi-032"
+      ],
+      "sad": [
+        "archive/shuichi-012",
+        "archive/shuichi-002",
+        "archive/shuichi-028"
+      ],
+      "angry": [
+        "archive/shuichi-010",
+        "archive/shuichi-019",
+        "archive/shuichi-021",
+        "archive/shuichi-029"
+      ],
+      "surprised": [
+        "archive/shuichi-005",
+        "archive/shuichi-003",
+        "archive/shuichi-025",
+        "archive/shuichi-026",
+        "archive/shuichi-031"
+      ],
+      "thinking": [
+        "archive/shuichi-006",
+        "archive/shuichi-018",
+        "archive/shuichi-022"
+      ],
+      "determined": [
+        "archive/shuichi-020",
+        "archive/shuichi-035"
+      ]
     }
   },
   "drv3.tenko-chabashira": {

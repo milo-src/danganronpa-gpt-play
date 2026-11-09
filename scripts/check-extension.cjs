@@ -18,6 +18,10 @@ let images = 0;
 for (const character of Object.values(assets.characters)) {
   assert.ok(character.sprites[character.defaultSprite]);
   for (const key of Object.values(character.expressions || {})) assert.ok(character.sprites[key], `Missing expression: ${key}`);
+  for (const keys of Object.values(character.expressionPools || {})) {
+    assert.ok(keys.length && new Set(keys).size === keys.length);
+    for (const key of keys) assert.ok(character.sprites[key] && character.bounds[key], `Missing emotion variant: ${key}`);
+  }
   for (const [key, values] of Object.entries(character.bounds || {})) {
     assert.ok(character.sprites[key]);
     const [width, height, x, y, w, h] = values;

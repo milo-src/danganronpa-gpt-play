@@ -105,12 +105,27 @@
   }
   D.protocol = {parse, normalize};
   // Semantic expressions are curated per character. Never guess from file order.
-  D.resolveSprite = (characterId, requested, speaking = false) => {
+  D.resolveSprite = (characterId, requested, speaking = false, seed = '') => {
     const character = Object.hasOwn(D.assets.characters, characterId) ? D.assets.characters[characterId] : null;
     if (!character) return null;
-    const expression = !requested || requested === 'default' ? (speaking ? 'talking' : 'neutral') : requested;
-    const key = Object.hasOwn(character.sprites, expression) ? expression
-      : (Object.hasOwn(character.expressions || {}, expression) ? character.expressions[expression] : character.defaultSprite);
+    const tag = String(requested || 'default').trim().toLowerCase();
+    const expression = tag === 'default' ? (speaking ? 'talking' : 'neutral') : tag;
+    let key = Object.hasOwn(character.sprites, requested) ? requested : character.defaultSprite;
+    if (!Object.hasOwn(character.sprites, requested)) {
+      // Old numbered tags are treated as the emotion, never as a pose selection.
+      const match = expression.match(/^([a-z]+)(?:[0-9]+)?$/);
+      const emotion = match?.[1];
+      const pool = Object.hasOwn(character.expressionPools || {}, emotion) ? character.expressionPools[emotion]
+        : Object.hasOwn(character.expressions || {}, emotion) ? [character.expressions[emotion]] : [];
+      let index = 0;
+      if (seed && pool.length > 1) {
+        // Stable pseudo-random choice: replay, streaming and redraws cannot reroll it.
+        let hash = 2166136261;
+        for (const char of `${seed}|${characterId}|${emotion}`) hash = Math.imul(hash ^ char.codePointAt(0), 16777619);
+        index = (hash >>> 0) % pool.length;
+      }
+      key = pool[index] || pool[0] || key;
+    }
     return {key, path: character.sprites[key], bounds: character.bounds?.[key]};
   };
 })();

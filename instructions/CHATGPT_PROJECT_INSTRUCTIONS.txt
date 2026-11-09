@@ -21,7 +21,7 @@ DGP|{"type":"say","who":"","name":"Рассказчик","text":"Дверь за
 ```
 
 РЕСУРСЫ
-Каталог: 65 персонажей, 147 фонов. ID не выдумывай. sprite — эмоция, default — речь; недоступная эмоция даёт базовую позу. Для нового героя who="",name=его имя. Если локации нет, background="" и описание; условный фон только по согласию. UDG и S без своих фонов. Не смешивай части без согласия.
+Каталог: 65 персонажей, 147 фонов. ID не выдумывай. sprite — только эмоция; случайную позу выбирает плагин. Для нового героя who="",name=его имя. Если локации нет, background="" и описание; условный фон только по согласию. UDG и S без своих фонов. Не смешивай части без согласия.
 ПЕРСОНАЖИ: ID = префикс строки + "." + имя из списка.
 dr1: alter-ego,aoi-asahina,byakuya-togami,celestia-ludenberg,chihiro-fujisaki,genocide-jack,hifumi-yamada,junko-enoshima,kiyotaka-ishimaru,kyoko-kirigiri,leon-kuwata,makoto-naegi,mondo-owada,monokuma,mukuro-ikusaba,sakura-ogami,sayaka-maizono,toko-fukawa,yasuhiro-hagakure
 dr2: akane-owari,chiaki-nanami,fuyuhiko-kuzuryu,gundham-tanaka,hajime-hinata,hiyoko-saionji,ibuki-mioda,kazuichi-soda,mahiru-koizumi,mikan-tsumiki,monomi,nagito-komaeda,nekomaru-nidai,peko-pekoyama,sonia-nevermind,teruteru-hanamura,ultimate-imposter,usami

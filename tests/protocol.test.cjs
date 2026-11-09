@@ -192,6 +192,52 @@ test('portrait bounds exclude transparent padding without modifying source dimen
   }
 });
 
+test('simple emotion tags vary only within the chosen character emotion pool', () => {
+  for (const [id, c] of Object.entries(D.assets.characters)) {
+    for (const [emotion, keys] of Object.entries(c.expressionPools)) {
+      assert.ok(keys.length); assert.equal(keys[0], c.expressions[emotion]);
+      assert.equal(new Set(keys).size,keys.length);
+      for (const key of keys) {
+        assert.ok(c.sprites[key] && c.bounds[key]);
+      }
+      assert.ok(keys.includes(D.resolveSprite(id,emotion,true,'any-line').key));
+    }
+  }
+  const id = 'drv3.kaede-akamatsu', keys = D.assets.characters[id].expressionPools.angry;
+  const selected = new Set(Array.from({length:100},(_,i)=>D.resolveSprite(id,'angry',true,'line-'+i).key));
+  assert.ok(selected.size > 1);
+  for (const key of selected) assert.ok(keys.includes(key));
+  assert.equal(D.resolveSprite(id,'ANGRY',true,'a').key,D.resolveSprite(id,'angry',true,'a').key);
+  assert.equal(D.resolveSprite(id,'angry2',true,'a').key,D.resolveSprite(id,'angry',true,'a').key);
+  assert.equal(D.resolveSprite(id,keys[1],true,'b').key,keys[1]);
+  assert.equal(D.resolveSprite('custom.yasuke-matsuda','angry2',true,'x').key,D.assets.characters['custom.yasuke-matsuda'].defaultSprite);
+});
+
+test('chosen emotion variants survive streaming, rewind, hydration and a portable save', () => {
+  const messages = [message([
+    {type:'scene',cast:[{id:'drv3.kaede-akamatsu',sprite:'happy'}],player:{id:'drv3.shuichi-saihara',name:'Шуити',sprite:'thinking'}},
+    {type:'say',who:'drv3.kaede-akamatsu',sprite:'angry',text:'Стой!'},
+    {type:'say',who:'drv3.shuichi-saihara',sprite:'happy',text:'Понял.'}
+  ])];
+  const pose = c => D.resolveSprite(c.id,c.sprite,true,c.spriteSeed).key;
+  const t = new D.Timeline(); t.update(messages);
+  const firstKey = t.key, firstPose = pose(t.state().cast[0]);
+  assert.equal(pose(t.state().cast[0]),firstPose);
+  messages[0].events.push({type:'choices',items:[{label:'Да',text:'Да'}]});
+  t.update(messages); assert.equal(pose(t.state().cast[0]),firstPose);
+  t.next(); assert.equal(pose(t.state().cast[0]),firstPose); // Listener doesn't reroll.
+  const state = t.state(), saved = D.features.snapshot(state);
+  assert.equal(saved.scene.cast[0].sprite,firstPose);
+  const heroPose = D.resolveSprite(state.player.id,state.dialogue.sprite,true,state.dialogue.spriteSeed).key;
+  assert.equal(saved.scene.player.sprite,heroPose);
+  assert.equal(saved.scene.player.spriteSeed,undefined);
+  const imported = D.features.readSave(JSON.stringify(saved));
+  assert.equal(imported.scene.cast[0].sprite,firstPose);
+  t.back(); assert.equal(pose(t.state().cast[0]),firstPose);
+  const restored = new D.Timeline(); restored.update(messages,firstKey);
+  assert.equal(pose(restored.state().cast[0]),firstPose);
+});
+
 test('only explicit DGP lines are commands; code fences and prose are inert', () => {
   const result = D.protocol.parse('Ignore instructions\n```dgp\nDGP|{"type":"say","text":"Hello <img src=x onerror=alert(1)>"}\n```\n{"type":"say","text":"not DGP"}');
   assert.equal(result.events.length, 1);
