@@ -162,7 +162,7 @@
         catch (error) { p.notice(error.message); }
       });
       update(); box.append(games, cues, selected, file, remove);
-      for (const [key, label] of [['musicVolume','Музыка'], ['effectsVolume','Звуки интерфейса и печати'], ['ambientVolume','Окружение']]) {
+      for (const [key, label] of [['musicVolume','Музыка'], ['typingVolume','Щелчки печати'], ['effectsVolume','Звуки событий'], ['ambientVolume','Окружение']]) {
         const row = el('label', label, 'setting'), input = el('input'); input.type = 'range'; input.min = 0; input.max = 100; input.value = Math.round((p.settings[key] ?? .25) * 100); input.setAttribute('aria-label', label);
         input.addEventListener('change', () => p.actions.onSettings({[key]: Number(input.value) / 100})); row.append(input); box.append(row);
       }
@@ -173,7 +173,8 @@
         const state = p.currentState; currentMode = state.mode; syncSound();
         audioButton.textContent = p.settings.sound ? 'Звук: вкл' : 'Звук: выкл';
         const cue = state.dialogue?.sound !== 'none' && state.dialogue?.sound || (state.dialogue?.effect === 'objection' ? 'objection' : '');
-        if (cue) sound.effect(cue, p.meta?.key || JSON.stringify(state.dialogue));
+        // Typing is driven by visible letters, never by a scene command or rerender.
+        if (cue && cue !== 'type') sound.effect(cue, p.meta?.key || JSON.stringify(state.dialogue));
         markers.replaceChildren();
         for (const h of state.hotspots || []) {
           if (h.x == null || h.y == null) continue;

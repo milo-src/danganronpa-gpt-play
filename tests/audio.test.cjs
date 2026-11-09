@@ -14,7 +14,7 @@ function harness() {
     removeAttribute(name) { if (name === 'src') this.src = ''; }
   }
   const ctx = vm.createContext({DGP:{}, Audio, Blob, URL, Date,
-    document: {hidden: false},
+    document: {hidden: false, createElement: () => ({addEventListener(name, cb) {this[name] = cb;}})},
     setTimeout: cb => { timers.set(++serial, cb); return serial; }, clearTimeout: id => timers.delete(id),
     setInterval: cb => { timers.set(++serial, cb); return serial; }, clearInterval: id => timers.delete(id)});
   vm.runInContext(read('src/game/audio.js'), ctx);
@@ -55,7 +55,8 @@ test('event sounds do not repeat on rerender or rewind and typing is rate limite
   sound.effect('evidence','line-1'); await Promise.resolve(); await Promise.resolve();
   const plays = sound.fx.plays;
   sound.effect('evidence','line-1'); assert.equal(sound.fx.plays,plays);
-  sound.effect('type'); sound.effect('type'); assert.equal(sound.tick.plays,1); assert.equal(timers.size,1);
+  sound.effect('type'); sound.effect('type'); assert.equal(sound.tick.plays,1); assert.equal(timers.size,0);
+  assert.match(sound.tick.src,/ui\/typing-soft\.wav$/);
   sound.configure({sound:false},true,{});
   assert.equal(timers.size,0); assert.ok(sound.tick.paused);
   sound.effect('type'); assert.equal(sound.tick.plays,1);
@@ -81,7 +82,7 @@ test('a scene switch while play is pending starts the new track after cancellati
 test('next reveals a typing line first, then advances, cancelling old sound timers', () => {
   const {ctx,timers} = harness(); let advances = 0, ticks = 0;
   const p = Object.create(ctx.DGP.Player.prototype);
-  Object.assign(p,{settings:{textSpeed:12},enabled:true,collapsed:false,text:{textContent:''},nextButton:{},
+  Object.assign(p,{settings:{textSpeed:12,reduced:true},enabled:true,collapsed:false,text:{textContent:''},nextButton:{},
     meta:{pending:1},currentState:{choices:[]},actions:{onNext(){advances++;}},scheduleAuto(){},
     extras:{sound:{effect(){ticks++;},stopTyping(){}}}});
   p.typeText('Привет 🌟'); assert.equal(p.text.textContent,'');
@@ -90,6 +91,40 @@ test('next reveals a typing line first, then advances, cancelling old sound time
   p.advance(); assert.equal(advances,1);
   p.typeText('Следующая'); p.typeText('Замена'); assert.equal(timers.size,1);
   p.finishTyping(); assert.equal(p.text.textContent,'Замена'); assert.equal(timers.size,0);
+});
+test('buttons and sound activation are silent; typing has independent volume and mute', async () => {
+  const {sound,ctx} = harness(); let clicks = 0;
+  const p = Object.create(ctx.DGP.Player.prototype); p.extras = {sound};
+  sound.configure({sound:true,effectsVolume:1,typingVolume:.2},true,{});
+  p.button('Далее', () => clicks++).click();
+  await sound.unlock(); sound.effect('click');
+  assert.equal(clicks,1); assert.equal(sound.fx.plays,0); assert.equal(sound.tick.plays,0);
+  sound.effect('type'); assert.equal(sound.tick.volume,.2); assert.equal(sound.tick.plays,1);
+  sound.configure({textSound:false},true,{});
+  assert.equal(sound.tick.paused,true); assert.equal(sound.audio.paused,false);
+  sound.effect('type'); assert.equal(sound.tick.plays,1);
+});
+test('typing sample is short, quiet PCM with zero-valued endpoints', () => {
+  const wav = fs.readFileSync(path.join(__dirname,'../public/assets/audio/ui/typing-soft.wav'));
+  assert.equal(wav.toString('ascii',0,4),'RIFF');
+  assert.equal(wav.toString('ascii',8,12),'WAVE');
+  assert.equal(wav.readUInt16LE(20),1); assert.equal(wav.readUInt16LE(22),1);
+  assert.equal(wav.readUInt16LE(34),16);
+  const values = Array.from({length:(wav.length-44)/2},(_,i)=>wav.readInt16LE(44+i*2));
+  assert.equal(values[0],0); assert.equal(values.at(-1),0);
+  assert.ok(Math.max(...values.map(Math.abs)) <= 3933);
+  assert.ok(values.length / wav.readUInt32LE(24) < .05);
+});
+test('spaces and punctuation are silent; instant and hidden text do not start typing', () => {
+  const {ctx,timers} = harness(); let ticks = 0;
+  const p = Object.create(ctx.DGP.Player.prototype);
+  Object.assign(p,{settings:{textSpeed:12},enabled:true,collapsed:false,text:{},nextButton:{},
+    currentState:{choices:[]},scheduleAuto(){},extras:{sound:{effect(){ticks++;},stopTyping(){}}}});
+  p.typeText('А !Б'); const tick = [...timers.values()][0];
+  tick(); tick(); tick(); tick(); assert.equal(ticks,2); assert.equal(timers.size,0);
+  p.settings.textSpeed = 0; p.typeText('Сразу'); assert.equal(p.text.textContent,'Сразу'); assert.equal(timers.size,0);
+  p.settings.textSpeed = 12; ctx.document.hidden = true; p.typeText('Скрыто');
+  assert.equal(p.text.textContent,'Скрыто'); assert.equal(timers.size,0); assert.equal(ticks,2);
 });
 test('audio cues are validated, follow read position, and survive save export', () => {
   const ctx = vm.createContext({});

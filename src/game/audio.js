@@ -12,11 +12,14 @@
   });
   class Sound {
     constructor({url = path => path} = {}) {
-      this.url = url; this.settings = {sound: false, musicVolume: .25, effectsVolume: .35, ambientVolume: .25};
+      this.url = url; this.settings = {sound: false, musicVolume: .25, effectsVolume: .35, typingVolume: .4, ambientVolume: .25};
       this.active = false; this.game = 'dr1'; this.mode = 'daily'; this.ambienceCue = 'none';
       this.tracks = Object.create(null); this.urls = Object.create(null); this.disposed = false;
       this.failed = new Set(); this.seen = new Set(); this.lastTick = 0;
       this.audio = new Audio(); this.ambient = new Audio(); this.tick = new Audio(); this.fx = new Audio();
+      // A complete, softly enveloped mechanical tap, not a cropped game effect.
+      this.tick.preload = 'auto';
+      this.tick.src = this.tick.dgpSource = this.url('public/assets/audio/ui/typing-soft.wav');
       for (const media of [this.audio, this.ambient]) {
         media.loop = true; media.preload = 'none';
         media.addEventListener('timeupdate', () => {
@@ -108,6 +111,7 @@
       if (typeof state === 'string') state = {mode: state};
       this.context(state); this.sync();
       if (!this.settings.sound || !this.active) this.stopEffects();
+      else if (this.settings.textSound === false || this.settings.typingVolume === 0) this.stopTyping();
     }
     source(record) {
       if (!record) return '';
@@ -150,13 +154,13 @@
     async unlock() {
       if (this.disposed) return false;
       this.failed.clear();
-      // Invoked synchronously inside a user's click, including all media layers.
+      // Invoked synchronously inside a user's click. Buttons themselves stay silent.
       this.settings.sound = true; this.sync();
-      this.effect('click');
       return true;
     }
     effect(cue, key = '') {
-      if (this.disposed || !this.active || !this.settings.sound || (cue === 'type' && this.settings.textSound === false)) return;
+      if (cue === 'click' || this.disposed || !this.active || !this.settings.sound ||
+          (cue === 'type' && (this.settings.textSound === false || this.settings.typingVolume === 0))) return;
       if (key) {
         if (this.seen.has(key)) return;
         this.seen.add(key);
@@ -165,19 +169,15 @@
       const now = Date.now();
       if (cue === 'type' && now - this.lastTick < 75) return;
       if (cue === 'type') this.lastTick = now;
-      const record = this.record(cue, 'effects'), src = this.source(record);
+      const src = cue === 'type' ? this.tick.dgpSource : this.source(this.record(cue, 'effects'));
       if (!src) return;
       const media = cue === 'type' ? this.tick : this.fx;
       if (media.dgpSource !== src) { media.src = src; media.dgpSource = src; }
       media.currentTime = 0;
-      media.volume = Math.min(1, Math.max(0, Number(this.settings.effectsVolume ?? .35))) * (cue === 'type' ? .35 : 1);
+      media.volume = Math.min(1, Math.max(0, Number(cue === 'type' ? this.settings.typingVolume ?? .4 : this.settings.effectsVolume ?? .35)));
       this.play(media);
-      if (cue === 'type') {
-        clearTimeout(this.tickTimer);
-        this.tickTimer = setTimeout(() => media.pause(), 55);
-      }
     }
-    stopTyping() { clearTimeout(this.tickTimer); this.tick.pause(); }
+    stopTyping() { this.tick.pause(); this.lastTick = 0; }
     stopEffects() { this.stopTyping(); this.fx.pause(); }
     stop() { this.audio.pause(); this.ambient.pause(); this.stopEffects(); }
     dispose() {

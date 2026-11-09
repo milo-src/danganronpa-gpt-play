@@ -9,7 +9,7 @@
   let manualChoice = false, handoff = null, checkingHandoff = false;
   let scope = adapter.scope();
   const handoffKey = 'dgp-start-handoff';
-  let settings = {textSpeed: 12, textSound: true, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches, sound: false, musicVolume: .25, effectsVolume: .35, ambientVolume: .25};
+  let settings = {textSpeed: 12, textSound: true, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches, sound: false, musicVolume: .25, effectsVolume: .35, typingVolume: .4, ambientVolume: .25};
   let lastRead = {messages: [], streaming: false, invalid: 0, assistantCount: 0};
   let disposed = false, routePoll, sending = false, sendGeneration = 0, awaitingReply = null;
   const url = path => api.runtime.getURL(path);
@@ -211,6 +211,7 @@
       settings = {...settings,
         textSpeed: Number.isFinite(savedSettings.textSpeed) ? Math.max(0, Math.min(50, savedSettings.textSpeed)) : 12,
         textSound: savedSettings.textSound !== false,
+        typingVolume: Number.isFinite(savedSettings.typingVolume) ? Math.max(0, Math.min(1, savedSettings.typingVolume)) : .4,
         effectsVolume: Number.isFinite(savedSettings.effectsVolume) ? Math.max(0, Math.min(1, savedSettings.effectsVolume)) : .35,
         ambientVolume: Number.isFinite(savedSettings.ambientVolume) ? Math.max(0, Math.min(1, savedSettings.ambientVolume)) : .25,
         auto: savedSettings.auto === true, reduced: savedSettings.reduced === true, sound: savedSettings.sound === true,

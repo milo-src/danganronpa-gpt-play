@@ -40,6 +40,9 @@ const catalog = JSON.parse(read('src/data/backgrounds.json')).backgrounds;
 assert.equal(catalog.length, Object.keys(assets.backgrounds).length);
 assert.ok(read('instructions/CHATGPT_PROJECT_INSTRUCTIONS.txt').length < 8000, 'Keep project instructions concise');
 let sounds = 0;
+exists('public/assets/audio/ui/typing-soft.wav');
+assert.equal(fs.readFileSync(path.join(root, 'public/assets/audio/ui/typing-soft.wav')).subarray(0, 4).toString('ascii'), 'RIFF');
+sounds++;
 if (fs.existsSync(path.join(root, 'public/assets/audio/local/catalog.json'))) {
   const audio = JSON.parse(read('public/assets/audio/local/catalog.json'));
   assert.equal(audio.version, 1);

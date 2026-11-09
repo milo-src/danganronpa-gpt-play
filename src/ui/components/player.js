@@ -13,7 +13,7 @@
       this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry, onNotes};
       this.version = version; this.busy = false; this.savedDrafts = [];
       this.lastDialogue = ''; this.lastCast = ''; this.animation = null; this.autoTimer = null;
-      this.settings = {textSpeed: 12, textSound: true, auto: false, reduced: false, sound: false, musicVolume: .25, effectsVolume: .35, ambientVolume: .25}; this.enabled = false; this.collapsed = false;
+      this.settings = {textSpeed: 12, textSound: true, auto: false, reduced: false, sound: false, musicVolume: .25, effectsVolume: .35, typingVolume: .4, ambientVolume: .25}; this.enabled = false; this.collapsed = false;
       // Firefox can leave a previous content script's DOM behind on add-on reload.
       for (const previous of document.querySelectorAll('#dgp-extension-root')) {
         previous.dispatchEvent(new Event('dgp-dispose'));
@@ -125,7 +125,7 @@
     }
     button(text, callback, cls = '') {
       const b = el('button', cls, text); b.type = 'button';
-      b.addEventListener('click', event => { this.extras?.sound.effect('click'); callback(event); }); return b;
+      b.addEventListener('click', callback); return b;
     }
     setEnabled(value) {
       this.draftHelp.hidden = true;
@@ -199,7 +199,7 @@
     }
     setSettings(settings) {
       this.settings = {...this.settings, ...settings}; this.panel.classList.toggle('reduced', this.settings.reduced);
-      if (this.settings.reduced || this.settings.textSpeed === 0) this.finishTyping();
+      if (this.settings.textSpeed === 0) this.finishTyping();
       this.extras?.syncSound();
       this.drawSettings(); this.scheduleAuto();
     }
@@ -212,7 +212,7 @@
       speed.setAttribute('aria-label', 'Задержка печати в миллисекундах');
       speed.addEventListener('change', () => { this.finishTyping(); this.actions.onSettings({textSpeed: Number(speed.value)}); });
       speedLabel.append(speed); this.settingsBody.append(speedLabel);
-      for (const [key, label] of [['textSound', 'Звук печати реплик'], ['auto', 'Автоматически читать следующие реплики'], ['reduced', 'Уменьшить анимацию и вспышки']]) {
+      for (const [key, label] of [['textSound', 'Тихие щелчки при появлении букв'], ['auto', 'Автоматически читать следующие реплики'], ['reduced', 'Уменьшить движения сцены и вспышки']]) {
         const row = el('label', 'setting', label); const input = el('input'); input.type = 'checkbox'; input.checked = this.settings[key];
         input.addEventListener('change', () => this.actions.onSettings({[key]: input.checked})); row.append(input); this.settingsBody.append(row);
       }
@@ -282,13 +282,13 @@
     typeText(text) {
       this.stopTyping(); this.fullText = text;
       const speed = Number(this.settings.textSpeed ?? 12);
-      if (!speed || this.settings.reduced || !this.enabled || this.collapsed || document.hidden) { this.text.textContent = text; return; }
+      if (!text || !speed || !this.enabled || this.collapsed || document.hidden) { this.text.textContent = text; return; }
       const letters = Array.from(text); let count = 0;
       this.text.textContent = '';
       this.animation = setInterval(() => {
         const letter = letters[count++];
         this.text.textContent = letters.slice(0, count).join('');
-        if (letter && /\S/u.test(letter)) this.extras?.sound.effect('type');
+        if (letter && /[\p{L}\p{N}]/u.test(letter)) this.extras?.sound.effect('type');
         if (count >= letters.length) this.finishTyping();
       }, speed);
     }
