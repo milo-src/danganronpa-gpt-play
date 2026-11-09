@@ -9,7 +9,7 @@
   let manualChoice = false, handoff = null, checkingHandoff = false;
   let scope = adapter.scope();
   const handoffKey = 'dgp-start-handoff';
-  let settings = {speed: 0, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches, sound: false, musicVolume: .25};
+  let settings = {textSpeed: 12, textSound: true, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches, sound: false, musicVolume: .25, effectsVolume: .35, ambientVolume: .25};
   let lastRead = {messages: [], streaming: false, invalid: 0, assistantCount: 0};
   let disposed = false, routePoll, sending = false, sendGeneration = 0, awaitingReply = null;
   const url = path => api.runtime.getURL(path);
@@ -27,7 +27,7 @@
   }
   function render() {
     const state = timeline.state();
-    player.render(state, {pending: timeline.pending, total: timeline.entries.length,
+    player.render(state, {key: timeline.entries.slice(0, timeline.cursor + 1).findLast(e => e.event.type === 'say')?.key || timeline.key, pending: timeline.pending, total: timeline.entries.length,
       history: timeline.entries.slice(0, timeline.cursor + 1).filter(e => e.event.type === 'say').slice(-60).map(e => e.event)});
     const errors = lastRead.latestInvalid ? ` В последнем ответе пропущено строк с ошибкой: ${lastRead.latestInvalid}.` : '';
     player.setBusy(sending || !!awaitingReply || lastRead.streaming);
@@ -208,7 +208,11 @@
     const version = routeVersion;
     const savedSettings = await storageGet('dgp-settings');
     if (savedSettings) {
-      settings = {...settings, speed: 0,
+      settings = {...settings,
+        textSpeed: Number.isFinite(savedSettings.textSpeed) ? Math.max(0, Math.min(50, savedSettings.textSpeed)) : 12,
+        textSound: savedSettings.textSound !== false,
+        effectsVolume: Number.isFinite(savedSettings.effectsVolume) ? Math.max(0, Math.min(1, savedSettings.effectsVolume)) : .35,
+        ambientVolume: Number.isFinite(savedSettings.ambientVolume) ? Math.max(0, Math.min(1, savedSettings.ambientVolume)) : .25,
         auto: savedSettings.auto === true, reduced: savedSettings.reduced === true, sound: savedSettings.sound === true,
         musicVolume: Number.isFinite(savedSettings.musicVolume) ? Math.max(0, Math.min(1, savedSettings.musicVolume)) : .25};
     }

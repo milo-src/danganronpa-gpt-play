@@ -81,29 +81,6 @@ test('save continuation passes through transport intact and excessive input is r
   assert.equal(h2.adapter.sent, undefined);
 });
 
-test('sound stays opt-in, changes mode without overlapping timers, and stops on hide/dispose', async () => {
-  const timers = new Map(); let serial=0;
-  const param = () => ({value:0,setTargetAtTime(v){this.value=v},setValueAtTime(){},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}});
-  class Audio {
-    constructor(){this.state='suspended';this.currentTime=1;this.destination={};}
-    createGain(){return {gain:param(),connect(){},disconnect(){}};}
-    createOscillator(){return {frequency:param(),connect(){},disconnect(){},start(){},stop(){this.onended?.()}};}
-    async resume(){this.state='running';}
-    async close(){this.state='closed';}
-  }
-  const ctx=vm.createContext({DGP:{},AudioContext:Audio,setTimeout:cb=>{const id=++serial;timers.set(id,cb);return id;},clearTimeout:id=>timers.delete(id)});
-  vm.runInContext(fs.readFileSync(path.join(__dirname,'../src/game/audio.js'),'utf8'),ctx);
-  const sound=new ctx.DGP.Sound(); sound.configure({sound:false},true,'daily');
-  assert.equal(sound.context,undefined); assert.equal(await sound.unlock(),true); assert.equal(timers.size,0);
-  sound.configure({sound:true},true,'daily'); assert.equal(timers.size,1);
-  sound.configure({},true,'daily'); assert.equal(timers.size,1);
-  sound.configure({},true,'trial'); assert.equal(sound.mode,'trial'); assert.equal(timers.size,1);
-  sound.configure({},false); assert.equal(timers.size,0); assert.equal(sound.music.gain.value,0);
-  sound.configure({},true,'investigation'); assert.equal(timers.size,1);
-  sound.dispose(); assert.equal(timers.size,0); assert.equal(sound.context.state,'closed');
-  assert.equal(await sound.unlock(),false); assert.equal(timers.size,0);
-});
-
 test('new chats default off; toggling disconnects message observation', async () => {
   const h = await harness(); assert.equal(h.player.enabled, false); assert.equal(h.adapter.started, false);
   assert.equal(h.adapter.reads, 0); await h.toggle(true); assert.equal(h.adapter.started, true);

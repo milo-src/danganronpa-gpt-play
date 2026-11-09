@@ -39,4 +39,18 @@ for (const p of ['START_HERE.txt', 'PROJECT_DESCRIPTION.txt', 'instructions/CHAT
 const catalog = JSON.parse(read('src/data/backgrounds.json')).backgrounds;
 assert.equal(catalog.length, Object.keys(assets.backgrounds).length);
 assert.ok(read('instructions/CHATGPT_PROJECT_INSTRUCTIONS.txt').length < 8000, 'Keep project instructions concise');
-console.log(`Manifest, JavaScript syntax and ${images} asset paths verified.`);
+let sounds = 0;
+if (fs.existsSync(path.join(root, 'public/assets/audio/local/catalog.json'))) {
+  const audio = JSON.parse(read('public/assets/audio/local/catalog.json'));
+  assert.equal(audio.version, 1);
+  for (const [game, pack] of Object.entries(audio.games)) {
+    assert.ok(['dr1', 'dr2', 'drv3'].includes(game));
+    for (const layer of ['music', 'ambience', 'effects']) for (const track of Object.values(pack[layer] || {})) {
+      assert.ok(track.path.startsWith(`public/assets/audio/local/${game}/`)); exists(track.path);
+      assert.equal(fs.readFileSync(path.join(root, track.path)).subarray(0, 4).toString('ascii'), 'OggS', track.path);
+      if (track.loopEnd != null) assert.ok(track.loopEnd > track.loopStart && track.loopStart >= 0);
+      sounds++;
+    }
+  }
+}
+console.log(`Manifest, JavaScript syntax, ${images} images and ${sounds} audio files verified.`);

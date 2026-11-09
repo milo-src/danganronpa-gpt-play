@@ -1,0 +1,294 @@
+{
+  "version": 1,
+  "games": {
+    "dr1": {
+      "music": {
+        "daily": {
+          "path": "public/assets/audio/local/dr1/daily.ogg",
+          "name": "Beautiful Days",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00012.ogg",
+          "loopStart": 10.417233560090702,
+          "loopEnd": 152.63943310657595
+        },
+        "morning": {
+          "path": "public/assets/audio/local/dr1/morning.ogg",
+          "name": "Beautiful Morning",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00004.ogg",
+          "loopStart": 11.149909297052154,
+          "loopEnd": 125.4356462585034
+        },
+        "tension": {
+          "path": "public/assets/audio/local/dr1/tension.ogg",
+          "name": "Despair Syndrome (1)",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00007.ogg",
+          "loopStart": 33.519614512471655,
+          "loopEnd": 141.51961451247166
+        },
+        "mystery": {
+          "path": "public/assets/audio/local/dr1/mystery.ogg",
+          "name": "Distrust",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00018.ogg",
+          "loopStart": 10.740521541950113,
+          "loopEnd": 280.27897959183673
+        },
+        "sad": {
+          "path": "public/assets/audio/local/dr1/sad.ogg",
+          "name": "All Star Apologies",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00011.ogg",
+          "loopStart": 7.628344671201814,
+          "loopEnd": 133.73004535147393
+        },
+        "investigation": {
+          "path": "public/assets/audio/local/dr1/investigation.ogg",
+          "name": "Box 15",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00016.ogg",
+          "loopStart": 17.222267573696143,
+          "loopEnd": 115.00006802721089
+        },
+        "trial": {
+          "path": "public/assets/audio/local/dr1/trial.ogg",
+          "name": "Class Trial [DAWN]",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00021.ogg",
+          "loopStart": 13.8881179138322,
+          "loopEnd": 152.55478458049888
+        },
+        "debate": {
+          "path": "public/assets/audio/local/dr1/debate.ogg",
+          "name": "Argument [BREAK]",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00024.ogg"
+        },
+        "climax": {
+          "path": "public/assets/audio/local/dr1/climax.ogg",
+          "name": "Closing Argument",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00028.ogg",
+          "loopStart": 23.668185941043085,
+          "loopEnd": 252.75895691609978
+        },
+        "monokuma": {
+          "path": "public/assets/audio/local/dr1/monokuma.ogg",
+          "name": "Mr. Monokuma's Lesson",
+          "source": "Dr1/data/all/bgm/dr1_bgm_hca.awb.00019.ogg",
+          "loopStart": 27.408072562358278,
+          "loopEnd": 194.36460317460316
+        }
+      },
+      "effects": {
+        "click": {
+          "path": "public/assets/audio/local/dr1/click.ogg",
+          "name": "HS_SE_000",
+          "source": "dr1-ui.acb:HS_SE_000"
+        },
+        "type": {
+          "path": "public/assets/audio/local/dr1/type.ogg",
+          "name": "HS_SE_003",
+          "source": "dr1-ui.acb:HS_SE_003"
+        },
+        "evidence": {
+          "path": "public/assets/audio/local/dr1/evidence.ogg",
+          "name": "HS_SE_001",
+          "source": "dr1-ui.acb:HS_SE_001"
+        },
+        "objection": {
+          "path": "public/assets/audio/local/dr1/objection.ogg",
+          "name": "HS_SE_012",
+          "source": "dr1-ui.acb:HS_SE_012"
+        }
+      },
+      "ambience": {}
+    },
+    "dr2": {
+      "music": {
+        "daily": {
+          "path": "public/assets/audio/local/dr2/daily.ogg",
+          "name": "Beautiful Ruin  (Summer Salt)",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00003.ogg",
+          "loopStart": 29.34269841269841,
+          "loopEnd": 144.3426984126984
+        },
+        "morning": {
+          "path": "public/assets/audio/local/dr2/morning.ogg",
+          "name": "Re: Beautiful Morning",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00006.ogg",
+          "loopStart": 11.519183673469387,
+          "loopEnd": 125.80489795918368
+        },
+        "tension": {
+          "path": "public/assets/audio/local/dr2/tension.ogg",
+          "name": "Re: ゼツボウシンドローム",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00010.ogg",
+          "loopStart": 33.93746031746032,
+          "loopEnd": 141.9374603174603
+        },
+        "mystery": {
+          "path": "public/assets/audio/local/dr2/mystery.ogg",
+          "name": "Re: DISTRUST",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00019.ogg",
+          "loopStart": 19.24628117913832,
+          "loopEnd": 117.02333333333333
+        },
+        "sad": {
+          "path": "public/assets/audio/local/dr2/sad.ogg",
+          "name": "Re: オール・オール・アポロジーズ",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00015.ogg",
+          "loopStart": 8.286281179138323,
+          "loopEnd": 146.90698412698413
+        },
+        "investigation": {
+          "path": "public/assets/audio/local/dr2/investigation.ogg",
+          "name": "イコロシア",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00004.ogg",
+          "loopStart": 26.9318820861678,
+          "loopEnd": 161.9318820861678
+        },
+        "trial": {
+          "path": "public/assets/audio/local/dr2/trial.ogg",
+          "name": "学級裁判黎明編 巻の二",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00023.ogg",
+          "loopStart": 22.160272108843536,
+          "loopEnd": 73.39102040816327
+        },
+        "debate": {
+          "path": "public/assets/audio/local/dr2/debate.ogg",
+          "name": "議論 -BREAK-",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00027.ogg",
+          "loopStart": 31.544149659863944,
+          "loopEnd": 163.2012925170068
+        },
+        "climax": {
+          "path": "public/assets/audio/local/dr2/climax.ogg",
+          "name": "Re: クライマックス推理",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00032.ogg",
+          "loopStart": 0.0,
+          "loopEnd": 142.60868480725622
+        },
+        "monokuma": {
+          "path": "public/assets/audio/local/dr2/monokuma.ogg",
+          "name": "Re: モノクマ先生の授業",
+          "source": "Dr2/data/all/bgm/dr2_bgm_hca.awb.00012.ogg",
+          "loopStart": 16.756961451247165,
+          "loopEnd": 136.75696145124718
+        }
+      },
+      "effects": {
+        "click": {
+          "path": "public/assets/audio/local/dr2/click.ogg",
+          "name": "DR2_SE_000",
+          "source": "dr2-ui.acb:DR2_SE_000"
+        },
+        "type": {
+          "path": "public/assets/audio/local/dr2/type.ogg",
+          "name": "DR2_SE_003",
+          "source": "dr2-ui.acb:DR2_SE_003"
+        },
+        "evidence": {
+          "path": "public/assets/audio/local/dr2/evidence.ogg",
+          "name": "DR2_SE_001",
+          "source": "dr2-ui.acb:DR2_SE_001"
+        },
+        "objection": {
+          "path": "public/assets/audio/local/dr2/objection.ogg",
+          "name": "DR2_SE_012",
+          "source": "dr2-ui.acb:DR2_SE_012"
+        }
+      },
+      "ambience": {}
+    },
+    "drv3": {
+      "music": {
+        "daily": {
+          "path": "public/assets/audio/local/drv3/daily.ogg",
+          "name": "Beautiful Lie",
+          "source": "BGM.awb:V3_BGM_005",
+          "loopStart": 37.35875,
+          "loopEnd": 234.90591666666666
+        },
+        "morning": {
+          "path": "public/assets/audio/local/drv3/morning.ogg",
+          "name": "Cool Morning",
+          "source": "BGM.awb:V3_BGM_012",
+          "loopStart": 18.981729166666668,
+          "loopEnd": 169.56995833333335
+        },
+        "tension": {
+          "path": "public/assets/audio/local/drv3/tension.ogg",
+          "name": "Darkness Time",
+          "source": "BGM.awb:V3_BGM_006",
+          "loopStart": 63.02758333333333,
+          "loopEnd": 185.4765625
+        },
+        "mystery": {
+          "path": "public/assets/audio/local/drv3/mystery.ogg",
+          "name": "Nightmare in the Locker",
+          "source": "BGM.awb:V3_BGM_017",
+          "loopStart": 39.5105,
+          "loopEnd": 219.5105
+        },
+        "sad": {
+          "path": "public/assets/audio/local/drv3/sad.ogg",
+          "name": "Heartless Journey",
+          "source": "BGM.awb:V3_BGM_024",
+          "loopStart": 55.241791666666664,
+          "loopEnd": 112.38464583333334
+        },
+        "investigation": {
+          "path": "public/assets/audio/local/drv3/investigation.ogg",
+          "name": "Despair Searching",
+          "source": "BGM.awb:V3_BGM_009",
+          "loopStart": 16.884020833333334,
+          "loopEnd": 234.38402083333332
+        },
+        "trial": {
+          "path": "public/assets/audio/local/drv3/trial.ogg",
+          "name": "Class Trial: Dawn Edition Vol. 3",
+          "source": "BGM.awb:V3_BGM_033",
+          "loopStart": 11.091604166666666,
+          "loopEnd": 280.63754166666666
+        },
+        "debate": {
+          "path": "public/assets/audio/local/drv3/debate.ogg",
+          "name": "V3 Argument -BREAK-",
+          "source": "BGM.awb:V3_BGM_037",
+          "loopStart": 17.897541666666665,
+          "loopEnd": 153.00864583333333
+        },
+        "climax": {
+          "path": "public/assets/audio/local/drv3/climax.ogg",
+          "name": "Closing Argument V3",
+          "source": "BGM.awb:V3_BGM_045",
+          "loopStart": 35.57279166666667,
+          "loopEnd": 302.23945833333335
+        },
+        "monokuma": {
+          "path": "public/assets/audio/local/drv3/monokuma.ogg",
+          "name": "Mr. Monokuma's Lesson V3",
+          "source": "BGM.awb:V3_BGM_018",
+          "loopStart": 13.345854166666667,
+          "loopEnd": 126.6791875
+        }
+      },
+      "effects": {
+        "click": {
+          "path": "public/assets/audio/local/drv3/click.ogg",
+          "name": "V3_SE_000",
+          "source": "v3-ui.acb:V3_SE_000"
+        },
+        "type": {
+          "path": "public/assets/audio/local/drv3/type.ogg",
+          "name": "V3_SE_003",
+          "source": "v3-ui.acb:V3_SE_003"
+        },
+        "evidence": {
+          "path": "public/assets/audio/local/drv3/evidence.ogg",
+          "name": "V3_SE_001",
+          "source": "v3-ui.acb:V3_SE_001"
+        },
+        "objection": {
+          "path": "public/assets/audio/local/drv3/objection.ogg",
+          "name": "V3_SE_012",
+          "source": "v3-ui.acb:V3_SE_012"
+        }
+      },
+      "ambience": {}
+    }
+  }
+}

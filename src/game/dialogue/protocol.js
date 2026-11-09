@@ -18,6 +18,12 @@
           if (typeof v[k] === 'string') out[k] = text(v[k], k === 'objective' ? 500 : 120);
         }
         if (modes.includes(v.mode)) out.mode = v.mode;
+        if (v.audio && typeof v.audio === 'object' && !Array.isArray(v.audio)) {
+          out.audio = {};
+          if (['dr1', 'dr2', 'drv3'].includes(v.audio.game)) out.audio.game = v.audio.game;
+          if (['none', 'daily', 'morning', 'tension', 'mystery', 'sad', 'investigation', 'trial', 'debate', 'climax', 'monokuma'].includes(v.audio.music)) out.audio.music = v.audio.music;
+          if (['none', 'room', 'wind', 'rain', 'sea'].includes(v.audio.ambience)) out.audio.ambience = v.audio.ambience;
+        }
         if (v.player === null) out.player = null;
         else if (v.player && typeof v.player === 'object' && !Array.isArray(v.player)) {
           out.player = {id: id(v.player.id), name: text(v.player.name, 100), sprite: id(v.player.sprite) || 'neutral'};
@@ -37,7 +43,8 @@
       case 'say':
         if (!text(v.text)) return null;
         return {type: 'say', who: id(v.who), name: text(v.name, 100), sprite: id(v.sprite),
-          text: text(v.text), effect: effects.includes(v.effect) ? v.effect : 'none'};
+          text: text(v.text), effect: effects.includes(v.effect) ? v.effect : 'none',
+          sound: ['evidence', 'objection'].includes(v.sound) ? v.sound : 'none'};
       case 'choices': {
         if (!Array.isArray(v.items)) return null;
         const items = v.items.slice(0, 6).filter(i => i && typeof i === 'object')

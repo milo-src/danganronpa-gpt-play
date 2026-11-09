@@ -8,7 +8,7 @@
   };
   const empty = () => ({background: '', location: 'Начало истории', chapter: 'DANGANRONPA', mode: 'daily',
     objective: '', cast: [], castExplicit: false, player: null, evidence: [], dialogue: null, choices: [],
-    hotspots: [], profiles: [], summary: ''});
+    hotspots: [], profiles: [], summary: '', audio: {}});
   function meet(state, id, name = '') {
     if (!id || id === state.player?.id || !Object.hasOwn(D.assets.characters, id)) return;
     const existing = state.profiles.find(p => p.id === id);
@@ -22,10 +22,11 @@
           (!event.background || Object.hasOwn(D.assets.backgrounds, event.background)));
       // A different room does not inherit the previous room's inhabitants.
       // Explicit cast (including []) is authoritative until the next scene update.
-      if (moved) { state.cast = []; state.castExplicit = false; state.dialogue = null; state.hotspots = []; }
+      if (moved) { state.cast = []; state.castExplicit = false; state.dialogue = null; state.hotspots = []; state.audio = {}; }
+      if (event.mode && event.mode !== state.mode && !('audio' in event)) { state.audio = {...state.audio}; delete state.audio.music; }
       if ('cast' in event) state.castExplicit = true;
       if ('player' in event) state.player = event.player;
-      for (const key of ['background', 'location', 'chapter', 'mode', 'objective', 'cast', 'evidence', 'hotspots', 'summary']) {
+      for (const key of ['background', 'location', 'chapter', 'mode', 'objective', 'cast', 'evidence', 'hotspots', 'summary', 'audio']) {
         if (!(key in event)) continue;
         if (key === 'background' && event[key] && !Object.hasOwn(D.assets.backgrounds, event[key])) continue;
         state[key] = event[key];

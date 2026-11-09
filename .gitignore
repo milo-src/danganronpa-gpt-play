@@ -9,4 +9,5 @@ source-assets/downloads/
 /docs
 docs/
 *.md
-/tests
+/tests/*
+!/tests/audio.test.cjs

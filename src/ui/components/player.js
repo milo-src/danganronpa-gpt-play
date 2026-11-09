@@ -13,7 +13,7 @@
       this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry, onNotes};
       this.version = version; this.busy = false; this.savedDrafts = [];
       this.lastDialogue = ''; this.lastCast = ''; this.animation = null; this.autoTimer = null;
-      this.settings = {speed: 0, auto: false, reduced: false, sound: false, musicVolume: .25}; this.enabled = false; this.collapsed = false;
+      this.settings = {textSpeed: 12, textSound: true, auto: false, reduced: false, sound: false, musicVolume: .25, effectsVolume: .35, ambientVolume: .25}; this.enabled = false; this.collapsed = false;
       // Firefox can leave a previous content script's DOM behind on add-on reload.
       for (const previous of document.querySelectorAll('#dgp-extension-root')) {
         previous.dispatchEvent(new Event('dgp-dispose'));
@@ -55,6 +55,7 @@
       const dialogueTop = el('div', 'dialogue-top'); this.speaker = el('strong', 'speaker'); this.progress = el('small', 'progress');
       dialogueTop.append(this.speaker, this.progress);
       this.text = el('p', 'speech');
+      this.text.addEventListener('click', () => this.advance());
       this.nextButton = this.button('Далее ▸', () => this.advance(), 'next');
       this.backButton = this.button('◂ Назад', onBack, 'back');
       const actions = el('nav', 'dialogue-actions'); actions.setAttribute('aria-label', 'Навигация по репликам');
@@ -113,7 +114,7 @@
       this.panel.tabIndex = -1;
       this.panel.addEventListener('focusout', () => this.scheduleAuto());
       D.installExtras?.(this, controls);
-      this.onVisibility = () => { this.scheduleAuto(); this.extras?.syncSound(); };
+      this.onVisibility = () => { if (document.hidden) this.finishTyping(); this.scheduleAuto(); this.extras?.syncSound(); };
       document.addEventListener('visibilitychange', this.onVisibility);
       this.host.addEventListener('dgp-dispose', () => {
         this.stopTyping(); clearTimeout(this.autoTimer);
@@ -123,7 +124,8 @@
       this.drawSettings();
     }
     button(text, callback, cls = '') {
-      const b = el('button', cls, text); b.type = 'button'; b.addEventListener('click', callback); return b;
+      const b = el('button', cls, text); b.type = 'button';
+      b.addEventListener('click', event => { this.extras?.sound.effect('click'); callback(event); }); return b;
     }
     setEnabled(value) {
       this.draftHelp.hidden = true;
@@ -134,12 +136,13 @@
       this.host.classList.toggle('collapsed', false);
       this.backdrop.hidden = !value;
       this.extras?.syncSound();
-      if (!value) { this.stopTyping(); clearTimeout(this.autoTimer); }
+      if (!value) { this.finishTyping(); clearTimeout(this.autoTimer); }
       else this.panel.focus({preventScroll: true});
     }
     setCollapsed(value) {
       if (!value) this.draftHelp.hidden = true;
       this.collapsed = value; this.panel.hidden = value || !this.enabled;
+      if (value) this.finishTyping();
       this.host.classList.toggle('collapsed', value);
       this.backdrop.hidden = value || !this.enabled;
       this.extras?.syncSound();
@@ -196,14 +199,20 @@
     }
     setSettings(settings) {
       this.settings = {...this.settings, ...settings}; this.panel.classList.toggle('reduced', this.settings.reduced);
+      if (this.settings.reduced || this.settings.textSpeed === 0) this.finishTyping();
       this.extras?.syncSound();
       this.drawSettings(); this.scheduleAuto();
     }
     setNotes(notes) { this.notes = typeof notes === 'string' ? notes.slice(0, 8000) : ''; }
     drawSettings() {
       this.settingsBody = el('div');
-      this.settingsBody.append(el('p', 'hint', 'Текст появляется сразу: без печатания и звуков на каждом символе.'));
-      for (const [key, label] of [['auto', 'Автоматически читать следующие реплики'], ['reduced', 'Уменьшить анимацию и вспышки']]) {
+      this.settingsBody.append(el('p', 'hint', '«Далее», Space или нажатие на реплику сначала показывают её целиком. Следующее нажатие — следующая реплика.'));
+      const speedLabel = el('label', 'setting', 'Скорость печати (0 — сразу)'), speed = el('input');
+      speed.type = 'range'; speed.min = 0; speed.max = 50; speed.value = this.settings.textSpeed;
+      speed.setAttribute('aria-label', 'Задержка печати в миллисекундах');
+      speed.addEventListener('change', () => { this.finishTyping(); this.actions.onSettings({textSpeed: Number(speed.value)}); });
+      speedLabel.append(speed); this.settingsBody.append(speedLabel);
+      for (const [key, label] of [['textSound', 'Звук печати реплик'], ['auto', 'Автоматически читать следующие реплики'], ['reduced', 'Уменьшить анимацию и вспышки']]) {
         const row = el('label', 'setting', label); const input = el('input'); input.type = 'checkbox'; input.checked = this.settings[key];
         input.addEventListener('change', () => this.actions.onSettings({[key]: input.checked})); row.append(input); this.settingsBody.append(row);
       }
@@ -264,17 +273,35 @@
       this.choices.replaceChildren(...state.choices.map(c => this.button(c.label, () => this.actions.onDraft(c.text))));
       this.nextButton.hidden = !!state.menu; this.backButton.hidden = !!state.menu;
       this.nextButton.disabled = !meta.pending && !this.animation;
-      this.nextButton.textContent = meta.pending ? 'Далее ▸' : this.animation ? 'Показать текст ▸' : state.choices.length ? 'Выбери действие выше' : 'Твой ход';
+      this.nextButton.textContent = this.animation ? 'Показать текст ▸' : meta.pending ? 'Далее ▸' : state.choices.length ? 'Выбери действие выше' : 'Твой ход';
       this.extras?.update();
       if (!this.drawer.hidden && !this.drawer.contains(this.shadow.activeElement)) this.renderDrawer();
       this.scheduleAuto();
       this.setBusy(this.busy);
     }
     typeText(text) {
-      this.stopTyping(); this.fullText = text; this.text.textContent = text;
+      this.stopTyping(); this.fullText = text;
+      const speed = Number(this.settings.textSpeed ?? 12);
+      if (!speed || this.settings.reduced || !this.enabled || this.collapsed || document.hidden) { this.text.textContent = text; return; }
+      const letters = Array.from(text); let count = 0;
+      this.text.textContent = '';
+      this.animation = setInterval(() => {
+        const letter = letters[count++];
+        this.text.textContent = letters.slice(0, count).join('');
+        if (letter && /\S/u.test(letter)) this.extras?.sound.effect('type');
+        if (count >= letters.length) this.finishTyping();
+      }, speed);
     }
-    stopTyping() { clearInterval(this.animation); this.animation = null; }
+    stopTyping() { clearInterval(this.animation); this.animation = null; this.extras?.sound.stopTyping(); }
+    finishTyping() {
+      if (!this.animation) return;
+      this.stopTyping(); this.text.textContent = this.fullText;
+      this.nextButton.disabled = !this.meta?.pending;
+      this.nextButton.textContent = this.meta?.pending ? 'Далее ▸' : this.currentState?.choices.length ? 'Выбери действие выше' : 'Твой ход';
+      this.scheduleAuto();
+    }
     advance() {
+      if (this.animation) { this.finishTyping(); return; }
       this.actions.onNext();
     }
     scheduleAuto() {
@@ -288,7 +315,6 @@
     playEffect(effect) {
       this.stage.classList.remove('shake', 'flash'); this.effect.textContent = '';
       if (effect === 'objection') this.effect.textContent = 'ВОЗРАЖЕНИЕ!';
-      if (effect === 'objection') this.extras?.sound.effect('objection');
       if (this.settings.reduced || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (effect === 'shake' || effect === 'flash') {
         void this.stage.offsetWidth; this.stage.classList.add(effect);
