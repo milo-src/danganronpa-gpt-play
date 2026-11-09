@@ -1,71 +1,94 @@
 (() => {
   'use strict';
-  const themes = {
-    daily: {beat: .48, bass: [48, 53, 50, 55], notes: [72, 76, 79, 76, 74, 77, 81, 77, 74, 77, 81, 84, 79, 77, 74, 71]},
-    investigation: {beat: .65, bass: [45, 45, 41, 43], notes: [69, 0, 72, 71, 0, 64, 0, 67, 65, 0, 69, 0, 67, 0, 71, 0]},
-    trial: {beat: .25, bass: [45, 41, 48, 43], notes: [69, 76, 72, 76, 69, 76, 72, 79, 65, 72, 69, 72, 67, 74, 71, 74]}
-  };
+  const DB_NAME = 'dgp-local-soundtracks';
+  const DB_VERSION = 1;
+  const TRACKS = ['daily', 'investigation', 'trial'];
+  const openDb = () => new Promise((resolve, reject) => {
+    if (!globalThis.indexedDB) return reject(new Error('Локальное хранилище недоступно'));
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    request.onupgradeneeded = () => request.result.createObjectStore('tracks');
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error('Не удалось открыть хранилище музыки'));
+  });
   class Sound {
-    constructor() { this.settings = {sound: false, musicVolume: .18, effectsVolume: .3}; this.active = false; this.mode = 'daily'; this.step = 0; this.nodes = new Set(); }
-    async unlock() {
-      if (this.disposed) return false;
-      const Audio = globalThis.AudioContext || globalThis.webkitAudioContext;
-      if (!Audio) return false;
+    constructor() {
+      this.settings = {sound: false, musicVolume: .25}; this.active = false; this.mode = 'daily';
+      this.tracks = Object.create(null); this.urls = Object.create(null); this.disposed = false;
+      this.audio = new Audio(); this.audio.loop = true; this.audio.preload = 'none';
+      this.audio.addEventListener('error', () => this.onError?.('Браузер не смог открыть выбранный аудиофайл.'));
+    }
+    async load() {
       try {
-        if (!this.context) {
-          this.context = new Audio(); this.music = this.context.createGain(); this.effects = this.context.createGain();
-          this.music.connect(this.context.destination); this.effects.connect(this.context.destination);
-        }
-        await this.context.resume();
-        if (this.disposed) return false;
-        this.sync(); return this.context.state === 'running';
-      } catch { return false; }
+        const db = await openDb();
+        const records = await new Promise((resolve, reject) => {
+          const request = db.transaction('tracks', 'readonly').objectStore('tracks').getAll();
+          request.onsuccess = () => resolve(request.result || []);
+          request.onerror = () => reject(request.error);
+        });
+        for (const record of records) if (TRACKS.includes(record.mode) && record.blob instanceof Blob) this.tracks[record.mode] = record;
+        db.close(); this.sync();
+      } catch { /* Music remains optional when storage is unavailable. */ }
+      return this.tracks;
+    }
+    async setTrack(mode, file) {
+      if (!TRACKS.includes(mode) || !(file instanceof Blob)) throw new Error('Выбери аудиофайл.');
+      if (!file.type.startsWith('audio/') && !/\.(mp3|ogg|oga|opus|wav|m4a|aac|flac|webm)$/i.test(file.name || '')) {
+        throw new Error('Поддерживаются аудиофайлы MP3, OGG, WAV, M4A, AAC, FLAC и WebM.');
+      }
+      if (file.size > 100 * 1024 * 1024) throw new Error('Файл музыки должен быть меньше 100 МБ.');
+      const record = {mode, name: file.name || 'Трек', blob: file};
+      const db = await openDb();
+      await new Promise((resolve, reject) => {
+        const request = db.transaction('tracks', 'readwrite').objectStore('tracks').put(record, mode);
+        request.onsuccess = resolve; request.onerror = () => reject(request.error);
+      }).finally(() => db.close());
+      if (this.urls[mode]) URL.revokeObjectURL(this.urls[mode]);
+      delete this.urls[mode];
+      this.tracks[mode] = record;
+      if (this.mode === mode) this.selectTrack(true);
+      return record.name;
+    }
+    async removeTrack(mode) {
+      const db = await openDb();
+      await new Promise((resolve, reject) => {
+        const request = db.transaction('tracks', 'readwrite').objectStore('tracks').delete(mode);
+        request.onsuccess = resolve; request.onerror = () => reject(request.error);
+      }).finally(() => db.close());
+      delete this.tracks[mode];
+      if (this.urls[mode]) URL.revokeObjectURL(this.urls[mode]);
+      delete this.urls[mode];
+      if (this.mode === mode) { this.audio.pause(); this.audio.removeAttribute('src'); }
     }
     configure(settings, active, mode = this.mode) {
       this.settings = {...this.settings, ...settings}; this.active = active;
-      if (mode !== this.mode) { this.mode = mode; this.step = 0; this.stop(); }
-      this.sync();
+      const changed = mode !== this.mode; this.mode = mode;
+      this.sync(changed);
     }
-    sync() {
-      if (!this.context || this.disposed) return;
-      const audible = this.settings.sound && this.active;
-      this.music.gain.setTargetAtTime(audible ? Math.min(.5, Math.max(0, this.settings.musicVolume)) : 0, this.context.currentTime, .08);
-      this.effects.gain.setTargetAtTime(audible ? Math.min(.7, Math.max(0, this.settings.effectsVolume)) : 0, this.context.currentTime, .03);
-      if (!audible || this.context.state !== 'running') { this.stop(); return; }
-      if (!this.timer) this.tick();
+    selectTrack(restart = false) {
+      const record = this.tracks[this.mode];
+      if (!record) { this.audio.pause(); this.audio.removeAttribute('src'); return; }
+      if (!this.urls[this.mode]) this.urls[this.mode] = URL.createObjectURL(record.blob);
+      const src = this.urls[this.mode];
+      if (this.audio.src !== src) this.audio.src = src;
+      if (restart && this.settings.sound && this.active) this.audio.currentTime = 0;
+      this.audio.volume = Math.min(1, Math.max(0, Number(this.settings.musicVolume) || 0));
+      if (this.settings.sound && this.active) this.audio.play().catch(() => this.onError?.('Нажми «Музыка» ещё раз, чтобы разрешить воспроизведение.'));
+      else this.audio.pause();
     }
-    tone(note, duration, gain, bus = this.music, type = 'sine') {
-      if (!this.context || !note || !bus) return;
-      const now = this.context.currentTime, oscillator = this.context.createOscillator(), envelope = this.context.createGain();
-      oscillator.type = type; oscillator.frequency.value = 440 * 2 ** ((note - 69) / 12);
-      envelope.gain.setValueAtTime(0, now); envelope.gain.linearRampToValueAtTime(gain, now + .015);
-      envelope.gain.exponentialRampToValueAtTime(.0001, now + duration);
-      oscillator.connect(envelope); envelope.connect(bus); this.nodes.add(oscillator);
-      oscillator.onended = () => { oscillator.disconnect(); envelope.disconnect(); this.nodes.delete(oscillator); };
-      oscillator.start(); oscillator.stop(now + duration + .02);
+    sync(restart = false) { if (!this.disposed) this.selectTrack(restart); }
+    async unlock() {
+      if (this.disposed) return false;
+      if (!this.tracks[this.mode]) return false;
+      this.audio.volume = Math.min(1, Math.max(0, Number(this.settings.musicVolume) || 0));
+      try { await this.audio.play(); return !this.audio.paused; } catch { return false; }
     }
-    tick() {
-      if (this.disposed || !this.active || !this.settings.sound) { this.stop(); return; }
-      const t = themes[this.mode] || themes.daily;
-      if (this.settings.musicVolume > 0) {
-        this.tone(t.notes[this.step % 16], t.beat * 1.4, .16);
-        if (this.step % 4 === 0) this.tone(t.bass[Math.floor(this.step / 4) % 4], t.beat * 3.6, .22, this.music, 'triangle');
-        if (this.mode === 'trial' && this.step % 2 === 0) this.tone(33, .09, .16);
-      }
-      this.step++; this.timer = setTimeout(() => { this.timer = null; this.tick(); }, t.beat * 1000);
+    effect() { /* No synthesized or typing effects; only user-selected music is played. */ }
+    stop() { this.audio.pause(); }
+    dispose() {
+      this.disposed = true; this.active = false; this.audio.pause(); this.audio.removeAttribute('src');
+      for (const url of Object.values(this.urls)) URL.revokeObjectURL(url);
+      this.urls = Object.create(null);
     }
-    effect(kind) {
-      if (!this.context || this.context.state !== 'running' || !this.active || !this.settings.sound) return;
-      const now = this.context.currentTime;
-      if (kind === 'type' && now - (this.lastType || 0) < .075) return;
-      if (kind === 'type') this.lastType = now;
-      const sounds = {type: [84, .025, .025], click: [79, .08, .12], evidence: [88, .45, .14], objection: [45, .55, .24]};
-      const [note, duration, gain] = sounds[kind] || sounds.click;
-      this.tone(note, duration, gain, this.effects, kind === 'objection' ? 'sawtooth' : 'sine');
-      if (kind === 'evidence') this.tone(95, .7, .09, this.effects);
-    }
-    stop() { clearTimeout(this.timer); this.timer = null; for (const node of this.nodes) { try { node.stop(); } catch {} } this.nodes.clear(); }
-    dispose() { this.disposed = true; this.active = false; this.stop(); this.context?.close().catch(() => {}); }
   }
   globalThis.DGP.Sound = Sound;
 })();

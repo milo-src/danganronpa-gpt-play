@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Danganronpa GPT Play",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Игровая сцена Danganronpa в веб-чате ChatGPT: персонажи, локации, реплики и улики. Без API.",
   "permissions": [
     "storage",

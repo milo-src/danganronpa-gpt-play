@@ -20,7 +20,7 @@
         if (modes.includes(v.mode)) out.mode = v.mode;
         if (v.player === null) out.player = null;
         else if (v.player && typeof v.player === 'object' && !Array.isArray(v.player)) {
-          out.player = {id: id(v.player.id), name: text(v.player.name, 100)};
+          out.player = {id: id(v.player.id), name: text(v.player.name, 100), sprite: id(v.player.sprite) || 'neutral'};
         }
         if (Array.isArray(v.cast)) out.cast = v.cast.slice(0, 3).filter(c => c && typeof c === 'object')
           .map(c => ({id: id(c.id), sprite: id(c.sprite) || 'default'})).filter(c => c.id);

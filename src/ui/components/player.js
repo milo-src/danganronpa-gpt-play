@@ -13,7 +13,7 @@
       this.url = url; this.actions = {onToggle, onNext, onBack, onReplay, onDraft, onSettings, onExpand, onFocusComposer, onRestoreDraft, onRetry, onNotes};
       this.version = version; this.busy = false; this.savedDrafts = [];
       this.lastDialogue = ''; this.lastCast = ''; this.animation = null; this.autoTimer = null;
-      this.settings = {speed: 22, auto: false, reduced: false, sound: false, musicVolume: .18, effectsVolume: .3}; this.enabled = false; this.collapsed = false;
+      this.settings = {speed: 0, auto: false, reduced: false, sound: false, musicVolume: .25}; this.enabled = false; this.collapsed = false;
       // Firefox can leave a previous content script's DOM behind on add-on reload.
       for (const previous of document.querySelectorAll('#dgp-extension-root')) {
         previous.dispatchEvent(new Event('dgp-dispose'));
@@ -56,8 +56,9 @@
       dialogueTop.append(this.speaker, this.progress);
       this.text = el('p', 'speech');
       this.nextButton = this.button('Далее ▸', () => this.advance(), 'next');
-      this.backButton = this.button('◂ Назад', onBack);
-      const actions = el('div', 'dialogue-actions'); actions.append(this.backButton, this.nextButton);
+      this.backButton = this.button('◂ Назад', onBack, 'back');
+      const actions = el('nav', 'dialogue-actions'); actions.setAttribute('aria-label', 'Навигация по репликам');
+      const navButtons = el('div', 'dialogue-nav'); navButtons.append(this.backButton, this.nextButton); actions.append(navButtons);
       this.choices = el('div', 'choices');
       this.dialogue.append(dialogueTop, this.text, this.choices, actions);
       this.status = el('div', 'status'); this.status.setAttribute('role', 'status');
@@ -69,6 +70,16 @@
       this.input = el('textarea', 'action-input'); this.input.id = 'dgp-action';
       this.input.rows = 2; this.input.maxLength = 60000;
       this.input.placeholder = 'Опиши своё действие или напиши реплику от лица своего героя…';
+      this.input.addEventListener('input', () => {
+        const hero = this.cast.querySelector('.protagonist');
+        if (!hero || !this.currentState?.player?.id) return;
+        const speaking = Boolean(this.input.value.trim());
+        const lineIsHero = this.currentState.dialogue?.who === this.currentState.player.id;
+        this.updateFigure(hero, this.currentState.player.id,
+          speaking ? 'talking' : lineIsHero ? this.currentState.dialogue?.sprite : this.currentState.player.sprite,
+          speaking || lineIsHero);
+        hero.classList.toggle('composing', speaking);
+      });
       inputLabel.htmlFor = this.input.id;
       this.sendButton = this.button('Отправить ▸', () => this.actions.onDraft(this.input.value), 'send-action');
       this.input.addEventListener('keydown', e => {
@@ -120,6 +131,7 @@
       this.launch.textContent = value ? 'RONPA · ВКЛ' : 'RONPA · ВЫКЛ';
       this.launch.setAttribute('aria-pressed', String(value));
       this.host.classList.toggle('enabled', value);
+      this.host.classList.toggle('collapsed', false);
       this.backdrop.hidden = !value;
       this.extras?.syncSound();
       if (!value) { this.stopTyping(); clearTimeout(this.autoTimer); }
@@ -128,6 +140,7 @@
     setCollapsed(value) {
       if (!value) this.draftHelp.hidden = true;
       this.collapsed = value; this.panel.hidden = value || !this.enabled;
+      this.host.classList.toggle('collapsed', value);
       this.backdrop.hidden = value || !this.enabled;
       this.extras?.syncSound();
       this.launch.textContent = value ? 'RONPA · ОТКРЫТЬ' : (this.enabled ? 'RONPA · ВКЛ' : 'RONPA · ВЫКЛ');
@@ -136,12 +149,9 @@
     }
     notice(text) { this.status.textContent = text; }
     setComposerLayout(layout) {
-      // A tall native editor takes priority over the scene; never cover its controls.
-      if (layout && !layout.available && this.enabled && !this.collapsed) this.setCollapsed(true);
-      const gap = layout?.available ? layout.gap : 180;
-      this.host.style.setProperty('--composer-gap', `${gap}px`);
-      this.composerHint.textContent = layout ? 'Enter — отправить · Shift+Enter — новая строка' :
-        'Поле ChatGPT пока не найдено. Открой диалог внутри проекта через «Открыть чат».';
+      this.composerHint.textContent = layout?.available
+        ? 'Enter — отправить · Shift+Enter — новая строка'
+        : 'Если сайт не принимает ход, открой чат и отправь черновик в поле ChatGPT.';
     }
     setRetry(value) { this.retryButton.hidden = !value; }
     preserveDraft(text) {
@@ -192,12 +202,7 @@
     setNotes(notes) { this.notes = typeof notes === 'string' ? notes.slice(0, 8000) : ''; }
     drawSettings() {
       this.settingsBody = el('div');
-      const speedLabel = el('label', 'setting', 'Скорость текста'); const speed = el('select');
-      for (const [value, name] of [[0, 'Сразу'], [12, 'Быстро'], [22, 'Обычно'], [40, 'Медленно']]) {
-        const option = el('option', '', name); option.value = value; speed.append(option);
-      }
-      speed.value = this.settings.speed; speed.addEventListener('change', () => this.actions.onSettings({speed: Number(speed.value)}));
-      speedLabel.append(speed); this.settingsBody.append(speedLabel);
+      this.settingsBody.append(el('p', 'hint', 'Текст появляется сразу: без печатания и звуков на каждом символе.'));
       for (const [key, label] of [['auto', 'Автоматически читать следующие реплики'], ['reduced', 'Уменьшить анимацию и вспышки']]) {
         const row = el('label', 'setting', label); const input = el('input'); input.type = 'checkbox'; input.checked = this.settings[key];
         input.addEventListener('change', () => this.actions.onSettings({[key]: input.checked})); row.append(input); this.settingsBody.append(row);
@@ -221,43 +226,25 @@
       const bg = D.assets.backgrounds[state.background];
       if (bg && this.background.dataset.path !== bg.path) { this.background.dataset.path = bg.path; this.background.src = this.url(bg.path); this.background.hidden = false; }
       else if (!bg) { this.background.removeAttribute('src'); this.background.hidden = true; this.background.dataset.path = ''; }
-      const castKey = JSON.stringify([state.cast, state.dialogue?.who]);
+      const player = state.player && Object.hasOwn(D.assets.characters, state.player.id) ? state.player : null;
+      const heroLine = player && state.dialogue?.who === player.id;
+      const heroSprite = this.input.value.trim() ? 'talking' : heroLine ? state.dialogue.sprite : player?.sprite;
+      const castKey = JSON.stringify([state.cast, state.dialogue?.who, player, heroSprite]);
       if (castKey !== this.lastCast) {
-        const previousActors = new Set(Array.from(this.cast.children).map(n => n.dataset.character));
-        const departures = Array.from(this.cast.children).filter(n => !n.classList.contains('leaving') && !state.cast.some(c => c.id === n.dataset.character));
-        for (const old of departures) {
-          old.style.left = old.offsetLeft + 'px'; old.style.width = old.offsetWidth + 'px';
-          old.style.position = 'absolute'; old.style.margin = '0'; old.classList.add('leaving'); old.setAttribute('aria-hidden', 'true');
-        }
         this.lastCast = castKey; this.cast.replaceChildren();
+        if (player) {
+          const hero = this.makeFigure(player.id, heroSprite || 'neutral', !!(this.input.value.trim() || heroLine), 'protagonist');
+          hero.dataset.label = `ТЫ · ${player.name || D.assets.characters[player.id].name}`;
+          if (this.input.value.trim()) hero.classList.add('composing');
+          this.cast.append(hero);
+        }
         for (const c of state.cast) {
+          if (player && c.id === player.id) continue;
           const asset = Object.hasOwn(D.assets.characters, c.id) ? D.assets.characters[c.id] : null;
           if (!asset) continue;
-          const sprite = D.resolveSprite(c.id, c.sprite, state.dialogue?.who === c.id);
-          const figure = el('figure', 'actor' + (state.dialogue?.who === c.id ? ' speaking' : ''));
-          figure.dataset.character = c.id;
-          if (!previousActors.has(c.id)) figure.classList.add('entering');
-          figure.dataset.sprite = sprite.key;
-          let image;
-          if (sprite.bounds) {
-            const [width, height, x, y, croppedWidth, croppedHeight] = sprite.bounds;
-            const ns = 'http://www.w3.org/2000/svg';
-            const portrait = document.createElementNS(ns, 'svg');
-            portrait.setAttribute('viewBox', `${x} ${y} ${croppedWidth} ${croppedHeight}`);
-            portrait.setAttribute('preserveAspectRatio', 'xMidYMax meet');
-            portrait.setAttribute('role', 'img'); portrait.setAttribute('aria-label', asset.name);
-            image = document.createElementNS(ns, 'image');
-            image.setAttribute('width', width); image.setAttribute('height', height);
-            image.setAttribute('href', this.url(sprite.path));
-            portrait.append(image); figure.append(portrait);
-          } else {
-            image = el('img'); image.alt = asset.name; image.src = this.url(sprite.path);
-            figure.append(image);
-          }
-          image.addEventListener('error', () => { figure.hidden = true; this.notice(`Не загрузился спрайт: ${asset.name}.`); });
+          const figure = this.makeFigure(c.id, c.sprite, state.dialogue?.who === c.id);
           this.cast.append(figure);
         }
-        for (const old of departures) { this.cast.append(old); setTimeout(() => old.remove(), 220); }
       }
       this.welcome.hidden = !!state.dialogue || state.choices.length > 0;
       this.dialogue.hidden = !state.dialogue && !state.choices.length;
@@ -284,20 +271,11 @@
       this.setBusy(this.busy);
     }
     typeText(text) {
-      this.stopTyping(); this.fullText = text;
-      if (this.settings.speed === 0 || this.settings.reduced) { this.text.textContent = text; return; }
-      this.text.textContent = ''; const chars = Array.from(text); let pos = 0;
-      this.animation = setInterval(() => {
-        pos = Math.min(chars.length, pos + Math.max(1, Math.ceil(chars.length / 450)));
-        this.text.textContent = chars.slice(0, pos).join('');
-        this.extras?.sound.effect('type');
-        if (pos === chars.length) { this.stopTyping(); this.nextButton.disabled = !this.meta?.pending; this.scheduleAuto(); }
-      }, this.settings.speed);
+      this.stopTyping(); this.fullText = text; this.text.textContent = text;
     }
     stopTyping() { clearInterval(this.animation); this.animation = null; }
     advance() {
-      if (this.animation) { this.stopTyping(); this.text.textContent = this.fullText; this.nextButton.disabled = !this.meta?.pending; this.scheduleAuto(); }
-      else this.actions.onNext();
+      this.actions.onNext();
     }
     scheduleAuto() {
       clearTimeout(this.autoTimer);
@@ -314,6 +292,37 @@
       if (this.settings.reduced || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (effect === 'shake' || effect === 'flash') {
         void this.stage.offsetWidth; this.stage.classList.add(effect);
+      }
+    }
+    makeFigure(id, requested, speaking, extraClass = '') {
+      const asset = D.assets.characters[id];
+      const figure = el('figure', `actor${speaking ? ' speaking' : ''}${extraClass ? ` ${extraClass}` : ''}`);
+      figure.dataset.character = id; this.updateFigure(figure, id, requested, speaking);
+      if (extraClass !== 'protagonist') {
+        const talk = this.button(`Поговорить: ${asset.name}`, () => this.actions.onDraft(`Обращаюсь к ${asset.name} (${id}). Начинаю разговор.`), 'actor-talk');
+        figure.append(talk);
+      }
+      return figure;
+    }
+    updateFigure(figure, id, requested, speaking) {
+      const asset = D.assets.characters[id]; if (!asset) return;
+      const sprite = D.resolveSprite(id, requested, speaking); if (!sprite) return;
+      figure.classList.toggle('speaking', !!speaking);
+      if (figure.dataset.sprite === sprite.key) return;
+      figure.dataset.sprite = sprite.key;
+      const imageError = image => { image.addEventListener('error', () => { figure.hidden = true; this.notice(`Не загрузился спрайт: ${asset.name}.`); }, {once: true}); };
+      if (sprite.bounds) {
+        const [width, height, x, y, croppedWidth, croppedHeight] = sprite.bounds;
+        const ns = 'http://www.w3.org/2000/svg', portrait = document.createElementNS(ns, 'svg');
+        portrait.setAttribute('viewBox', `${x} ${y} ${croppedWidth} ${croppedHeight}`);
+        portrait.setAttribute('preserveAspectRatio', 'xMidYMax meet'); portrait.setAttribute('role', 'img');
+        portrait.setAttribute('aria-label', asset.name);
+        const image = document.createElementNS(ns, 'image'); image.setAttribute('width', width); image.setAttribute('height', height);
+        image.setAttribute('href', this.url(sprite.path)); imageError(image); portrait.append(image);
+        figure.querySelector('svg, img')?.remove(); figure.prepend(portrait);
+      } else {
+        const image = el('img'); image.alt = asset.name; image.src = this.url(sprite.path); imageError(image);
+        figure.querySelector('svg, img')?.remove(); figure.prepend(image);
       }
     }
     toggleDrawer(name) {

@@ -9,7 +9,7 @@
   let manualChoice = false, handoff = null, checkingHandoff = false;
   let scope = adapter.scope();
   const handoffKey = 'dgp-start-handoff';
-  let settings = {speed: 22, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches, sound: false, musicVolume: .18, effectsVolume: .3};
+  let settings = {speed: 0, auto: false, reduced: matchMedia('(prefers-reduced-motion: reduce)').matches, sound: false, musicVolume: .25};
   let lastRead = {messages: [], streaming: false, invalid: 0, assistantCount: 0};
   let disposed = false, routePoll, sending = false, sendGeneration = 0, awaitingReply = null;
   const url = path => api.runtime.getURL(path);
@@ -208,10 +208,9 @@
     const version = routeVersion;
     const savedSettings = await storageGet('dgp-settings');
     if (savedSettings) {
-      settings = {...settings, speed: [0, 12, 22, 40].includes(savedSettings.speed) ? savedSettings.speed : 22,
+      settings = {...settings, speed: 0,
         auto: savedSettings.auto === true, reduced: savedSettings.reduced === true, sound: savedSettings.sound === true,
-        musicVolume: Number.isFinite(savedSettings.musicVolume) ? Math.max(0, Math.min(1, savedSettings.musicVolume)) : .18,
-        effectsVolume: Number.isFinite(savedSettings.effectsVolume) ? Math.max(0, Math.min(1, savedSettings.effectsVolume)) : .3};
+        musicVolume: Number.isFinite(savedSettings.musicVolume) ? Math.max(0, Math.min(1, savedSettings.musicVolume)) : .25};
     }
     player.setSettings(settings);
     const session = await storageGet(keyFor(route));

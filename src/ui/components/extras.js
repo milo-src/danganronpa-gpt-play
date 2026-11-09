@@ -8,16 +8,22 @@
     const action = (label, text) => p.button(label, () => { sound.effect('click'); p.actions.onDraft(text); }, 'game-action');
     const syncSound = () => {
       sound.configure(p.settings, p.enabled && !p.collapsed && !document.hidden, currentMode);
-      audioButton.textContent = p.settings.sound ? 'Звук: вкл' : 'Звук: выкл';
+      audioButton.textContent = !sound.tracks[currentMode] ? 'Музыка: нет трека' : p.settings.sound ? 'Музыка: вкл' : 'Музыка: выкл';
     };
-    const audioButton = p.button('Звук: выкл', async () => {
-      if (p.settings.sound && sound.context?.state !== 'running') { await sound.unlock(); syncSound(); return; }
-      if (!p.settings.sound && !await sound.unlock()) { p.notice('Браузер не разрешил звук. Попробуй нажать ещё раз.'); return; }
-      p.actions.onSettings({sound: !p.settings.sound}); syncSound();
+    const audioButton = p.button('Музыка: выкл', async () => {
+      if (p.settings.sound && sound.tracks[currentMode]) { p.actions.onSettings({sound: false}); syncSound(); return; }
+      if (!sound.tracks[currentMode]) { p.notice('Добавь свой музыкальный файл в «Настройки» → «Музыка», затем нажми эту кнопку.'); p.toggleDrawer('settings'); return; }
+      if (!await sound.unlock()) { p.notice('Браузер не разрешил воспроизведение. Нажми «Музыка» ещё раз.'); return; }
+      p.actions.onSettings({sound: true}); syncSound();
     });
     controls.prepend(p.button('Осмотр', () => p.toggleDrawer('inspect')), p.button('Справочник', () => p.toggleDrawer('handbook')),
       p.button('Сохранение', () => p.toggleDrawer('save')));
     controls.append(audioButton);
+    sound.onError = message => p.notice(message);
+    sound.load().then(() => {
+      syncSound();
+      if (!p.drawer.hidden && p.drawerName === 'settings') p.renderDrawer();
+    });
     const markers = el('div', null, 'hotspots'); p.stage.append(markers);
     const objectDetail = (title, text) => {
       p.drawerName = 'inspect'; p.drawer.hidden = false; p.renderDrawer();
@@ -111,8 +117,27 @@
       return false;
     };
     const settings = () => {
-      const box = el('section'); box.append(el('h3', 'Звук'), el('p', 'Три синтезированные темы: повседневность, расследование и суд. Включаются кнопкой «Звук»; при скрытии игры затихают.'));
-      for (const [key, label] of [['musicVolume','Громкость музыки'],['effectsVolume','Громкость эффектов']]) {
+      const box = el('section'); box.append(el('h3', 'Музыка'), el('p', 'Здесь нет MIDI и звуков печати. Выбери музыкальные файлы из своей копии игры: они сохранятся в браузере и будут включаться по режиму сцены. Файлы саундтрека в проект не включены.'));
+      for (const [mode, label] of [['daily','Повседневная жизнь'],['investigation','Расследование'],['trial','Классный суд']]) {
+        const row = el('label', 'setting', label), input = el('input'); input.type = 'file'; input.accept = 'audio/*,.mp3,.ogg,.wav,.m4a,.aac,.flac,.webm'; input.setAttribute('aria-label', `Музыка: ${label}`);
+        const selected = sound.tracks[mode];
+        row.append(input); box.append(row);
+        box.append(el('p', 'hint', selected ? `Выбрано: ${selected.name}` : 'Трек не выбран'));
+        input.addEventListener('change', async () => {
+          try {
+            if (!input.files?.[0]) return;
+            const name = await sound.setTrack(mode, input.files[0]);
+            p.notice(`Музыка «${name}» сохранена для режима «${label}».`);
+            p.renderDrawer();
+          } catch (error) { p.notice(error.message || 'Не удалось сохранить аудиофайл.'); }
+        });
+        if (selected) box.append(p.button(`Убрать трек: ${label}`, async () => {
+          try { await sound.removeTrack(mode); p.renderDrawer(); p.notice('Трек удалён из локальной библиотеки дополнения.'); }
+          catch (error) { p.notice(error.message || 'Не удалось удалить трек.'); }
+        }));
+      }
+      box.append(el('p', 'Поддерживаются MP3, OGG, WAV, M4A, AAC, FLAC и WebM, до 100 МБ на файл. Выбирай треки, которые у тебя есть право использовать.'));
+      for (const [key, label] of [['musicVolume','Громкость музыки']]) {
         const row = el('label', label, 'setting'), input = el('input'); input.type = 'range'; input.min = 0; input.max = 100; input.value = Math.round((p.settings[key] ?? .2) * 100); input.setAttribute('aria-label', label);
         input.addEventListener('change', () => p.actions.onSettings({[key]: Number(input.value) / 100})); row.append(input); box.append(row);
       }
@@ -121,7 +146,7 @@
     p.extras = {render, settings, sound, syncSound,
       update() {
         const state = p.currentState; currentMode = state.mode; syncSound();
-        audioButton.textContent = p.settings.sound ? 'Звук: вкл' : 'Звук: выкл';
+        audioButton.textContent = !sound.tracks[currentMode] ? 'Музыка: нет трека' : p.settings.sound ? 'Музыка: вкл' : 'Музыка: выкл';
         const ids = state.evidence.map(e => e.id); if (previousEvidence && ids.some(id => !previousEvidence.includes(id))) sound.effect('evidence'); previousEvidence = ids;
         markers.replaceChildren();
         for (const h of state.hotspots || []) {
@@ -131,6 +156,7 @@
         }
         for (const figure of p.cast.children) {
           if (figure.classList.contains('leaving')) continue;
+          if (figure.classList.contains('protagonist')) continue;
           if (figure.querySelector('button')) continue;
           const id = figure.dataset.character, name = state.profiles.find(x => x.id === id)?.name || D.assets.characters[id]?.name || id;
           const button = p.button(`Поговорить: ${name}`, () => objectDetail(name, `Обращаюсь к ${name} (${id}). Начинаю разговор.`), 'actor-talk');
